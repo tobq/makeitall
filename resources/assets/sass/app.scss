@@ -1,6 +1,167 @@
 // Variables
-@import "variables";
-@import "base";
+//@import "variables";
+@import "fonts";
 
-// Side-bar
+$sidebar-width: 200px;
+$sidebar-item-size: 50px;
+$sidebar-spacing: 14px;
+$logo-height: 70px;
+$MIA-grey: rgb(211, 211, 211);
+$MIA-light-grey: #EEE;
 
+body {
+  box-sizing: border-box;
+  padding: $logo-height 20px 0;
+  margin: 0 0 0 $sidebar-width;
+  font-family: roboto;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+%no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+nav {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  width: $sidebar-width;
+  background: $MIA-light-grey;
+  //font-family: KC;
+  z-index: 10;
+  font-weight: bold;
+  line-height: $sidebar-item-size;
+
+  > a {
+    display: block;
+    transition: background-color 100ms ease;
+
+    &:hover {
+      background-color: $MIA-grey;
+    }
+
+    > .material-icons {
+      display: inline-block;
+      text-align: center;
+      width: $sidebar-item-size;
+    }
+
+  }
+}
+
+#logo {
+  @extend %no-select;
+  font-family: "Bauhaus 93";
+  font-size: 24px;
+  font-weight: normal;
+  line-height: $logo-height;
+  background-color: $MIA-grey;
+}
+
+#logo-icon {
+  height: 30px;
+  width: $sidebar-item-size;
+  display: inline-block;
+  vertical-align: middle;
+  background-image: url(/i/logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+header {
+  text-align: right;
+  position: fixed;
+  left: $sidebar-width;
+  right: 0;
+  top: 0;
+  line-height: $logo-height;
+  pointer-events: none;
+  box-sizing: border-box;
+  padding: 0 $sidebar-spacing;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 9;
+
+  > * {
+    pointer-events: all;
+    vertical-align: middle;
+    display: inline-block;
+    margin-right: 14px;
+    //box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    //border: 1px solid #AAA;
+    border-radius: 20px;
+    line-height: 40px;
+  }
+}
+
+#new-call-button {
+  font-family: KC;
+  font-size: 13px;
+  background-color: $MIA-light-grey;
+  //box-shadow: inset 0 0 0 2px $MIA-grey;
+  padding: 0 16px;
+
+  > .material-icons {
+    margin-right: 4px;
+  }
+}
+
+#user-menu {
+  position: fixed;
+  margin: 0;
+  top: 0;
+  right: $sidebar-spacing;
+  width: $sidebar-width;
+  line-height: $sidebar-item-size;
+  text-align: left;
+  background-color: white;
+  border-radius: 0;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 100ms ease;
+
+  &.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  > a {
+    padding: 0 $sidebar-spacing;
+    display: block;
+
+    &:hover {
+      background-color: $MIA-light-grey;
+    }
+  }
+}
+
+#user-menu-name {
+  line-height: 70px;
+  background-color: $MIA-light-grey;
+}
+
+#user-display-picture {
+  position: relative;
+  z-index: 2;
+  @extend %no-select;
+  width: 40px;
+  background-color: $MIA-light-grey;
+  border: 1px solid $MIA-grey;
+  text-align: center;
+}
