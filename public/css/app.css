@@ -1,0 +1,15 @@
+body {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding-left: 200px;
+}
+
+nav {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  width: 200px;
+  background: red;
+}
+

@@ -1,0 +1,15 @@
+$sidebar-width: 200px;
+
+body {
+  box-sizing: border-box;
+  padding-left: $sidebar-width;
+}
+
+nav {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  width: $sidebar-width;
+  background: red;
+}
