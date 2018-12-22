@@ -1,0 +1,124 @@
+@import "variables";
+@import "material-icons";
+
+$select-spacing: 14px;
+
+.select-root {
+  position: relative;
+  line-height: $button-height;
+  outline: none;
+  padding-bottom: $button-height;
+}
+
+.select-options {
+  max-height: calc(50vh - #{$logo-height / 2 +$body-spacing + $button-height});
+  overflow-y: auto;
+  line-height: 32px;
+  font-family: Arial, serif;
+  font-size: 13px;
+
+  &:empty:after {
+    content: 'No matching results';
+    padding: 0 $select-spacing;
+    text-align: center;
+    display: block;
+    line-height: $button-height;
+    font-style: italic;
+  }
+
+  > * {
+    @extend %no-select;
+    padding: 0 $select-spacing;
+
+    &:hover, &:focus {
+      background-color: $MIA-light-grey;
+    }
+  }
+}
+
+.select {
+  @extend %MIA-outline;
+  line-height: $button-height;
+  overflow: hidden;
+  height: $button-height;
+  border-radius: $button-radius;
+  background: white;
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  &.active {
+    z-index: 2;
+    @extend %hover-shadow;
+    height: auto;
+
+    .select-button {
+      background-color: $MIA-light-grey;
+    }
+  }
+}
+
+.select-row {
+  @extend %select-row;
+  height: auto;
+  font-size: 14px;
+  position: relative;
+}
+
+.select-search {
+  @extend %select-row-input;
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
+}
+
+%select-row-input {
+  height: $button-height;
+  flex-grow: 1;
+  padding: 0 $select-spacing;
+  box-sizing: border-box;
+}
+
+%select-row {
+  @extend %list-underline;
+  //padding: 0 $select-spacing;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: $button-height;
+  //overflow: hidden;
+  //white-space: nowrap;
+  //text-overflow: ellipsis;
+}
+
+.select-option-title {
+  padding: 0 $select-spacing;
+  flex-grow: 1;
+}
+
+.select-button, .select-option-remove {
+  @extend %material-icons;
+  border-radius: $button-radius;
+  border: 2px solid white;
+  height: $button-height;
+  width: $button-height;
+  transition: background-color 100ms ease;
+
+  &:hover {
+    background-color: $MIA-light-grey;
+  }
+}
+
+.select-option-no-match, .select-option-selected {
+  display: none;
+}
+
+.select-field-extension {
+  @extend %MIA-outline;
+  border-radius: $button-radius;
+  margin-bottom: 3px;
+
+  &:empty {
+    display: none;
+  }
+}

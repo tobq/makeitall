@@ -69,7 +69,8 @@
 
 __webpack_require__(1);
 __webpack_require__(2);
-module.exports = __webpack_require__(3);
+__webpack_require__(3);
+module.exports = __webpack_require__(4);
 
 
 /***/ }),
@@ -78,14 +79,34 @@ module.exports = __webpack_require__(3);
 
 var dp = document.getElementById("user-display-picture");
 var umenu = document.getElementById("user-menu");
+var unoti = document.getElementById("user-noti");
 
-dp.addEventListener("click", function (event) {
-    umenu.classList.toggle("open");
-    event.stopPropagation();
+function opendp() {
+    // console.trace("OPEN");
+    umenu.classList.add("active");
+    umenu.focus();
+}
+
+function closedp() {
+    // console.trace("CLOSE");
+    umenu.classList.remove("active");
+    document.activeElement.blur();
+}
+
+function isActive() {
+    return umenu.classList.contains("active");
+}
+
+umenu.addEventListener("focusout", function (event) {
+    if (!this.contains(event.relatedTarget)) closedp();
 });
 
-document.addEventListener("click", function () {
-    umenu.classList.remove("open");
+dp.addEventListener("click", function (event) {
+    if (isActive()) closedp();else opendp();
+});
+
+document.addEventListener("click", function (event) {
+    unoti.classList.toggle("active");
 });
 
 /***/ }),
@@ -96,6 +117,12 @@ document.addEventListener("click", function () {
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

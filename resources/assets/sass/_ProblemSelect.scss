@@ -1,0 +1,65 @@
+@import "Select";
+
+.select-create-problem {
+  @extend %select-row-input;
+  background-color: $MIA-light-grey;
+  flex-grow: 1;
+}
+
+.select-problem-row {
+  @extend %select-row;
+}
+
+
+.select-create-edit:after {
+  content: 'edit';
+}
+
+.select-create-field {
+  @extend %list-underline;
+
+  &.active {
+    .select-create-edit:after {
+      content: 'save';
+    }
+
+    .select-create-field-content {
+      display: block;
+    }
+
+    .select-problem-title {
+      border-color: $MIA-light-grey;
+    }
+  }
+}
+
+.select-create-field-content {
+  padding: 20px;
+  display: none;
+}
+
+.select-problem-id {
+  @extend %tag;
+  margin: 0 $select-spacing;
+}
+
+.select-problem-title {
+  flex-grow: 1;
+  border-radius: $button-radius;
+  padding: 0 4px;
+  height: $button-height - 12px;
+  border: 1px solid transparent;
+  margin-right: 4px;
+
+  &:disabled {
+    color: black !important;
+  }
+}
+
+input, textarea {
+  &.required-error {
+    border-color: $error-color !important;
+    background-color: lighten($error-color, 25%) !important;
+    outline-color: $error-color !important;
+  }
+}
