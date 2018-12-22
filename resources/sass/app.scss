@@ -8,9 +8,9 @@
 RESET DEFAULT HTML
  */
 
-* {
-  outline-color: $MIA-grey;
-}
+//* {
+//  outline-color: $MIA-grey;
+//}
 
 body {
   @extend %MIA-font;
@@ -152,7 +152,6 @@ header {
 }
 
 #user-menu-list {
-  @extend %MIA-outline;
   @extend %hover-shadow;
   position: fixed;
   margin: 0;

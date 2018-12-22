@@ -133,20 +133,20 @@ class NewProblem {
 
     validate() {
         let allPassed = true;
+        if (this.getDescription().length > 0) {
+            this._descriptionLabel.classList.remove("required-error");
+            this._descriptionElement.classList.remove("required-error");
+        } else {
+            this._descriptionLabel.classList.add("required-error");
+            this._descriptionElement.classList.add("required-error");
+            this._descriptionElement.focus();
+            allPassed = false;
+        }
         if (this.getTitle().length > 0) {
             this._titleInput.classList.remove("required-error");
         } else {
             this._titleInput.classList.add("required-error");
             this._titleInput.focus();
-            allPassed = false;
-        }
-        if (this.getDescription().length > 0) {
-            this._descriptionLabel.classList.remove("required-error");
-            this._descriptionElement.classList.remove(  "required-error");
-        } else {
-            this._descriptionLabel.classList.add("required-error");
-            this._descriptionElement.classList.add("required-error");
-            this._descriptionElement.focus();
             allPassed = false;
         }
         return allPassed;
@@ -190,4 +190,8 @@ class NewProblem {
     focus() {
         this._titleInput.focus();
     }
+}
+
+class ProblemDetails {
+    constructor(urgency)
 }

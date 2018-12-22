@@ -23,7 +23,6 @@ export class Select {
             const optionElement = document.createElement("div");
             optionElement.innerText = display(option);
             optionElement.addEventListener("click", this.select.bind(this, option));
-            // opt.tabIndex = 0;
             optionsCon.appendChild(optionElement);
             optionElements.set(option, optionElement);
         }
@@ -62,20 +61,20 @@ export class Select {
         selectElement.appendChild(optionsCon);
         element.appendChild(selectElement);
 
-        selectElement.tabIndex = optionsCon.tabIndex = -1;
+        // selectElement.tabIndex =
+        optionsCon.tabIndex = optionRow.tabIndex = -1;
         toggleButton.tabIndex = 0;
         this.value = null;
     }
 
     toggle() {
-        console.trace(this.isActive());
         if (this.isActive()) this.close();
         else this.open();
     }
 
     open() {
+        console.trace("OPEN");
         if (this.isActive()) return;
-        this._root.focus();
         this._selectElement.classList.add("active");
         this._optionsCon.tabIndex = 0;
         this._optionsCon.scrollTop = 0;
@@ -83,8 +82,9 @@ export class Select {
     }
 
     close() {
+        console.trace("CLOSE");
         this._selectElement.blur();
-        this._optionsCon.tabIndex = 1;
+        this._optionsCon.tabIndex = -1;
         this._selectElement.classList.remove("active");
         this._toggleButton.innerText = OPEN_ICON;
     }
@@ -160,7 +160,6 @@ export class SearchSelect extends Select {
     }
 
     open() {
-        console.trace("OPEN");
         if (this.isActive()) return;
         this._input.focus();
         this.filter();

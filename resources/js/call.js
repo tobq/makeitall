@@ -1,5 +1,5 @@
-import {SearchSelect, Select} from "./Select";
-import ProblemSelect from "./ProblemSelect";
+import {SearchSelect, Select} from "./components/Select";
+import ProblemSelect from "./components/ProblemSelect";
 
 const options = [];
 for (let i = 20; i--;) options[i] = Math.random().toString();

@@ -37,7 +37,7 @@ $select-spacing: 14px;
 }
 
 .select {
-  @extend %MIA-outline;
+  //@extend %MIA-outline;
   line-height: $button-height;
   overflow: hidden;
   height: $button-height;
@@ -48,8 +48,9 @@ $select-spacing: 14px;
   right: 0;
 
   &.active {
-    z-index: 2;
     @extend %hover-shadow;
+    //border: 2px solid $MIA-light-grey;
+    z-index: 2;
     height: auto;
 
     .select-button {
@@ -89,6 +90,8 @@ $select-spacing: 14px;
   //overflow: hidden;
   //white-space: nowrap;
   //text-overflow: ellipsis;
+
+  box-sizing: border-box;
 }
 
 .select-option-title {
@@ -98,8 +101,8 @@ $select-spacing: 14px;
 
 .select-button, .select-option-remove {
   @extend %material-icons;
-  border-radius: $button-radius;
-  border: 2px solid white;
+  //border-radius: $button-radius;
+  //border: 2px solid white;
   height: $button-height;
   width: $button-height;
   transition: background-color 100ms ease;
@@ -114,7 +117,7 @@ $select-spacing: 14px;
 }
 
 .select-field-extension {
-  @extend %MIA-outline;
+  //@extend %MIA-outline;
   border-radius: $button-radius;
   margin-bottom: 3px;
 

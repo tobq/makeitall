@@ -28,7 +28,7 @@
     }
 
     .select-problem-title {
-      border-color: $MIA-light-grey;
+      border: 1px solid $MIA-light-grey;
     }
   }
 }
@@ -48,10 +48,10 @@
   border-radius: $button-radius;
   padding: 0 4px;
   height: $button-height - 12px;
-  border: 1px solid transparent;
   margin-right: 4px;
 
   &:disabled {
+    padding: 0;
     color: black !important;
   }
 }
