@@ -171,7 +171,7 @@ var NewProblem = function () {
         var descriptionElement = document.createElement("textarea");
 
         this._deviceSelect = new __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* MultiSelect */]("Affected Device", deviceSelect, options, display, query);
-        this._softwareSelect = new __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* MultiSelect */]("Installed Software", softwareSelect, options, display, query);
+        this._softwareSelect = new __WEBPACK_IMPORTED_MODULE_0__Select__["a" /* MultiSelect */]("Affected Software", softwareSelect, options, display, query);
         //TODO: FETCH OPTIONS. CREATE DISPLAY, QUERY,
         var createFieldContent = document.createElement("div");
         createFieldContent.className = "select-create-field-content";
@@ -350,10 +350,6 @@ new __WEBPACK_IMPORTED_MODULE_0__Select__["b" /* SearchSelect */]("Employee", em
 new __WEBPACK_IMPORTED_MODULE_0__Select__["c" /* Select */]("Call Reason", reasonSelect, ["Checking Up", "Bored", "Other"], display).onchange(console.log);
 new __WEBPACK_IMPORTED_MODULE_1__ProblemSelect__["a" /* default */]("Problem", problemSelect, options, display, query).onchange(console.log);
 new __WEBPACK_IMPORTED_MODULE_0__Select__["c" /* Select */]("Random", rawSelect, options, display).onchange(console.log);
-
-// let employee = new Select("employees");
-// console.log(employee);
-// console.log(employees);
 
 /***/ }),
 

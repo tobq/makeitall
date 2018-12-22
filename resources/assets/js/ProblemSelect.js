@@ -67,7 +67,7 @@ class NewProblem {
         const descriptionElement = document.createElement("textarea");
 
         this._deviceSelect = new MultiSelect("Affected Device", deviceSelect, options, display, query);
-        this._softwareSelect = new MultiSelect("Installed Software", softwareSelect, options, display, query);
+        this._softwareSelect = new MultiSelect("Affected Software", softwareSelect, options, display, query);
         //TODO: FETCH OPTIONS. CREATE DISPLAY, QUERY,
         const createFieldContent = document.createElement("div");
         createFieldContent.className = "select-create-field-content";

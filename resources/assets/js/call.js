@@ -15,8 +15,3 @@ new SearchSelect("Employee", employeeSelect, options, display, query).onchange(c
 new Select("Call Reason", reasonSelect, ["Checking Up", "Bored", "Other"], display).onchange(console.log);
 new ProblemSelect("Problem", problemSelect, options, display, query).onchange(console.log);
 new Select("Random", rawSelect, options, display).onchange(console.log);
-
-
-// let employee = new Select("employees");
-// console.log(employee);
-// console.log(employees);
