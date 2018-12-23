@@ -16,9 +16,13 @@
 }
 
 .select-create-field {
-  @extend %list-underline;
 
   &.active {
+    @extend %hover-shadow;
+    position: relative;
+    z-index: 3;
+    border-radius: $button-radius;
+
     .select-create-edit:after {
       content: 'save';
     }

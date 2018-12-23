@@ -36,6 +36,10 @@ $select-spacing: 14px;
   }
 }
 
+.select-button:after {
+  content: "keyboard_arrow_down";
+}
+
 .select {
   //@extend %MIA-outline;
   line-height: $button-height;
@@ -50,11 +54,15 @@ $select-spacing: 14px;
   &.active {
     @extend %hover-shadow;
     //border: 2px solid $MIA-light-grey;
-    z-index: 2;
+    z-index: 999;
     height: auto;
 
     .select-button {
       background-color: $MIA-light-grey;
+
+      &:after {
+        content: 'close';
+      }
     }
   }
 }

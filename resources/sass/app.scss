@@ -140,7 +140,7 @@ header {
 
 #new-call-button {
   text-align: center;
-  background-color: lighten(desaturate($MIA-yellow, 20%), 20%);
+  background-color: $MIA-light-yellow;
   line-height: $button-height;
   display: inline-block;
   padding: 0 $select-spacing;

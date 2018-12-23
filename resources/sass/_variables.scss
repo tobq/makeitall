@@ -8,6 +8,7 @@ $body-spacing: 30px;
 $MIA-grey: rgb(211, 211, 211);
 $MIA-yellow: rgb(255, 217, 0);
 $MIA-light-grey: #EEE;
+$MIA-light-yellow: lighten(desaturate($MIA-yellow, 20%), 20%);
 $error-color: salmon;
 
 %MIA-outline {
@@ -37,8 +38,8 @@ $error-color: salmon;
 
 %list-underline {
   border-bottom: 1px solid $MIA_light-grey;
-
-  &:last-child {
-    border-bottom: none;
-  }
+  //
+  //&:last-child {
+  //  border-bottom: none;
+  //}
 }

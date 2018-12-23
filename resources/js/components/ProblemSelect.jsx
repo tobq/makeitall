@@ -3,12 +3,21 @@ import {MultiSelect} from "./Select";
 const options = [];
 for (let i = 20; i--;) options[i] = Math.random().toString();
 const display = opt => opt;
-const query = (opt, query) => opt.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+const containsInsensitive = (string, query) => contains(string.toLowerCase(), query.toLowerCase());
+const contains = (string, query) => string.indexOf(query) !== -1;
 
+function problemQuery(problem, query) {
+    return containsInsensitive(problem.title, query) ||
+        containsInsensitive(problem.description, query);
+}
+
+function problemDisplay(problem) {
+    return problem.title;
+}
 
 export default class ProblemSelect extends MultiSelect {
-    constructor(type, element, options, display, query) {
-        super(type, element, options, display, query);
+    constructor(type, element, problems) {
+        super(type, element, problems, problemDisplay, problemQuery);
         const createCon = document.createElement("div");
         createCon.className = "select-create-con select-field-extension";
 
@@ -30,13 +39,22 @@ export default class ProblemSelect extends MultiSelect {
     }
 
     create() {
-        if (this.newProblems.length > 0 &&
-            this.newProblems[this.newProblems.length - 1].value === null) return;
+        if (this.newProblems.length > 0) {
+            const lastProblem = this.newProblems[this.newProblems.length - 1];
+            if (lastProblem.value === null) {
+                lastProblem.focus();
+                return;
+            }
+        }
 
         const createField = document.createElement("div");
         let newProblem = new NewProblem(createField);
         this.newProblems.push(newProblem);
-        this._createCon.appendChild(createField);
+        this._multiCon.appendChild(createField);
+
+        newProblem.onremove(event => {
+            this.newProblems = this.newProblems.filter(problem => problem !== newProblem);
+        });
         newProblem.focus();
 
         newProblem.onchange(value => this.changed(value));
@@ -66,8 +84,8 @@ class NewProblem {
 
         const descriptionElement = document.createElement("textarea");
 
-        this._deviceSelect = new MultiSelect("Affected Device", deviceSelect, options, display, query);
-        this._softwareSelect = new MultiSelect("Affected Software", softwareSelect, options, display, query);
+        this._deviceSelect = new MultiSelect("Affected Device", deviceSelect, options, display, containsInsensitive);
+        this._softwareSelect = new MultiSelect("Affected Software", softwareSelect, options, display, containsInsensitive);
         //TODO: FETCH OPTIONS. CREATE DISPLAY, QUERY,
         const createFieldContent = document.createElement("div");
         createFieldContent.className = "select-create-field-content";
@@ -192,6 +210,12 @@ class NewProblem {
     }
 }
 
-class ProblemDetails {
-    constructor(urgency)
+export class Problem {
+    constructor(title, urgency, devices, software, description) {
+        this.title = title;
+        this.urgency = urgency;
+        this.devices = devices;
+        this.software = software;
+        this.description = description;
+    }
 }

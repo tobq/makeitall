@@ -26,10 +26,6 @@ body {
   border-bottom: 1px solid #EEE;
 }
 
-.select-row:last-child {
-  border-bottom: none;
-}
-
 #user-display-picture {
   border: 1px solid lightgray;
 }
@@ -58,10 +54,6 @@ body {
   border-bottom: 1px solid #EEE;
 }
 
-.select-row:last-child {
-  border-bottom: none;
-}
-
 #user-display-picture {
   border: 1px solid lightgray;
 }
@@ -88,10 +80,6 @@ body {
 
 .select-row {
   border-bottom: 1px solid #EEE;
-}
-
-.select-row:last-child {
-  border-bottom: none;
 }
 
 @font-face {
@@ -153,6 +141,10 @@ body {
   background-color: #EEE;
 }
 
+.select-button:after {
+  content: "keyboard_arrow_down";
+}
+
 .select {
   line-height: 40px;
   overflow: hidden;
@@ -165,12 +157,16 @@ body {
 }
 
 .select.active {
-  z-index: 2;
+  z-index: 999;
   height: auto;
 }
 
 .select.active .select-button {
   background-color: #EEE;
+}
+
+.select.active .select-button:after {
+  content: "close";
 }
 
 .select-row {
@@ -302,10 +298,6 @@ body {
 
 .select-row {
   border-bottom: 1px solid #EEE;
-}
-
-.select-row:last-child {
-  border-bottom: none;
 }
 
 @font-face {

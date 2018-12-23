@@ -1,10 +1,11 @@
-const OPEN_ICON = "keyboard_arrow_down";
-const CLOSE_ICON = "close";
+import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 
-//TODO: NO MATCHING RESULTS
+export class Select extends Component {
+    constructor(props) {//type, element, options, display) {
+        super(props);
+        this.state = {value: null};
 
-export class Select {
-    constructor(type, element, options, display) {
         const that = this;
         if (element instanceof Element) {
             element.innerHTML = null;
@@ -44,27 +45,24 @@ export class Select {
         this._selectedTitle = selectedTitle;
         this._optionRow = optionRow;
 
-        const selectElement = document.createElement("div");
-        selectElement.className = "select";
-        this._selectElement = selectElement;
+    }
 
-        toggleButton.addEventListener("click", event => this.toggle());
-        selectedTitle.addEventListener("click", event => this.toggle());
-        selectElement.addEventListener('focusout', function (event) {
-            console.log(this, event.relatedTarget, this.contains(event.relatedTarget));
-            if (!this.contains(event.relatedTarget)) that.close();
-        });
+    componentDidMount() {
+        this.refs.root.addEventListener("focusout", (event) => {
+            if (!this.refs.root.contains(event.relatedTarget)) this.close();
+        })
+    }
 
-        optionRow.appendChild(selectedTitle);
-        optionRow.appendChild(toggleButton);
-        selectElement.appendChild(optionRow);
-        selectElement.appendChild(optionsCon);
-        element.appendChild(selectElement);
-
-        // selectElement.tabIndex =
-        optionsCon.tabIndex = optionRow.tabIndex = -1;
-        toggleButton.tabIndex = 0;
-        this.value = null;
+    render() {
+        return <div className="select-root">
+            <div className="select" ref={"root"}>
+                <div className="select-row" tabIndex={-1}>
+                    <div className="select-option-title" onClick={event => this.toggle()}/>
+                    <button className="select-button" tabIndex={-1} onClick={event => this.toggle()}/>
+                </div>
+                <div className="select-options" tabIndex={-1}/>
+            </div>
+        </div>
     }
 
     toggle() {
@@ -185,11 +183,10 @@ export class MultiSelect extends SearchSelect {
         classList.add("select-option-selected");
         const optRow = document.createElement("div");
         optRow.className = "select-row";
-        this._multiCon.appendChild(optRow);
         const optRemove = document.createElement("button");
         const optTitle = document.createElement("div");
         optTitle.className = "select-option-title";
-        optTitle.innerText = this._display(option);
+        optTitle.innerHTML = this._display(option);
 
         optRemove.className = "select-option-remove";
         optRemove.innerText = "close";
@@ -202,6 +199,7 @@ export class MultiSelect extends SearchSelect {
         });
         optRow.appendChild(optTitle);
         optRow.appendChild(optRemove);
+        this._multiCon.appendChild(optRow);
 
         this.changed(option);
         this.close();
