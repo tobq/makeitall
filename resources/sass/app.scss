@@ -54,21 +54,56 @@ DOCUMENT HEADER / NAVBAR CSS
 */
 
 #title {
-  line-height: $logo-height;
+  @extend %text-overflow;
   font-size: 24px;
-  float: left;
+  flex-grow: 1;
 }
 
-
-nav {
+#overlay-components {
   position: fixed;
   left: 0;
   bottom: 0;
   top: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+#header-con{
+  display: flex;
+}
+
+header {
+  display: flex;
+  height: $logo-height;
+  flex-grow: 1;
+  //box-sizing: border-box;
+  //width: 100%;
+  padding: 0 $body-spacing;
+  background-color: rgba($header-colour, 0.95);
+  box-shadow: 0 2px 4px rgba(black, 0.05);
+  align-items: center;
+
+  > * {
+    pointer-events: all;
+    margin-right: $sidebar-spacing;
+    //border: 1px solid #AAA;
+    border-radius: $button-radius;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+nav {
+  pointer-events: all;
+  flex-grow: 1;
   width: $sidebar-width;
   background: $MIA-light-grey;
   //font-family: KC;
-  z-index: 10;
   line-height: $logo-height;
 
   > a {
@@ -90,11 +125,14 @@ nav {
 
 #logo {
   @extend %no-select;
+  flex-shrink: 0;
   font-family: "Bauhaus 93";
   font-size: 24px;
   font-weight: normal;
   line-height: $logo-height;
+  width: $sidebar-width;
   background-color: $MIA-grey;
+  pointer-events: all;
 }
 
 #logo-icon {
@@ -106,36 +144,6 @@ nav {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-}
-
-header {
-  text-align: right;
-  position: fixed;
-  left: $sidebar-width;
-  right: 0;
-  top: 0;
-  line-height: $logo-height;
-  pointer-events: none;
-  box-sizing: border-box;
-  padding: 0 $body-spacing;
-  background-color: rgba($header-colour, 0.95);
-  box-shadow: 0 0 6px rgba(black, 0.1);
-  z-index: 9;
-
-  > * {
-    pointer-events: all;
-    vertical-align: middle;
-    display: inline-block;
-    margin-right: $sidebar-spacing;
-    //box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-    //border: 1px solid #AAA;
-    border-radius: $button-radius;
-    line-height: $button-height;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
 }
 
 #new-call-button {
@@ -151,7 +159,7 @@ header {
   }
 }
 
-#user-menu-list {
+.user-menu-list {
   @extend %hover-shadow;
   position: fixed;
   margin: 0;
@@ -177,16 +185,17 @@ header {
   }
 }
 
-#user-menu.active > #user-menu-list {
+.user-menu-root.active > .user-menu-list {
   opacity: 1;
   pointer-events: all;
 }
 
-#user-menu-name {
+.user-menu-name {
   background-color: $MIA-light-grey;
 }
 
-#user-display-picture {
+.user-display-picture {
+  @extend %material-icons;
   @extend %MIA-outline;
   display: block;
   position: relative;
@@ -196,6 +205,10 @@ header {
   border-radius: $button-radius;
   background-color: $MIA-light-grey;
   text-align: center;
+
+  &:after {
+    content: 'person';
+  }
 }
 
 #user-noti {
@@ -213,4 +226,8 @@ header {
     border: 2px solid $header-colour;
     border-radius: 50%;
   }
+}
+
+.tag {
+  @extend %tag;
 }
