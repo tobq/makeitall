@@ -1,18 +1,54 @@
-//@import "Select";
-//
-//.select-create-problem {
-//  @extend %select-row-input;
-//  background-color: $MIA-light-grey;
-//}
+@import "SelectVariables";
+
+.select-new-problem-con {
+  @extend %MIA-outline;
+  //@extend %hover-shadow;
+  position: relative;
+  z-index: 3;
+  //display: flex;
+}
+
+.select-create-problem {
+  @extend %select-row-input;
+  background-color: $MIA-light-grey;
+  color: #444;
+  //font-family: rbold;
+}
+
+.select-input {
+  @extend %list-underline;
+  height: $button-height;
+  padding: 0 $select-spacing;
+  width: 100%;
+  //margin-bottom: 30px; TODO: MARGIN-BOTTOM
+}
+
+.select-new-problem {
+  padding: 30px;
+}
+
 //
 //.select-problem-row {
 //  @extend %select-row;
 //}
 //
 //
-//.select-create-edit:after {
-//  content: 'edit';
-//}
+.select-problem-edit {
+  @extend %select-button;
+
+  &:after {
+    content: 'edit';
+  }
+}
+
+.select-problem-save {
+  @extend %select-button;
+
+  &:after {
+    content: 'save';
+  }
+}
+
 //
 //.select-create-field {
 //
@@ -41,7 +77,7 @@
 //  render: none;
 //}
 //
-//.select-problem-id {
+//.select-problem-ID {
 //  @extend %tag;
 //  margin: 0 $select-spacing;
 //}
@@ -59,10 +95,12 @@
 //  }
 //}
 //
-//input, textarea {
-//  &.required-error {
-//    border-color: $error-color !important;
-//    background-color: lighten($error-color, 25%) !important;
-//    outline-color: $error-color !important;
-//  }
-//}
+.required-input-error {
+  border-color: $error-color !important;
+  background-color: lighten($error-color, 25%) !important;
+  outline-color: $error-color !important;
+}
+
+.select-problem-editing-label{
+  font-style: italic;
+}

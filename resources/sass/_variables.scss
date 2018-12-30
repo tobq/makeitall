@@ -11,8 +11,9 @@ $MIA-light-grey: #EEE;
 $MIA-light-yellow: lighten(desaturate($MIA-yellow, 20%), 20%);
 $error-color: salmon;
 
-%MIA-outline {
-  border: 1px solid $MIA-grey;
+
+%field-shadow{
+  box-shadow: 0 2px 3px rgba(black, 0.1);
 }
 
 %text-overflow {
@@ -26,7 +27,7 @@ $error-color: salmon;
 }
 
 %hover-shadow {
-  box-shadow: 0 2px 8px rgba(#444, 0.5);
+  box-shadow: 0 4px 16px rgba(black, 0.3);
 }
 
 %MIA-font {
@@ -35,15 +36,23 @@ $error-color: salmon;
 
 %tag {
   background-color: $MIA-light-grey;
-  font-size: 11px;
+  font-size: 12px;
   display: inline-block;
-  line-height: 16px;
+  line-height: 18px;
   border-radius: $button-radius;
   padding: 0 6px;
 }
 
+
+%MIA-outline {
+  border: 1px solid $MIA-grey;
+  //outline: none;
+  //border: none;
+  //@extend %field-shadow;
+}
+
 %list-underline {
-  border-bottom: 2px solid $MIA_light-grey;
+  border-bottom: 1px solid $MIA-grey;
   box-sizing: border-box;
   //
   //&:last-child {

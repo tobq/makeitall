@@ -40,7 +40,7 @@ return [
     | Session Encryption
     |--------------------------------------------------------------------------
     |
-    | This option allows you to easily specify that all of your session data
+    | This option allows you to easily specify that fetch of your session data
     | should be encrypted before it is stored. All encryption will be run
     | automatically by Laravel and you can use the Session like normal.
     |
@@ -93,7 +93,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | When using the "apc" or "memcached" session drivers, you may specify a
-    | cache store that should be used for these sessions. This value must
+    | cache store that should be used for these sessions. This option must
     | correspond with one of the application's configured cache stores.
     |
     */
@@ -173,8 +173,8 @@ return [
     | HTTP Access Only
     |--------------------------------------------------------------------------
     |
-    | Setting this value to true will prevent JavaScript from accessing the
-    | value of the cookie and the cookie will only be accessible through
+    | Setting this option to true will prevent JavaScript from accessing the
+    | option of the cookie and the cookie will only be accessible through
     | the HTTP protocol. You are free to modify this option if needed.
     |
     */

@@ -1,23 +1,24 @@
-@import "variables";
-@import "material-icons";
-
-$select-spacing: 14px;
-
-// TODO: LIST SHADOQ INSET
+@import "SelectVariables";
 
 .select-root {
+  //@extend %field-shadow;
   position: relative;
   padding-bottom: $button-height;
-  margin-bottom: 40px;
+  //margin-bottom: 40px; TODO: MARGIN-BOTTOM
+  //
+  //&:last-child {
+  //  margin-bottom: 0;
+  //}
 
-  * {
-    outline: none;
-  }
+  //* {
+  //  outline: none;
+  //}
 }
 
 .select-option-list {
   //line-height: normal; // TODO <<<;
-  display: none;
+  //display: none;
+  background-color: white;
   max-height: calc(50vh - #{$logo-height / 2 +$body-spacing + $button-height});
   overflow-y: auto;
   font-family: Arial, serif;
@@ -35,7 +36,10 @@ $select-spacing: 14px;
 .select-option {
   height: 32px;
   display: flex;
+  width: 100%;
+  text-align: left;
   align-items: center;
+  outline: none;
 
   &:hover {
     background-color: $MIA-light-grey;
@@ -46,28 +50,19 @@ $select-spacing: 14px;
   }
 }
 
-
-.select-no-selected {
-  @extend %text-overflow;
-  padding: 0 $select-spacing;
-  flex-grow: 1;
-}
-
 .select-toggle {
-  //, .select-option-remove
-  @extend %material-icons;
-  //border-radius: $button-radius;
-  //border: 2px solid white;
-  width: $button-height;
-  height: 100%;
-  transition: background-color 100ms ease;
-
-  &:hover, &:focus {
-    background-color: $MIA-light-grey;
-  }
+  @extend %select-button;
 
   &:after {
     content: "keyboard_arrow_down";
+  }
+}
+
+.select-option-remove {
+  @extend %select-button;
+
+  &:after {
+    content: "close";
   }
 }
 
@@ -77,7 +72,6 @@ $select-spacing: 14px;
   left: 0;
   right: 0;
   height: $button-height;
-  overflow: hidden;
   border-radius: $button-radius;
   background: white;
 
@@ -90,60 +84,30 @@ $select-spacing: 14px;
     //%list-underline {
     //border-color: $MIA-grey;
     //}
-
-    .select-option-list {
-      display: block;
-    }
-
-    .select-toggle {
-      //background-color: $MIA-light-grey;
-
-      &:after {
-        content: 'close';
-      }
-    }
   }
 }
 
 .select-row {
   @extend %list-underline;
+  //&:hover {
+  //  @extend %field-shadow;
+  //}
+
   height: $button-height;
   font-size: 14px;
   display: flex;
-  align-items: center;
-}
-
-%select-row-input {
-  flex-grow: 1;
-  padding: 0 $select-spacing;
+  //align-items: center;
 }
 
 //
 .select-search {
   @extend %select-row-input;
-  height: 100%;
 
   &:focus, &:hover {
     background-color: $MIA-light-grey
   }
 
-  //z-index: 1;
-  //flex-grow: 1;
-  //position: relative;
 }
-
-//
-
-//
-//.select-field-extension {
-//  //@extend %MIA-outline;
-//  border-radius: $button-radius;
-//  margin-bottom: 3px;
-//
-//  &:empty {
-//    render: none;
-//  }
-//}
 
 textarea {
   @extend %MIA-outline;
@@ -152,6 +116,6 @@ textarea {
   resize: vertical;
   display: block;
   min-height: 2 * $button-height;
-  padding: 6px 10px;
+  padding: 10px 14px;
   width: 100%;
 }

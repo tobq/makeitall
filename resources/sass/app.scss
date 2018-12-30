@@ -1,8 +1,10 @@
 // Variables
 @import "variables";
-@import "Select";
 @import "fonts";
 @import "material-icons";
+
+@import "Select";
+@import "FieldLabel";
 
 /**
 RESET DEFAULT HTML
@@ -88,10 +90,10 @@ header {
 
   > * {
     pointer-events: all;
-    margin-right: $sidebar-spacing;
     //border: 1px solid #AAA;
     border-radius: $button-radius;
 
+    margin-right: $sidebar-spacing;
     &:last-child {
       margin-right: 0;
     }
@@ -151,8 +153,9 @@ nav {
   background-color: $MIA-light-yellow;
   line-height: $button-height;
   display: inline-block;
-  padding: 0 $select-spacing;
+  padding: 0 20px;
   font-family: rbold;
+  border-radius: $button-height / 2;
 
   > .material-icons {
     margin-right: 10px;
@@ -166,7 +169,7 @@ nav {
   top: 0;
   right: $sidebar-spacing;
   width: $sidebar-width;
-  line-height: $logo-height;
+  line-height: $button-height;
   text-align: left;
   background-color: white;
   border-radius: 0;
@@ -174,6 +177,7 @@ nav {
   opacity: 0;
   transition: opacity 100ms ease;
   z-index: 1;
+  font-size: 15px;
 
   > a {
     padding: 0 $sidebar-spacing;
@@ -192,6 +196,7 @@ nav {
 
 .user-menu-name {
   background-color: $MIA-light-grey;
+  line-height: $logo-height;
 }
 
 .user-display-picture {

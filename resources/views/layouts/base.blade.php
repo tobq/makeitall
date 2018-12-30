@@ -19,7 +19,7 @@
                 @yield("title")
             </div>
 
-            <a href="/call" id="new-call-button">
+            <a href="/calls/new" id="new-call-button">
                 <i class="material-icons">call</i>New Call
             </a><i id="user-noti" class="material-icons">
                 notifications

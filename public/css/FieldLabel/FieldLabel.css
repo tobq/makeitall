@@ -1,0 +1,36 @@
+.field-label > .required-field {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.field-label > .required-field {
+  background-color: #EEE;
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+.field-label {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  height: 28px;
+}
+
+.field-label > label {
+  color: #333;
+  font-size: 13px;
+}
+
+.field-label > .required-field {
+  margin-left: 10px;
+}
+
+.field-label > .required-field.required-error {
+  background-color: salmon;
+}
+

@@ -86,6 +86,798 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime-module.js":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime-module.js ***!
+  \****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// This method of obtaining a reference to the global object needs to be
+// kept identical to the way it is obtained in runtime.js
+var g = (function() {
+  return this || (typeof self === "object" && self);
+})() || Function("return this")();
+
+// Use `getOwnPropertyNames` because not all browsers support calling
+// `hasOwnProperty` on the global `self` object in a worker. See #183.
+var hadRuntime = g.regeneratorRuntime &&
+  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
+
+// Save the old regeneratorRuntime in case it needs to be restored later.
+var oldRuntime = hadRuntime && g.regeneratorRuntime;
+
+// Force reevalutation of runtime.js.
+g.regeneratorRuntime = undefined;
+
+module.exports = __webpack_require__(/*! ./runtime */ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js");
+
+if (hadRuntime) {
+  // Restore the original runtime.
+  g.regeneratorRuntime = oldRuntime;
+} else {
+  // Remove the global property added by runtime.js.
+  try {
+    delete g.regeneratorRuntime;
+  } catch(e) {
+    g.regeneratorRuntime = undefined;
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime.js ***!
+  \*********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+!(function(global) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  var inModule = typeof module === "object";
+  var runtime = global.regeneratorRuntime;
+  if (runtime) {
+    if (inModule) {
+      // If regeneratorRuntime is defined globally and we're in a module,
+      // make the exports object identical to regeneratorRuntime.
+      module.exports = runtime;
+    }
+    // Don't bother evaluating the rest of this file if the runtime was
+    // already defined globally.
+    return;
+  }
+
+  // Define the runtime globally (as expected by generated code) as either
+  // module.exports (if we're in a module) or a new, empty object.
+  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  runtime.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  runtime.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  runtime.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  runtime.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  runtime.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList)
+    );
+
+    return runtime.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        if (delegate.iterator.return) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  runtime.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  runtime.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+})(
+  // In sloppy mode, unbound `this` refers to the global object, fallback to
+  // Function constructor if we're in global strict mode. That is sadly a form
+  // of indirect eval which violates Content Security Policy.
+  (function() {
+    return this || (typeof self === "object" && self);
+  })() || Function("return this")()
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/regenerator/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/@babel/runtime/node_modules/regenerator-runtime/runtime-module.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/object-assign/index.js":
 /*!*********************************************!*\
   !*** ./node_modules/object-assign/index.js ***!
@@ -24200,99 +24992,63 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_FieldLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/FieldLabel */ "./resources/js/components/FieldLabel.jsx");
-/* harmony import */ var _components_Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Select */ "./resources/js/components/Select.jsx");
-/* harmony import */ var _components_SearchSelect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/SearchSelect */ "./resources/js/components/SearchSelect.jsx");
-/* harmony import */ var _components_MultiSelect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/MultiSelect */ "./resources/js/components/MultiSelect.jsx");
-/* harmony import */ var _components_EmployeeOption__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/EmployeeOption */ "./resources/js/components/EmployeeOption.jsx");
-/* harmony import */ var _components_Employee__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Employee */ "./resources/js/components/Employee.jsx");
-/* harmony import */ var _components_SelectOption__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/SelectOption */ "./resources/js/components/SelectOption.jsx");
+/* harmony import */ var _components_ProblemSelect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/ProblemSelect */ "./resources/js/components/ProblemSelect.jsx");
+/* harmony import */ var _components_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/FieldLabel/FieldLabel */ "./resources/js/components/FieldLabel/FieldLabel.jsx");
+/* harmony import */ var _components_EmployeeSelect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/EmployeeSelect */ "./resources/js/components/EmployeeSelect.jsx");
+/* harmony import */ var _components_SpecialistSelect__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/SpecialistSelect */ "./resources/js/components/SpecialistSelect.jsx");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
- // import ProblemSelect, {Problem} from "./components/ProblemSelect";
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
 
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
-
-
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 
 
 
-var employeeOptions = [];
-var problems = [];
-
-for (var i = 20; i--;) {
-  var employee = new _components_Employee__WEBPACK_IMPORTED_MODULE_7__["default"](Math.random(), Math.random() > 0.5 ? "Mr" : "Ms", Math.random().toString().slice(2, 5), Math.random().toString().slice(2, 5));
-  employeeOptions[i] = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_EmployeeOption__WEBPACK_IMPORTED_MODULE_6__["default"], {
-    value: employee
-  });
-} // console.log(employeeOptions)
-// for (let i = 20; i--;) problems[i] = new Problem(
-//     Math.random().toString(),
-//     Math.random(),
-//     Math.random().toString(),
-//     Math.random().toString(),
-//     Math.random().toString()
-// );
 
 
-var display = function display(opt) {
-  return opt;
-};
 
-var employeQuery = function employeQuery(opt, query) {
-  var employee = opt.props.value;
-  var serialised = employee.id + employee.toString().toLowerCase();
-  var searchString = query.toLowerCase();
-  var _iteratorNormalCompletion = true;
-  var _didIteratorError = false;
-  var _iteratorError = undefined;
-
-  try {
-    for (var _iterator = searchString.split(" ")[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var word = _step.value;
-      if (serialised.indexOf(word) === -1) return false;
-    }
-  } catch (err) {
-    _didIteratorError = true;
-    _iteratorError = err;
-  } finally {
-    try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
-      }
-    } finally {
-      if (_didIteratorError) {
-        throw _iteratorError;
-      }
-    }
-  }
-
-  return true;
-};
-
+Promise.all([_components_EmployeeSelect__WEBPACK_IMPORTED_MODULE_4__["EmployeeOption"].fetch(), _components_SpecialistSelect__WEBPACK_IMPORTED_MODULE_5__["SpecialistOption"].fetch()]).then(function (options) {
+  console.log(options);
+  render.apply(void 0, _toConsumableArray(options));
+});
 var content = document.getElementById("body-content");
-react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_FieldLabel__WEBPACK_IMPORTED_MODULE_2__["RequiredLabel"], {
-  name: "Caller"
-}), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_SearchSelect__WEBPACK_IMPORTED_MODULE_4__["default"], {
-  type: "Employee",
-  options: employeeOptions,
-  query: employeQuery
-}), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_FieldLabel__WEBPACK_IMPORTED_MODULE_2__["RequiredLabel"], {
-  name: "Call Notes"
-}), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
-  id: "notes-field"
-}, "On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_FieldLabel__WEBPACK_IMPORTED_MODULE_2__["FieldLabel"], {
-  name: "Testing"
-}), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_Select__WEBPACK_IMPORTED_MODULE_3__["default"], {
-  type: "Random",
-  options: employeeOptions
-})), content); // ReactDOM.render(, reasonSelect);
+
+function render(employeeOptions, specialistOptions) {
+  var callerRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef(),
+      reasonRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef(),
+      notesRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef(),
+      problemsRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef();
+  react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_EmployeeSelect__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    label: "Caller",
+    type: "Employee CALLERR",
+    options: employeeOptions,
+    onchange: console.log
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__["RequiredLabel"], {
+    for: reasonRef
+  }, "Call Reason"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
+    id: "call-reason-field",
+    ref: reasonRef
+  }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__["RequiredLabel"], {
+    for: notesRef
+  }, "Call Notes"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
+    id: "notes-field",
+    ref: notesRef
+  }, "On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode On god nigga i finna go sicko mode"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_ProblemSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    type: "Problem",
+    label: "Referenced problems",
+    options: employeeOptions,
+    onchange: console.log
+  })), content);
+} // ReactDOM.render(, reasonSelect);
 //
 // ReactDOM.render(, employeeSelect);
-// new SearchSelect("Employee", employeeSelect, options, render, query).onchange(console.log);
+// new SearchSelect("Employee", employeeSelect, children, render, query).onchange(console.log);
 // new Select("Call Reason", reasonSelect, ["Checking Up", "Bored", "Other"], render).onchange(console.log);
-// new ProblemSelect("Problem", problemSelect, problems).onchange(console.log);
-// new Select("Random", rawSelect, options, render).onchange(console.log);
+// new ProblemSelect("NewProblem", problemSelect, problems).onchange(console.log);
+// new Select("Random", rawSelect, children, render).onchange(console.log);
 
 /***/ }),
 
@@ -24306,6 +25062,14 @@ react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render(react__WEBPACK_IMPORTED_
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Employee; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -24315,21 +25079,78 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Employee =
 /*#__PURE__*/
 function () {
-  function Employee(id, title, firstName, lastName, department) {
+  function Employee(id, title, firstName, lastName, department_name) {
     _classCallCheck(this, Employee);
 
     this.id = id;
     this.title = title;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.department = department;
+    this.department_name = department_name;
   }
 
   _createClass(Employee, [{
-    key: "toString",
-    value: function toString() {
+    key: "fullName",
+    value: function fullName() {
       return "".concat(this.title, " ").concat(this.firstName, " ").concat(this.lastName);
     }
+  }], [{
+    key: "fromRow",
+    value: function fromRow(row) {
+      return new Employee(row.id, row.title, row["first_name"], row["last_name"], row.department_name);
+    }
+  }, {
+    key: "fetch",
+    value: function (_fetch) {
+      function fetch() {
+        return _fetch.apply(this, arguments);
+      }
+
+      fetch.toString = function () {
+        return _fetch.toString();
+      };
+
+      return fetch;
+    }(
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var response, json, employees;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!this._cache) {
+                _context.next = 3;
+                break;
+              }
+
+              console.log("CACHED");
+              return _context.abrupt("return", this._cache);
+
+            case 3:
+              _context.next = 5;
+              return fetch('/employees');
+
+            case 5:
+              response = _context.sent;
+              _context.next = 8;
+              return response.json();
+
+            case 8:
+              json = _context.sent;
+              employees = json.map(this.fromRow);
+              this._cache = employees;
+              return _context.abrupt("return", employees);
+
+            case 12:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    })))
   }]);
 
   return Employee;
@@ -24339,24 +25160,337 @@ function () {
 
 /***/ }),
 
-/***/ "./resources/js/components/EmployeeOption.jsx":
+/***/ "./resources/js/components/EmployeeSelect.jsx":
 /*!****************************************************!*\
-  !*** ./resources/js/components/EmployeeOption.jsx ***!
+  !*** ./resources/js/components/EmployeeSelect.jsx ***!
   \****************************************************/
+/*! exports provided: default, EmployeeOption */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EmployeeSelect; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EmployeeOption", function() { return EmployeeOption; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Employee__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Employee */ "./resources/js/components/Employee.jsx");
+/* harmony import */ var _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Select/SearchSelect */ "./resources/js/components/Select/SearchSelect.jsx");
+/* harmony import */ var _FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FieldLabel/FieldLabel */ "./resources/js/components/FieldLabel/FieldLabel.jsx");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+var EmployeeSelect =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(EmployeeSelect, _React$Component);
+
+  function EmployeeSelect(props) {
+    var _this;
+
+    _classCallCheck(this, EmployeeSelect);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(EmployeeSelect).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      options: []
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "ref", react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef());
+
+    EmployeeOption.fetch().then(function (options) {
+      return _this.setState({
+        options: options
+      });
+    });
+    return _this;
+  }
+
+  _createClass(EmployeeSelect, [{
+    key: "render",
+    value: function render() {
+      return this.state.options ? react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
+        className: "employee-select"
+      }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_4__["RequiredLabel"], {
+        for: this.ref
+      }, this.props.label), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_SearchSelect__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        ref: this.ref,
+        type: "Employee",
+        options: this.state.options,
+        onchange: console.log
+      })) : null;
+    }
+  }]);
+
+  return EmployeeSelect;
+}(react__WEBPACK_IMPORTED_MODULE_5___default.a.Component);
+
+_defineProperty(EmployeeSelect, "propTypes", {
+  label: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  onchange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
+});
+
+
+var EmployeeOption =
+/*#__PURE__*/
+function (_QueryOption) {
+  _inherits(EmployeeOption, _QueryOption);
+
+  function EmployeeOption(value) {
+    _classCallCheck(this, EmployeeOption);
+
+    if (!(value instanceof _Employee__WEBPACK_IMPORTED_MODULE_2__["default"])) throw value + " not an instance of Employee";
+    return _possibleConstructorReturn(this, _getPrototypeOf(EmployeeOption).call(this, value));
+  }
+
+  _createClass(EmployeeOption, [{
+    key: "toSearchString",
+    value: function toSearchString() {
+      var employee = this.value;
+      return this.prepareSearchString("".concat(employee.id, " ").concat(employee.fullName()));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
+        className: "select-option-content"
+      }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
+        className: "employee-id"
+      }, "ID: ", this.value.id), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
+        className: "employee-full-name"
+      }, this.value.fullName()), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
+        className: "tag"
+      }, this.value.department_name));
+    }
+  }], [{
+    key: "fetch",
+    value: function () {
+      var _fetch = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var employees;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _Employee__WEBPACK_IMPORTED_MODULE_2__["default"].fetch();
+
+              case 2:
+                employees = _context.sent;
+                return _context.abrupt("return", employees.map(function (employee) {
+                  return new EmployeeOption(employee);
+                }));
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetch() {
+        return _fetch.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }]);
+
+  return EmployeeOption;
+}(_Select_SearchSelect__WEBPACK_IMPORTED_MODULE_3__["QueryOption"]);
+
+/***/ }),
+
+/***/ "./resources/js/components/FieldLabel/FieldLabel.jsx":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/FieldLabel/FieldLabel.jsx ***!
+  \***********************************************************/
+/*! exports provided: FieldLabel, RequiredLabel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FieldLabel", function() { return FieldLabel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RequiredLabel", function() { return RequiredLabel; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+ // import "../css/FieldLabel.css"
+
+var FieldLabel =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(FieldLabel, _Component);
+
+  function FieldLabel() {
+    var _getPrototypeOf2;
+
+    var _this;
+
+    _classCallCheck(this, FieldLabel);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(FieldLabel)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {});
+
+    return _this;
+  }
+
+  _createClass(FieldLabel, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "field-label",
+        onClick: function onClick(event) {
+          return _this2.props.for.current.focus();
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, this.props.children));
+    }
+  }]);
+
+  return FieldLabel;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+_defineProperty(FieldLabel, "propTypes", {
+  children: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  for: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.any.isRequired
+});
+
+var RequiredLabel =
+/*#__PURE__*/
+function (_FieldLabel) {
+  _inherits(RequiredLabel, _FieldLabel);
+
+  function RequiredLabel(props) {
+    var _this3;
+
+    _classCallCheck(this, RequiredLabel);
+
+    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(RequiredLabel).call(this, props));
+    _this3.state.active = false;
+    return _this3;
+  }
+
+  _createClass(RequiredLabel, [{
+    key: "activate",
+    value: function activate() {
+      this.setState({
+        active: true
+      });
+    }
+  }, {
+    key: "deactivate",
+    value: function deactivate() {
+      this.setState({
+        active: false
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this4 = this;
+
+      var className = "required-field";
+      if (this.state.active) className += " required-error";
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "field-label",
+        onClick: function onClick(event) {
+          return _this4.props.for.current.focus();
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, this.props.children), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: className
+      }, "required"));
+    }
+  }]);
+
+  return RequiredLabel;
+}(FieldLabel);
+
+/***/ }),
+
+/***/ "./resources/js/components/NewProblem.jsx":
+/*!************************************************!*\
+  !*** ./resources/js/components/NewProblem.jsx ***!
+  \************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EmployeeOption; });
-/* harmony import */ var _SelectOption__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SelectOption */ "./resources/js/components/SelectOption.jsx");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _Employee__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Employee */ "./resources/js/components/Employee.jsx");
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return NewProblem; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FieldLabel/FieldLabel */ "./resources/js/components/FieldLabel/FieldLabel.jsx");
+/* harmony import */ var _Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Select/MultiSelect */ "./resources/js/components/Select/MultiSelect.jsx");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _RequiredField__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./RequiredField */ "./resources/js/components/RequiredField.jsx");
+/* harmony import */ var _Select_Problem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Select/Problem */ "./resources/js/components/Select/Problem.jsx");
+/* harmony import */ var _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Select/SearchSelect */ "./resources/js/components/Select/SearchSelect.jsx");
+/* harmony import */ var _SpecialistSelect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./SpecialistSelect */ "./resources/js/components/SpecialistSelect.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24382,58 +25516,367 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var EmployeeOption =
+
+
+
+
+var NewProblem =
 /*#__PURE__*/
-function (_SelectOption) {
-  _inherits(EmployeeOption, _SelectOption);
+function (_Component) {
+  _inherits(NewProblem, _Component);
 
-  function EmployeeOption(props) {
-    _classCallCheck(this, EmployeeOption);
+  function NewProblem(props) {
+    var _this;
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(EmployeeOption).call(this, props));
+    _classCallCheck(this, NewProblem);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(NewProblem).call(this, props));
+    _this.state = {
+      active: true,
+      title: null,
+      priority: null,
+      description: null
+    };
+    _this.title = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.description = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.devices = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.software = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.specialist = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    return _this;
   }
 
-  _createClass(EmployeeOption, [{
+  _createClass(NewProblem, [{
+    key: "save",
+    value: function save() {
+      if (this.validate()) {
+        this.setState({
+          active: false,
+          title: this.title.current.value,
+          description: this.description.current.value
+        });
+      }
+    }
+  }, {
+    key: "edit",
+    value: function edit() {
+      this.setState({
+        active: true
+      });
+      console.log("EDIT");
+    }
+  }, {
+    key: "validate",
+    value: function validate() {
+      var titleValid = this.title.current.validate();
+      var descriptionValid = this.description.current.validate();
+      return titleValid && descriptionValid;
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "select-option-content"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "employee-id"
-      }, this.props.value.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        style: {
-          flexGrow: 1
+      var _this2 = this;
+
+      var removeButton = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "select-option-remove",
+        onClick: function onClick(event) {
+          return _this2.props.onRemove();
         }
-      }, this.props.value.toString()));
+      });
+      return this.state.active ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "select-new-problem-con"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "select-row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "select-option-content"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "employee-id"
+      }, "New"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "select-problem-editing-label"
+      }, "Editing problem...")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "select-problem-save",
+        onClick: function onClick(event) {
+          return _this2.save();
+        }
+      }), removeButton), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "select-new-problem"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RequiredField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: "Title",
+        placeholder: "Problem Title",
+        ref: this.title,
+        value: this.state.title
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RequiredField__WEBPACK_IMPORTED_MODULE_4__["RequiredTextarea"], {
+        ref: this.description,
+        label: "Description",
+        value: this.state.description
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
+        for: this.software
+      }, "Installed Software"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        ref: this.software,
+        type: "Installed Software",
+        options: [1, 2, 3, 4, 5, 6].map(function (x) {
+          return new _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_6__["QueryOption"](x);
+        })
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
+        for: this.devices
+      }, "Affected Devices"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        ref: this.devices,
+        type: "Device",
+        options: [1, 2, 3, 4, 5, 6].map(function (x) {
+          return new _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_6__["QueryOption"](x);
+        })
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SpecialistSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        label: "Assign Specialists"
+      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "select-row"
+      }, _Select_Problem__WEBPACK_IMPORTED_MODULE_5__["default"].render("New", this.state.title, this.state.priority), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "select-problem-edit",
+        onClick: function onClick(event) {
+          return _this2.edit();
+        }
+      }), removeButton);
     }
   }]);
 
-  return EmployeeOption;
-}(_SelectOption__WEBPACK_IMPORTED_MODULE_0__["default"]);
+  return NewProblem;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-_defineProperty(EmployeeOption, "propTypes", _objectSpread({}, _SelectOption__WEBPACK_IMPORTED_MODULE_0__["default"].propTypes, {
-  value: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.instanceOf(_Employee__WEBPACK_IMPORTED_MODULE_3__["default"]).isRequired
-}));
+_defineProperty(NewProblem, "propTypes", {
+  onRemove: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func.isRequired
+});
 
 
 
 /***/ }),
 
-/***/ "./resources/js/components/FieldLabel.jsx":
-/*!************************************************!*\
-  !*** ./resources/js/components/FieldLabel.jsx ***!
-  \************************************************/
-/*! exports provided: FieldLabel, RequiredLabel */
+/***/ "./resources/js/components/ProblemSelect.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/components/ProblemSelect.jsx ***!
+  \***************************************************/
+/*! exports provided: default, ProblemOption */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FieldLabel", function() { return FieldLabel; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RequiredLabel", function() { return RequiredLabel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ProblemSelect; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProblemOption", function() { return ProblemOption; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Select_MultiSelect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Select/MultiSelect */ "./resources/js/components/Select/MultiSelect.jsx");
+/* harmony import */ var _NewProblem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./NewProblem */ "./resources/js/components/NewProblem.jsx");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./FieldLabel/FieldLabel */ "./resources/js/components/FieldLabel/FieldLabel.jsx");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _Select_Problem__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Select/Problem */ "./resources/js/components/Select/Problem.jsx");
+/* harmony import */ var _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Select/SearchSelect */ "./resources/js/components/Select/SearchSelect.jsx");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+
+
+
+var ProblemSelect =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(ProblemSelect, _Component);
+
+  function ProblemSelect(props) {
+    var _this;
+
+    _classCallCheck(this, ProblemSelect);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ProblemSelect).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "ref", react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef());
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      created: [],
+      options: []
+    });
+
+    ProblemOption.fetch().then(function (options) {
+      return _this.setState({
+        options: options
+      });
+    });
+    return _this;
+  }
+
+  _createClass(ProblemSelect, [{
+    key: "create",
+    value: function create() {
+      var _this2 = this;
+
+      var newProblem = react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_NewProblem__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onRemove: function onRemove() {
+          return _this2.unCreate(newProblem);
+        }
+      });
+      var created = [].concat(_toConsumableArray(this.state.created), [newProblem]);
+      this.setState({
+        created: created
+      });
+    }
+  }, {
+    key: "unCreate",
+    value: function unCreate(newProblem) {
+      var created = this.state.created.filter(function (np) {
+        return np !== newProblem;
+      });
+      this.setState({
+        created: created
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_4__["FieldLabel"], {
+        for: this.ref
+      }, this.props.label), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
+        className: "select-row"
+      }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("button", {
+        className: "select-create-problem",
+        onClick: function onClick(event) {
+          return _this3.create();
+        }
+      }, "Create New Problem")), this.state.created, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        ref: this.ref,
+        options: this.state.options
+      }));
+    }
+  }]);
+
+  return ProblemSelect;
+}(react__WEBPACK_IMPORTED_MODULE_5__["Component"]);
+
+_defineProperty(ProblemSelect, "propTypes", {
+  type: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string.isRequired,
+  label: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string.isRequired,
+  onchange: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func
+});
+
+
+var ProblemOption =
+/*#__PURE__*/
+function (_QueryOption) {
+  _inherits(ProblemOption, _QueryOption);
+
+  function ProblemOption(value) {
+    _classCallCheck(this, ProblemOption);
+
+    if (!(value instanceof _Select_Problem__WEBPACK_IMPORTED_MODULE_6__["default"])) throw value + " not an instance of Problem";
+    return _possibleConstructorReturn(this, _getPrototypeOf(ProblemOption).call(this, value));
+  }
+
+  _createClass(ProblemOption, [{
+    key: "toSearchString",
+    value: function toSearchString() {
+      var problem = this.value;
+      return this.prepareSearchString("".concat(problem.id, " ").concat(problem.title, " ").concat(problem.description));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var problem = this.value;
+      return _Select_Problem__WEBPACK_IMPORTED_MODULE_6__["default"].render(problem.id, problem.title, problem.priority);
+    }
+  }], [{
+    key: "fetch",
+    value: function () {
+      var _fetch = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var problems;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _Select_Problem__WEBPACK_IMPORTED_MODULE_6__["default"].fetch();
+
+              case 2:
+                problems = _context.sent;
+                return _context.abrupt("return", problems.map(function (employee) {
+                  return new ProblemOption(employee);
+                }));
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetch() {
+        return _fetch.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }]);
+
+  return ProblemOption;
+}(_Select_SearchSelect__WEBPACK_IMPORTED_MODULE_7__["QueryOption"]);
+
+/***/ }),
+
+/***/ "./resources/js/components/RequiredField.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/components/RequiredField.jsx ***!
+  \***************************************************/
+/*! exports provided: default, RequiredTextarea */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RequiredField; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RequiredTextarea", function() { return RequiredTextarea; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FieldLabel/FieldLabel */ "./resources/js/components/FieldLabel/FieldLabel.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24444,84 +25887,155 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
-var FieldLabel =
+
+
+
+
+var RequiredField =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(FieldLabel, _Component);
+  _inherits(RequiredField, _Component);
 
-  function FieldLabel(props) {
-    _classCallCheck(this, FieldLabel);
+  function RequiredField() {
+    var _getPrototypeOf2;
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(FieldLabel).call(this, props));
+    var _this;
+
+    _classCallCheck(this, RequiredField);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(RequiredField)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      valid: true
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "input", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
+
+    return _this;
   }
 
-  _createClass(FieldLabel, [{
+  _createClass(RequiredField, [{
+    key: "validate",
+    value: function validate() {
+      var valid = this.input.current.value.length !== 0;
+      this.validated(valid);
+      return valid;
+    }
+  }, {
+    key: "validated",
+    value: function validated(valid) {
+      if (valid) this.refs.label.deactivate();else {
+        this.refs.label.activate();
+        this.input.current.focus();
+      }
+      this.setState({
+        valid: valid
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "field-label"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, this.props.name));
+      var className = "select-input";
+      if (!this.state.valid) className += " required-input-error";
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_2__["RequiredLabel"], {
+        ref: "label",
+        for: this.input
+      }, this.props.label), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        placeholder: this.props.placeholder,
+        ref: this.input,
+        defaultValue: this.props.value,
+        className: className
+      }));
+    }
+  }, {
+    key: "value",
+    get: function get() {
+      return this.input.current.value;
     }
   }]);
 
-  return FieldLabel;
+  return RequiredField;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
-FieldLabel.propTypes = {
-  name: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired
-};
-var RequiredLabel =
+
+_defineProperty(RequiredField, "propTypes", {
+  label: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  placeholder: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  value: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string
+});
+
+
+var RequiredTextarea =
 /*#__PURE__*/
-function (_FieldLabel) {
-  _inherits(RequiredLabel, _FieldLabel);
+function (_RequiredField) {
+  _inherits(RequiredTextarea, _RequiredField);
 
-  function RequiredLabel() {
-    _classCallCheck(this, RequiredLabel);
+  function RequiredTextarea() {
+    _classCallCheck(this, RequiredTextarea);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(RequiredLabel).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(RequiredTextarea).apply(this, arguments));
   }
 
-  _createClass(RequiredLabel, [{
+  _createClass(RequiredTextarea, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "field-label"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, this.props.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "required-field"
-      }, "required"));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_2__["RequiredLabel"], {
+        ref: "label",
+        for: this.input
+      }, this.props.label), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+        ref: this.input,
+        defaultValue: this.props.value,
+        className: this.state.valid ? null : "required-input-error"
+      }));
     }
   }]);
 
-  return RequiredLabel;
-}(FieldLabel);
+  return RequiredTextarea;
+}(RequiredField);
+
+_defineProperty(RequiredTextarea, "propTypes", {
+  label: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
+  value: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string
+});
 
 /***/ }),
 
-/***/ "./resources/js/components/MultiSelect.jsx":
-/*!*************************************************!*\
-  !*** ./resources/js/components/MultiSelect.jsx ***!
-  \*************************************************/
+/***/ "./resources/js/components/Select/MultiSelect.jsx":
+/*!********************************************************!*\
+  !*** ./resources/js/components/Select/MultiSelect.jsx ***!
+  \********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MultiSelect; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Select */ "./resources/js/components/Select.jsx");
+/* harmony import */ var _SearchSelect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchSelect */ "./resources/js/components/Select/SearchSelect.jsx");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24543,165 +26057,233 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
 
 var MultiSelect =
 /*#__PURE__*/
-function (_Select) {
-  _inherits(MultiSelect, _Select);
+function (_SearchSelect) {
+  _inherits(MultiSelect, _SearchSelect);
 
+  // state = {active: false};
+  // selected = new Set();
   function MultiSelect(props) {
     var _this;
 
     _classCallCheck(this, MultiSelect);
 
-    //type, element, options, render) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MultiSelect).call(this, props));
-    _this.state.queryString = "";
+    _this.state.selected = [];
     return _this;
   }
 
   _createClass(MultiSelect, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      _get(_getPrototypeOf(MultiSelect.prototype), "componentDidMount", this).call(this);
+    key: "options",
+    value: function options() {
+      var _this2 = this;
 
-      this.clearQuery();
-    }
-  }, {
-    key: "query",
-    value: function query(queryString) {
-      this.open();
-      this.setState({
-        queryString: queryString
+      return _get(_getPrototypeOf(MultiSelect.prototype), "options", this).call(this).filter(function (option) {
+        return !_this2.state.selected.includes(option);
       });
     }
   }, {
-    key: "close",
-    value: function close() {
-      _get(_getPrototypeOf(MultiSelect.prototype), "close", this).call(this);
-
+    key: "select",
+    value: function select(option) {
+      var selected = [].concat(_toConsumableArray(this.state.selected), [option]);
+      this.setState({
+        selected: selected
+      });
+      this.changed(selected);
       this.clearQuery();
+      this.refs.toggle.focus();
+      this.close();
     }
   }, {
-    key: "clearQuery",
-    value: function clearQuery() {
-      //TODO: search ref null
-      this.refs.search.value = null;
-      this.setState({
-        queryString: ""
+    key: "unselect",
+    value: function unselect(option) {
+      var selected = this.state.selected.filter(function (selected) {
+        return selected !== option;
       });
-    } // open() {
-    //     if (super.open()) this.refs.search.focus();
-    // }
-
+      this.setState({
+        selected: selected
+      });
+      this.changed(selected);
+      this.close();
+    }
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
-      var search = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        onKeyUp: function onKeyUp(event) {
-          var queryString = _this2.refs.search.value;
-          if (_this2.state.queryString !== queryString) _this2.query(queryString);
-        },
-        onChange: function onChange(event) {
-          return _this2.query(event.target.value);
-        },
-        ref: "search",
-        tabIndex: !this.valid() || this.state.active ? 0 : -1,
-        className: "select-search",
-        placeholder: "Search for ".concat(this.props.type)
-      });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "select-root"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, this.state.selected.map(function (option) {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "select-row"
+        }, option.render(), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+          className: "select-option-remove",
+          onClick: function onClick(event) {
+            return _this3.unselect(option);
+          }
+        }));
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "select-field" + (this.state.active ? " active" : ""),
         ref: "root"
-      }, this.valid() ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "select-row",
         tabIndex: -1
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "select-selected-title",
-        onClick: function onClick(event) {
-          return _this2.toggle();
-        }
-      }, this.props.optionToString(this.value)), this.toggleButton()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "select-row",
-        tabIndex: -1
-      }, search)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "select-row",
-        tabIndex: -1
-      }, search, this.toggleButton()), this.optionList(this.props.options.filter(function (option) {
-        return _this2.props.query(option, _this2.state.queryString);
-      }))));
+      }, this.searchInput(), this.toggleButton()), this.optionlist()));
     }
   }]);
 
   return MultiSelect;
-}(_Select__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_SearchSelect__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+_defineProperty(MultiSelect, "propTypes", _SearchSelect__WEBPACK_IMPORTED_MODULE_0__["default"].propTypes);
 
 
-MultiSelect.propTypes = {// query: PropTypes.func.isRequired,
-}; // export class MultiSelect extends SearchSelect {
-//     constructor(type, element, options, render, query) {
-//         super(type, element, options, render, query);
-//         this.value = [];
-//         const multiCon = document.createElement("div");
-//         multiCon.className = "select-field-extension";
-//         this._multiCon = multiCon;
-//         this._root.insertBefore(multiCon, this._selectElement);
-//         this._input.placeholder += " to add";
-//     }
-//
-//     select(option) {
-//         this.value.push(option);
-//         const classList = this._optionElements.get(option).classList;
-//         classList.add("select-option-selected");
-//         const optRow = document.createElement("div");
-//         optRow.className = "select-row";
-//         const optRemove = document.createElement("button");
-//         const optTitle = document.createElement("div");
-//         optTitle.className = "select-option-title";
-//         optTitle.innerHTML = this._display(option);
-//
-//         optRemove.className = "select-option-remove";
-//         optRemove.innerText = "close";
-//         optRemove.addEventListener("click", event => {
-//             this.value = this.value.filter(op => op !== option);
-//             this.changed(option);
-//
-//             classList.remove("select-option-selected");
-//             optRow.remove();
-//         });
-//         optRow.appendChild(optTitle);
-//         optRow.appendChild(optRemove);
-//         this._multiCon.appendChild(optRow);
-//
-//         this.changed(option);
-//         this.close();
-//     }
-// }
 
 /***/ }),
 
-/***/ "./resources/js/components/SearchSelect.jsx":
-/*!**************************************************!*\
-  !*** ./resources/js/components/SearchSelect.jsx ***!
-  \**************************************************/
+/***/ "./resources/js/components/Select/Problem.jsx":
+/*!****************************************************!*\
+  !*** ./resources/js/components/Select/Problem.jsx ***!
+  \****************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Problem; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var Problem =
+/*#__PURE__*/
+function () {
+  function Problem(id, title, description, urgency) {
+    _classCallCheck(this, Problem);
+
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.urgency = urgency;
+  }
+
+  _createClass(Problem, null, [{
+    key: "fromRow",
+    value: function fromRow(row) {
+      return new Problem(row.id, row.title, row["description"], row["urgency"]);
+    }
+  }, {
+    key: "fetch",
+    value: function (_fetch) {
+      function fetch() {
+        return _fetch.apply(this, arguments);
+      }
+
+      fetch.toString = function () {
+        return _fetch.toString();
+      };
+
+      return fetch;
+    }(
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var response, json, problems;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!this._cache) {
+                _context.next = 3;
+                break;
+              }
+
+              console.log("CACHED");
+              return _context.abrupt("return", this._cache);
+
+            case 3:
+              _context.next = 5;
+              return fetch('/problems');
+
+            case 5:
+              response = _context.sent;
+              _context.next = 8;
+              return response.json();
+
+            case 8:
+              json = _context.sent;
+              problems = json.map(this.fromRow);
+              this._cache = problems;
+              return _context.abrupt("return", problems);
+
+            case 12:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    })))
+  }, {
+    key: "render",
+    value: function render(id, title, priority) {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "select-option-content"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "employee-id"
+      }, id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "employee-full-name"
+      }, title), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "tag"
+      }, priority));
+    }
+  }]);
+
+  return Problem;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Select/SearchSelect.jsx":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/Select/SearchSelect.jsx ***!
+  \*********************************************************/
+/*! exports provided: default, QueryOption */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SearchSelect; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QueryOption", function() { return QueryOption; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Select */ "./resources/js/components/Select.jsx");
+/* harmony import */ var _Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Select */ "./resources/js/components/Select/Select.jsx");
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24723,6 +26305,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -24760,30 +26344,40 @@ function (_Select) {
       });
     }
   }, {
-    key: "close",
-    value: function close() {
-      _get(_getPrototypeOf(SearchSelect.prototype), "close", this).call(this);
+    key: "clearQuery",
+    value: function clearQuery() {
+      //TODO: search ref null
+      if (this.refs.search) this.refs.search.value = null;
+      this.setState({
+        queryString: ""
+      });
+    }
+  }, {
+    key: "focus",
+    value: function focus() {
+      if (this.state.active) this.refs.search.focus();else _get(_getPrototypeOf(SearchSelect.prototype), "focus", this).call(this);
+    }
+  }, {
+    key: "options",
+    value: function options() {
+      var query = QueryOption.prepare(this.state.queryString);
+      return this.props.options.filter(function (option) {
+        return option.query(query);
+      });
+    }
+  }, {
+    key: "select",
+    value: function select(option) {
+      _get(_getPrototypeOf(SearchSelect.prototype), "select", this).call(this, option);
 
       this.clearQuery();
     }
   }, {
-    key: "clearQuery",
-    value: function clearQuery() {
-      //TODO: search ref null
-      this.refs.search.value = null;
-      this.setState({
-        queryString: ""
-      });
-    } // open() {
-    //     if (super.open()) this.refs.search.focus();
-    // }
-
-  }, {
-    key: "render",
-    value: function render() {
+    key: "searchInput",
+    value: function searchInput() {
       var _this2 = this;
 
-      var search = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onKeyUp: function onKeyUp(event) {
           var queryString = _this2.refs.search.value;
           if (_this2.state.queryString !== queryString) _this2.query(queryString);
@@ -24792,96 +26386,173 @@ function (_Select) {
           return _this2.query(event.target.value);
         },
         ref: "search",
+        onFocus: function onFocus(event) {
+          if (event.target.value.length > 0) _this2.open();
+        },
         tabIndex: !this.valid() || this.state.active ? 0 : -1,
         className: "select-search",
         placeholder: "Search for ".concat(this.props.type)
       });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      var className = "select-field";
+      if (this.state.active) className += " active";
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-root"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "select-field" + (this.state.active ? " active" : ""),
+        className: className,
         ref: "root"
       }, this.valid() ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-row",
+        tabIndex: -1,
         onClick: function onClick(event) {
-          return _this2.toggle();
+          return _this3.toggle();
         }
-      }, this.state.value, this.toggleButton()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, this.state.option.render(), this.toggleButton()), this.state.active ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-row",
         tabIndex: -1
-      }, search)) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, this.searchInput()) : null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-row",
         tabIndex: -1
-      }, search, this.toggleButton()), this.optionlist(this.props.options.filter(function (option) {
-        return _this2.props.query(option, _this2.state.queryString);
-      }))));
+      }, this.searchInput(), this.toggleButton()), this.optionlist()));
     }
   }]);
 
   return SearchSelect;
 }(_Select__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
+_defineProperty(SearchSelect, "propTypes", _objectSpread({}, _Select__WEBPACK_IMPORTED_MODULE_2__["default"].propTypes, {
+  options: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.instanceOf(QueryOption)).isRequired
+}));
 
-SearchSelect.propTypes = {
-  query: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func.isRequired
-}; // export class MultiSelect extends SearchSelect {
-//     constructor(type, element, options, render, query) {
-//         super(type, element, options, render, query);
-//         this.value = [];
-//         const multiCon = document.createElement("div");
-//         multiCon.className = "select-field-extension";
-//         this._multiCon = multiCon;
-//         this._root.insertBefore(multiCon, this._selectElement);
-//         this._input.placeholder += " to add";
-//     }
-//
-//     select(option) {
-//         this.value.push(option);
-//         const classList = this._optionElements.get(option).classList;
-//         classList.add("select-option-selected");
-//         const optRow = document.createElement("div");
-//         optRow.className = "select-row";
-//         const optRemove = document.createElement("button");
-//         const optTitle = document.createElement("div");
-//         optTitle.className = "select-option-title";
-//         optTitle.innerHTML = this._display(option);
-//
-//         optRemove.className = "select-option-remove";
-//         optRemove.innerText = "close";
-//         optRemove.addEventListener("click", event => {
-//             this.value = this.value.filter(op => op !== option);
-//             this.changed(option);
-//
-//             classList.remove("select-option-selected");
-//             optRow.remove();
-//         });
-//         optRow.appendChild(optTitle);
-//         optRow.appendChild(optRemove);
-//         this._multiCon.appendChild(optRow);
-//
-//         this.changed(option);
-//         this.close();
-//     }
-// }
+
+var QueryOption =
+/*#__PURE__*/
+function (_SelectOption) {
+  _inherits(QueryOption, _SelectOption);
+
+  function QueryOption() {
+    _classCallCheck(this, QueryOption);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(QueryOption).apply(this, arguments));
+  }
+
+  _createClass(QueryOption, [{
+    key: "prepareSearchString",
+    value: function prepareSearchString(string) {
+      // console.log(QueryOption.prepare(string.toLowerCase()).join(""));
+      return QueryOption.prepare(string).join("");
+    }
+  }, {
+    key: "toSearchString",
+    value: function toSearchString() {
+      return this.prepareSearchString(this.value.toString());
+    }
+  }, {
+    key: "query",
+    value: function query(preparedQuery) {
+      var searchString = this.toSearchString();
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = preparedQuery[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var word = _step.value;
+          if (searchString.indexOf(word) === -1) return false;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return true;
+    }
+  }], [{
+    key: "prepare",
+    value: function prepare(queryString) {
+      var keptWords = {};
+      var words = queryString.toLowerCase().split(" ");
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = words[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var word = _step2.value;
+          keptWords[word] = true;
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      var uniqueWords = Object.keys(keptWords);
+      var length = uniqueWords.length;
+
+      for (var i = 0; i < length; i++) {
+        var a = uniqueWords[i];
+        if (keptWords[a]) for (var j = i + 1; j < length; j++) {
+          var b = uniqueWords[j];
+
+          if (a.length > b.length) {
+            if (a.indexOf(b) !== -1) keptWords[b] = false;
+          } else if (b.indexOf(a) !== -1) keptWords[a] = false;
+        }
+      }
+
+      return uniqueWords.filter(function (word) {
+        return keptWords[word];
+      });
+    }
+  }]);
+
+  return QueryOption;
+}(_Select__WEBPACK_IMPORTED_MODULE_2__["SelectOption"]);
+
+_defineProperty(QueryOption, "propTypes", _Select__WEBPACK_IMPORTED_MODULE_2__["SelectOption"].propTypes);
 
 /***/ }),
 
-/***/ "./resources/js/components/Select.jsx":
-/*!********************************************!*\
-  !*** ./resources/js/components/Select.jsx ***!
-  \********************************************/
-/*! exports provided: default */
+/***/ "./resources/js/components/Select/Select.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/components/Select/Select.jsx ***!
+  \***************************************************/
+/*! exports provided: default, SelectOption */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Select; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectOption", function() { return SelectOption; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _SelectOption__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SelectOption */ "./resources/js/components/SelectOption.jsx");
-/* harmony import */ var _EmployeeOption__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EmployeeOption */ "./resources/js/components/EmployeeOption.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -24892,36 +26563,43 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
-
-
+ // TODO: CSS ES6 IMPORT
+// TODO: OVERFLOW DETECTION FLIP SELECT
 
 var Select =
 /*#__PURE__*/
 function (_Component) {
   _inherits(Select, _Component);
 
-  function Select(props) {
+  function Select() {
+    var _getPrototypeOf2;
+
     var _this;
 
     _classCallCheck(this, Select);
 
-    //type, element, options, render) {
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Select).call(this, props));
-    console.log(props);
-    _this.state = {
-      value: null,
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Select)).call.apply(_getPrototypeOf2, [this].concat(args)));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      option: null,
       active: false
-    };
+    });
+
     return _this;
   }
 
@@ -24937,7 +26615,7 @@ function (_Component) {
   }, {
     key: "valid",
     value: function valid() {
-      return this.state.value !== null;
+      return this.state.option !== null;
     }
   }, {
     key: "toggle",
@@ -24947,12 +26625,16 @@ function (_Component) {
   }, {
     key: "open",
     value: function open() {
+      var _this3 = this;
+
       console.log("OPEN", this.refs.root); // console.trace("OPEN");
 
-      if (this.state.active) return false;
-      this.refs.options.scrollTop = 0;
+      if (this.state.active) return false; // this.focus()
+
       this.setState({
         active: true
+      }, function (then) {
+        _this3.refs.options.scrollTop = 0;
       });
       return true;
     }
@@ -24966,142 +26648,275 @@ function (_Component) {
       });
     }
   }, {
+    key: "changed",
+    value: function changed(option) {
+      if (typeof this.props.onchange === "function") this.props.onchange(option);
+    }
+  }, {
+    key: "focus",
+    value: function focus() {
+      this.refs.toggle.focus();
+    }
+  }, {
     key: "toggleButton",
     value: function toggleButton() {
-      var _this3 = this;
+      var _this4 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "select-toggle",
         ref: "toggle",
         onClick: function onClick(event) {
-          return _this3.toggle();
+          return _this4.toggle();
         }
       });
     }
   }, {
+    key: "options",
+    value: function options() {
+      return this.props.options;
+    }
+  }, {
     key: "optionlist",
-    value: function optionlist(options) {
-      var _this4 = this;
+    value: function optionlist() {
+      var _this5 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return this.state.active ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-option-list",
         ref: "options",
         tabIndex: -1
-      }, options.map(function (option) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          ref: "options",
-          tabIndex: _this4.state.active ? 0 : -1,
+      }, this.options().map(function (option) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          tabIndex: _this5.state.active ? 0 : -1,
           onClick: function onClick(event) {
-            return _this4.value = option;
+            return _this5.select(option);
           },
           className: "select-option"
-        }, option);
-      }));
+        }, option.render());
+      })) : null;
+    }
+  }, {
+    key: "select",
+    value: function select(option) {
+      this.value = option;
+    }
+  }, {
+    key: "unselect",
+    value: function unselect() {
+      this.value = null;
     }
   }, {
     key: "render",
     value: function render() {
+      var _this6 = this;
+
+      var className = "select-field";
+      if (this.state.active) className += " active";
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-root"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "select-field" + (this.state.active ? " active" : ""),
+        className: className,
         ref: "root"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-row",
-        tabIndex: -1
-      }, this.valid() ? this.state.value : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        tabIndex: -1,
+        onClick: function onClick(event) {
+          return _this6.toggle();
+        }
+      }, this.valid() ? this.state.option.render() : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-option-content"
-      }, "Select ", this.props.type), this.toggleButton()), this.optionlist(this.props.options)));
+      }, "Select ", this.props.type), this.toggleButton()), this.optionlist()));
     }
   }, {
     key: "value",
-    set: function set(selectOption) {
-      var _this5 = this;
+    set: function set(option) {
+      var _this7 = this;
 
-      if (this.state.value !== selectOption) {
-        this.setState({
-          value: selectOption
-        }, function (event) {
-          if (typeof _this5.props.onchange === "function") _this5.props.onchange(selectOption);
-        });
-      }
-
+      if (this.state.option !== option) this.setState({
+        option: option
+      }, function (event) {
+        return _this7.changed(option);
+      });
       this.refs.toggle.focus();
       this.close();
     },
     get: function get() {
-      return this.state.value.value;
+      return this.state.option.value;
     }
   }]);
 
   return Select;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-
-Select.propTypes = {
+_defineProperty(Select, "propTypes", {
   type: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
-  options: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
-    type: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.oneOf([_SelectOption__WEBPACK_IMPORTED_MODULE_2__["default"], _EmployeeOption__WEBPACK_IMPORTED_MODULE_3__["default"]]).isRequired
-  })).isRequired,
-  onchanged: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func // optionToString: PropTypes.func.isRequired,
+  options: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.instanceOf(SelectOption)).isRequired,
+  onchange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func // optionToString: PropTypes.func.isRequired,
 
-}; //
-// export class MultiSelect extends SearchSelect {
-//     constructor(type, element, options, render, query) {
-//         super(type, element, options, render, query);
-//         this.value = [];
-//         const multiCon = document.createElement("div");
-//         multiCon.className = "select-field-extension";
-//         this._multiCon = multiCon;
-//         this._root.insertBefore(multiCon, this._selectElement);
-//         this._input.placeholder += " to add";
-//     }
-//
-//     select(option) {
-//         this.value.push(option);
-//         const classList = this._optionElements.get(option).classList;
-//         classList.add("select-option-selected");
-//         const optRow = document.createElement("div");
-//         optRow.className = "select-row";
-//         const optRemove = document.createElement("button");
-//         const optTitle = document.createElement("div");
-//         optTitle.className = "select-option-title";
-//         optTitle.innerHTML = this._display(option);
-//
-//         optRemove.className = "select-option-remove";
-//         optRemove.innerText = "close";
-//         optRemove.addEventListener("click", event => {
-//             this.value = this.value.filter(op => op !== option);
-//             this.changed(option);
-//
-//             classList.remove("select-option-selected");
-//             optRow.remove();
-//         });
-//         optRow.appendChild(optTitle);
-//         optRow.appendChild(optRemove);
-//         this._multiCon.appendChild(optRow);
-//
-//         this.changed(option);
-//         this.close();
-//     }
-// }
+});
+
+
+var SelectOption =
+/*#__PURE__*/
+function () {
+  function SelectOption(value) {
+    _classCallCheck(this, SelectOption);
+
+    this._value = value;
+  }
+
+  _createClass(SelectOption, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "select-option-content"
+      }, this._value.toString());
+    }
+  }, {
+    key: "value",
+    get: function get() {
+      return this._value;
+    }
+  }]);
+
+  return SelectOption;
+}();
 
 /***/ }),
 
-/***/ "./resources/js/components/SelectOption.jsx":
-/*!**************************************************!*\
-  !*** ./resources/js/components/SelectOption.jsx ***!
-  \**************************************************/
+/***/ "./resources/js/components/Specialist.jsx":
+/*!************************************************!*\
+  !*** ./resources/js/components/Specialist.jsx ***!
+  \************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SelectOption; });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Specialist; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Specialist =
+/*#__PURE__*/
+function () {
+  function Specialist(id, title, firstName, lastName, problem_count) {
+    _classCallCheck(this, Specialist);
+
+    this.id = id;
+    this.title = title;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.problem_count = problem_count;
+  }
+
+  _createClass(Specialist, [{
+    key: "fullName",
+    value: function fullName() {
+      return "".concat(this.title, " ").concat(this.firstName, " ").concat(this.lastName);
+    }
+  }], [{
+    key: "fromRow",
+    value: function fromRow(row) {
+      return new Specialist(row.id, row.title, row["first_name"], row["last_name"], row["problem_count"]);
+    }
+  }, {
+    key: "fetch",
+    value: function (_fetch) {
+      function fetch() {
+        return _fetch.apply(this, arguments);
+      }
+
+      fetch.toString = function () {
+        return _fetch.toString();
+      };
+
+      return fetch;
+    }(
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var response, json, specialists;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!this._cache) {
+                _context.next = 3;
+                break;
+              }
+
+              console.log("CACHED");
+              return _context.abrupt("return", this._cache);
+
+            case 3:
+              _context.next = 5;
+              return fetch('/specialists');
+
+            case 5:
+              response = _context.sent;
+              _context.next = 8;
+              return response.json();
+
+            case 8:
+              json = _context.sent;
+              specialists = json.map(this.fromRow);
+              this._cache = specialists;
+              return _context.abrupt("return", specialists);
+
+            case 12:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    })))
+  }]);
+
+  return Specialist;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/SpecialistSelect.jsx":
+/*!******************************************************!*\
+  !*** ./resources/js/components/SpecialistSelect.jsx ***!
+  \******************************************************/
+/*! exports provided: default, SpecialistOption */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SpecialistSelect; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SpecialistOption", function() { return SpecialistOption; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FieldLabel/FieldLabel */ "./resources/js/components/FieldLabel/FieldLabel.jsx");
+/* harmony import */ var _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Select/SearchSelect */ "./resources/js/components/Select/SearchSelect.jsx");
+/* harmony import */ var _Specialist__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Specialist */ "./resources/js/components/Specialist.jsx");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25112,43 +26927,144 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
-var SelectOption =
+
+
+
+
+
+
+var SpecialistSelect =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(SelectOption, _Component);
+  _inherits(SpecialistSelect, _Component);
 
-  function SelectOption(props) {
-    _classCallCheck(this, SelectOption);
+  function SpecialistSelect(props) {
+    var _this;
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(SelectOption).call(this, props));
+    _classCallCheck(this, SpecialistSelect);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SpecialistSelect).call(this, props));
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      options: []
+    });
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "ref", Object(react__WEBPACK_IMPORTED_MODULE_1__["createRef"])());
+
+    SpecialistOption.fetch().then(function (options) {
+      return _this.setState({
+        options: options
+      });
+    });
+    return _this;
   }
 
-  _createClass(SelectOption, [{
+  _createClass(SpecialistSelect, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, this.props.value.toString());
+      return this.state.options ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "employee-select"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__["RequiredLabel"], {
+        for: this.ref
+      }, this.props.label), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_Select_SearchSelect__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        ref: this.ref,
+        type: "Specialist",
+        options: this.state.options,
+        onchange: console.log
+      })) : null;
     }
   }]);
 
-  return SelectOption;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+  return SpecialistSelect;
+}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
+
+_defineProperty(SpecialistSelect, "propTypes", {
+  label: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  onchange: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func
+});
 
 
-SelectOption.propTypes = {
-  value: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.any.isRequired // onClick: PropTypes.func.isRequired,
+var SpecialistOption =
+/*#__PURE__*/
+function (_QueryOption) {
+  _inherits(SpecialistOption, _QueryOption);
 
-};
+  function SpecialistOption(value) {
+    _classCallCheck(this, SpecialistOption);
+
+    if (!(value instanceof _Specialist__WEBPACK_IMPORTED_MODULE_5__["default"])) throw value + " not an instance of Specialist";
+    return _possibleConstructorReturn(this, _getPrototypeOf(SpecialistOption).call(this, value));
+  }
+
+  _createClass(SpecialistOption, [{
+    key: "toSearchString",
+    value: function toSearchString() {
+      var specialist = this.value;
+      return this.prepareSearchString("".concat(specialist.id, " ").concat(specialist.fullName()));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "select-option-content"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "employee-id"
+      }, "ID: ", this.value.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "employee-full-name"
+      }, this.value.fullName()), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "tag"
+      }, "Current Problems: ", this.value.problem_count));
+    }
+  }], [{
+    key: "fetch",
+    value: function () {
+      var _fetch = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var specialists;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _Specialist__WEBPACK_IMPORTED_MODULE_5__["default"].fetch();
+
+              case 2:
+                specialists = _context.sent;
+                return _context.abrupt("return", specialists.map(function (specialist) {
+                  return new SpecialistOption(specialist);
+                }));
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function fetch() {
+        return _fetch.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }]);
+
+  return SpecialistOption;
+}(_Select_SearchSelect__WEBPACK_IMPORTED_MODULE_4__["QueryOption"]);
 
 /***/ }),
 

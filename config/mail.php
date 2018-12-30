@@ -37,7 +37,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | This is the SMTP port used by your application to deliver e-mails to
-    | users of the application. Like the host we have set this value to
+    | users of the application. Like the host we have set this option to
     | stay compatible with the Mailgun e-mail application by default.
     |
     */
@@ -49,9 +49,9 @@ return [
     | Global "From" Address
     |--------------------------------------------------------------------------
     |
-    | You may wish for all e-mails sent by your application to be sent from
+    | You may wish for fetch e-mails sent by your application to be sent from
     | the same address. Here, you may specify a name and address that is
-    | used globally for all e-mails that are sent by your application.
+    | used globally for fetch e-mails that are sent by your application.
     |
     */
 
@@ -80,7 +80,7 @@ return [
     |
     | If your SMTP server requires a username for authentication, you should
     | set it here. This will get used to authenticate with your server on
-    | connection. You may also set the "password" value below this one.
+    | connection. You may also set the "password" option below this one.
     |
     */
 
