@@ -26,6 +26,22 @@ export default class Select extends Component {
         return this.state.option !== null;
     }
 
+    validate() {
+        if (this.valid()) {
+            this.refs.root.classList.remove("required-error");
+            return true;
+        }
+        else {
+            this.refs.root.classList.add("required-error");
+            this.focus();
+            return false;
+        }
+    }
+
+    resetValidate() {
+        this.refs.root.classList.remove("required-error");
+    }
+
     toggle() {
         if (this.state.active) this.close();
         else this.open();

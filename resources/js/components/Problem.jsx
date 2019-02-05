@@ -1,15 +1,15 @@
 import React from "react";
 
 export default class Problem {
-    constructor(id, title, description, urgency) {
+    constructor(id, title, description, priority) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.urgency = urgency;
+        this.priority = priority;
     }
 
     static fromRow(row) {
-        return new Problem(row.id, row.title, row["description"], row["urgency"])
+        return new Problem(row.id, row.title, row["description"], row["priority"])
     }
 
     static async fetch() {
@@ -26,9 +26,9 @@ export default class Problem {
 
     static render(id, title, priority) {
         return <div className="select-option-content">
-            <div className="employee-id">{id}</div>
+            <div className="employee-id">ID: {id}</div>
             <div className="employee-full-name">{title}</div>
-            <div className="tag">{priority}</div>
+            <div className="tag">Priority: {priority}</div>
         </div>
     }
 }

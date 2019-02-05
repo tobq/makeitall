@@ -31,6 +31,10 @@ export default class MultiSelect extends SearchSelect {
         this.close();
     }
 
+    valid() {
+        return this.state.selected.length !== 0;
+    }
+
     render() {
         return <div className="select-root">
             {this.state.selected.map(option =>

@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import {FieldLabel} from "./FieldLabel/FieldLabel";
+import {FieldLabel, RequiredLabel} from "./FieldLabel/FieldLabel";
 import MultiSelect from "./Select/MultiSelect";
 import PropTypes from "prop-types";
-import RequiredField, {RequiredTextarea} from "./RequiredField";
-import Problem from "./Select/Problem";
+import {RequiredTextarea, RequiredInput} from "./RequiredField";
+import Problem from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
 import SpecialistSelect from "./SpecialistSelect";
+import Select, {SelectOption} from "./Select/Select";
 
 
 export default class NewProblem extends Component {
@@ -13,22 +14,20 @@ export default class NewProblem extends Component {
         onRemove: PropTypes.func.isRequired
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            active: true,
-            title: null,
-            priority: null,
-            description: null,
+    state = {
+        active: true,
+        title: null,
+        priority: null,
+        description: null,
 
-        };
+    };
 
-        this.title = React.createRef();
-        this.description = React.createRef();
-        this.devices = React.createRef();
-        this.software = React.createRef();
-        this.specialist = React.createRef();
-    }
+    title = React.createRef();
+    description = React.createRef();
+    devices = React.createRef();
+    software = React.createRef();
+    specialist = React.createRef();
+    priority = React.createRef();
 
 
     save() {
@@ -37,6 +36,7 @@ export default class NewProblem extends Component {
                 active: false,
                 title: this.title.current.value,
                 description: this.description.current.value,
+                priority: this.priority.current.value
             });
         }
     }
@@ -49,7 +49,15 @@ export default class NewProblem extends Component {
     validate() {
         const titleValid = this.title.current.validate();
         const descriptionValid = this.description.current.validate();
-        return titleValid && descriptionValid;
+        const softwareValid = this.software.current.validate() || this.devices.current.validate();
+        if (softwareValid) {
+            this.software.current.resetValidate();
+            this.devices.current.resetValidate();
+        }
+        const specialistValid = this.specialist.current.validate();
+        const priorityValid = this.priority.current.validate();
+
+        return titleValid && descriptionValid && softwareValid && specialistValid && priorityValid;
     }
 
     render() {
@@ -71,7 +79,7 @@ export default class NewProblem extends Component {
                     {removeButton}
                 </div>
                 <div className="select-new-problem">
-                    <RequiredField
+                    <RequiredInput
                         label="Title"
                         placeholder="Problem Title"
                         ref={this.title}
@@ -94,7 +102,11 @@ export default class NewProblem extends Component {
                         type="Device"
                         options={[1, 2, 3, 4, 5, 6].map(x => new QueryOption(x))}
                     />
-                    <SpecialistSelect label={"Assign Specialists"}/>
+                    <SpecialistSelect ref={this.specialist} label={"Assign Specialists"}/>
+                    {/*<PrioritySelect/>*/}
+                    <RequiredLabel for={this.priority}>Priority</RequiredLabel>
+                    <Select type={"Priority"} options={["Normal", "Urgent", "Emergency"].map(x => new SelectOption(x))}
+                            ref={this.priority}/>
                 </div>
             </div>
             :
@@ -107,5 +119,45 @@ export default class NewProblem extends Component {
                 {removeButton}
             </div>;
 
+    }
+}
+
+class PrioritySelect extends Component {
+    value = 0;
+
+    state = {display: this.value};
+
+    display(priority) {
+        this.setState({display: priority})
+    }
+
+    select(priority) {
+        console.log("VALUE:  " + priority);
+        this.value = priority;
+    }
+
+    reset() {
+        this.display(this.value);
+    }
+
+    render() {
+        const options = [];
+        const currentDisplay = this.state.display;
+        for (let i = 0; i < 5; i++) {
+            let className = "select-priority-option";
+            if (i < currentDisplay) className += " active";
+            options[i] = <button
+                className={className}
+                onMouseEnter={this.display.bind(this, i + 1)}
+                onFocus={this.display.bind(this, i + 1)}
+                onClick={this.select.bind(this, i + 1)}
+            />;
+        }
+
+        return <div
+            className="select-priority"
+            onMouseLeave={event => this.reset()}>
+            Normal {options} Emergency
+        </div>
     }
 }

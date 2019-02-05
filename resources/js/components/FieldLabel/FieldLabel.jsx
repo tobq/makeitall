@@ -21,6 +21,8 @@ export class FieldLabel extends Component {
 
 
 export class RequiredLabel extends FieldLabel {
+    static propTypes = FieldLabel.propTypes;
+
     constructor(props) {
         super(props);
         this.state.active = false;

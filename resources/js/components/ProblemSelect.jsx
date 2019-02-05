@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {FieldLabel} from "./FieldLabel/FieldLabel";
 import {Component} from "react";
 import React from "react";
-import Problem from "./Select/Problem";
+import Problem from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
 
 export default class ProblemSelect extends Component {
@@ -22,6 +22,7 @@ export default class ProblemSelect extends Component {
 
     constructor(props) {
         super(props);
+        setInterval(() => this.validate(), 1000);
 
         ProblemOption.fetch()
             .then(options => this.setState({options: options}));
@@ -38,6 +39,14 @@ export default class ProblemSelect extends Component {
         this.setState({created: created});
     }
 
+    validate() {
+        if (this.state.created.length === 0) return this.ref.current.validate();
+        else {
+            this.ref.current.resetValidate();
+            return true;
+        }
+    }
+
     render() {
         return <div>
             <FieldLabel for={this.ref}>{this.props.label}</FieldLabel>
@@ -49,7 +58,11 @@ export default class ProblemSelect extends Component {
                 </button>
             </div>
             {this.state.created}
-            <MultiSelect ref={this.ref} options={this.state.options}/>
+            <MultiSelect
+                ref={this.ref}
+                type={"Problem"}
+                options={this.state.options}
+            />
         </div>
 
     }

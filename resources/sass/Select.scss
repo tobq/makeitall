@@ -85,6 +85,15 @@
     //border-color: $MIA-grey;
     //}
   }
+
+  &.required-error {
+    background-color: lighten($error-color, 25%) !important;
+
+    outline-color: $error-color;
+    //outline-offset: -20px;
+    outline-style: auto;
+    //outline-width: 10px;
+  }
 }
 
 .select-row {

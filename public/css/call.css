@@ -15,7 +15,7 @@
 }
 
 .employee-id {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
   line-height: 18px;
@@ -75,7 +75,7 @@
 }
 
 .employee-id {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
   line-height: 18px;
@@ -109,7 +109,7 @@
 }
 
 .employee-id {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
   line-height: 18px;
@@ -163,7 +163,7 @@
 .select-problem-edit:hover,
 .select-problem-save:focus,
 .select-problem-edit:focus {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .select-create-problem {
@@ -177,7 +177,7 @@
 }
 
 .select-create-problem {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
   color: #444;
 }
 
@@ -209,6 +209,25 @@
   font-style: italic;
 }
 
+.select-priority {
+  line-height: 40px;
+  text-align: center;
+}
+
+.select-priority-option {
+  outline: none;
+  margin: 0 6px;
+  height: 22px;
+  width: 22px;
+  border: 3px solid lightgray;
+  border-radius: 50%;
+  transition: background-color 100ms ease;
+}
+
+.select-priority-option.active {
+  background-color: lightgray;
+}
+
 .employee-full-name {
   overflow: hidden;
   white-space: nowrap;
@@ -226,7 +245,7 @@
 }
 
 .employee-id {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
   line-height: 18px;
@@ -260,7 +279,7 @@
 }
 
 .employee-id {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
   line-height: 18px;
@@ -294,7 +313,7 @@
 }
 
 .employee-id {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
   line-height: 18px;
@@ -348,7 +367,7 @@
 .select-problem-save:hover,
 .select-problem-edit:focus,
 .select-problem-save:focus {
-  background-color: #EEE;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .select-create-problem {

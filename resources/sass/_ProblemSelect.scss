@@ -101,6 +101,25 @@
   outline-color: $error-color !important;
 }
 
-.select-problem-editing-label{
+.select-problem-editing-label {
   font-style: italic;
+}
+
+$priority-size: 22px;
+.select-priority {
+  line-height: $button-height;
+  text-align: center;
+}
+.select-priority-option {
+  outline: none;
+  margin: 0 6px;
+  height: $priority-size;
+  width: $priority-size;
+  border: 3px solid $MIA-grey;
+  border-radius: 50%;
+  transition: background-color 100ms ease;
+
+  &.active {
+    background-color: $MIA-grey;
+  }
 }
