@@ -22,7 +22,7 @@ export default class ProblemSelect extends Component {
 
     constructor(props) {
         super(props);
-        setInterval(() => this.validate(), 1000);
+        // setInterval(() => this.validate(), 1000);
 
         ProblemOption.fetch()
             .then(options => this.setState({options: options}));
