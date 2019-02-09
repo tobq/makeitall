@@ -25548,6 +25548,9 @@ function (_Component) {
           active: false,
           title: this.title.current.value,
           description: this.description.current.value,
+          software: this.software.current.value,
+          devices: this.devices.current.value,
+          specialists: this.specialist.current.value,
           priority: this.priority.current.value
         });
       }
