@@ -25518,8 +25518,11 @@ function (_Component) {
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
       active: true,
       title: null,
-      priority: null,
-      description: null
+      description: null,
+      software: null,
+      devices: null,
+      specialists: null,
+      priority: null
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "title", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
