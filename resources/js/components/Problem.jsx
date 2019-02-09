@@ -24,11 +24,33 @@ export default class Problem {
         return problems;
     }
 
+    static priorities = ["Normal", "High", "Emergency"];
+
     static render(id, title, priority) {
         return <div className="select-option-content">
             <div className="employee-id">ID: {id}</div>
             <div className="employee-full-name">{title}</div>
-            <div className="tag">Priority: {priority}</div>
+            <div className="tag">Priority: {this.getPriority(priority)}</div>
+        </div>
+    }
+
+    static getPriority(priority) {
+        return this.priorities[priority - 1];
+    }
+}
+
+export class UrgencyOption {
+    constructor(value) {
+        this._value = value;
+    }
+
+    get value() {
+        return this._value;
+    }
+
+    render() {
+        return <div className="select-option-content">
+            {Problem.getPriority(this._value)}
         </div>
     }
 }

@@ -29,8 +29,13 @@ export default class ProblemSelect extends Component {
     }
 
     create() {
-        const newProblem = <NewProblem onRemove={() => this.unCreate(newProblem)}/>;
-        const created = [...this.state.created, newProblem];
+        console.log(this.state.created, this.state.created.length !== 0,
+            this.state.created[this.state.created.length - 1]);
+        if (this.state.created.length !== 0 &&
+            !this.state.created[this.state.created.length - 1].current.validate()) return;
+        const ref = React.createRef();
+        const newProblem = <NewProblem ref={ref} onRemove={() => this.unCreate(ref)}/>;
+        const created = [...this.state.created, ref];
         this.setState({created: created});
     }
 
@@ -40,11 +45,10 @@ export default class ProblemSelect extends Component {
     }
 
     validate() {
-        if (this.state.created.length === 0) return this.ref.current.validate();
-        else {
-            this.ref.current.resetValidate();
-            return true;
-        }
+        for (let created of this.state.created)
+            if (!created.current.validate()) return false;
+
+        return this.state.created.length === 0 ? this.ref.current.validate() : true;
     }
 
     render() {
@@ -57,7 +61,7 @@ export default class ProblemSelect extends Component {
                 >Create New Problem
                 </button>
             </div>
-            {this.state.created}
+            {this.state.created.map(ref => ref.current)}
             <MultiSelect
                 ref={this.ref}
                 type={"Problem"}

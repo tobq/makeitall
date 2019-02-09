@@ -3,7 +3,7 @@ import {FieldLabel, RequiredLabel} from "./FieldLabel/FieldLabel";
 import MultiSelect from "./Select/MultiSelect";
 import PropTypes from "prop-types";
 import {RequiredTextarea, RequiredInput} from "./RequiredField";
-import Problem from "./Problem";
+import Problem, {UrgencyOption} from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
 import SpecialistSelect from "./SpecialistSelect";
 import Select, {SelectOption} from "./Select/Select";
@@ -17,9 +17,11 @@ export default class NewProblem extends Component {
     state = {
         active: true,
         title: null,
-        priority: null,
         description: null,
-
+        software: null,
+        devices: null,
+        specialists: null,
+        priority: null,
     };
 
     title = React.createRef();
@@ -36,6 +38,9 @@ export default class NewProblem extends Component {
                 active: false,
                 title: this.title.current.value,
                 description: this.description.current.value,
+                software: this.software.current.value,
+                devices: this.devices.current.value,
+                specialists: this.specialist.current.value,
                 priority: this.priority.current.value
             });
         }
@@ -95,23 +100,28 @@ export default class NewProblem extends Component {
                         ref={this.software}
                         type="Installed Software"
                         options={[1, 2, 3, 4, 5, 6].map(x => new QueryOption(x))}
+                        selected={this.state.software}
                     />
                     <FieldLabel for={this.devices}>Affected Devices</FieldLabel>
                     <MultiSelect
                         ref={this.devices}
                         type="Device"
                         options={[1, 2, 3, 4, 5, 6].map(x => new QueryOption(x))}
+                        selected={this.state.devices}
                     />
-                    <SpecialistSelect ref={this.specialist} label={"Assign Specialists"}/>
+                    <SpecialistSelect ref={this.specialist} label={"Assign Specialists"} selected={this.state.specialists}/>
                     {/*<PrioritySelect/>*/}
                     <RequiredLabel for={this.priority}>Priority</RequiredLabel>
-                    <Select type={"Priority"} options={["Normal", "Urgent", "Emergency"].map(x => new SelectOption(x))}
-                            ref={this.priority}/>
+                    <Select type={"Priority"}
+                            options={[1, 2, 3].map(x => new UrgencyOption(x))}
+                            ref={this.priority}
+                            value={this.state.priority}
+                    />
                 </div>
             </div>
             :
             <div className="select-row">
-                {Problem.render("New", this.state.title, this.state.priority)}
+                {Problem.render("New", this.state.title, this.state.priority.value)}
                 <button
                     className="select-problem-edit"
                     onClick={event => this.edit()}

@@ -11,6 +11,7 @@ export default class SpecialistSelect extends Component {
     static propTypes = {
         label: PropTypes.string.isRequired,
         onchange: PropTypes.func,
+        selected: PropTypes.arrayOf(PropTypes.instanceOf(SpecialistOption)),
     };
 
     constructor(props) {
@@ -18,6 +19,10 @@ export default class SpecialistSelect extends Component {
 
         SpecialistOption.fetch()
             .then(options => this.setState({options: options}));
+    }
+
+    get value() {
+        return this.ref.current.value;
     }
 
     state = {options: []};
@@ -33,15 +38,15 @@ export default class SpecialistSelect extends Component {
     }
 
     render() {
-        return this.state.options ? <div className="employee-select">
+        return <div className="employee-select">
             <RequiredLabel for={this.ref} ref={this.label}>{this.props.label}</RequiredLabel>
             <MultiSelect
                 ref={this.ref}
                 type="Specialist"
                 options={this.state.options}
-                onchange={console.log}
+                selected={this.props.selected}
             />
-        </div> : null
+        </div>
 
     }
 }

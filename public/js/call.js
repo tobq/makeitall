@@ -25623,7 +25623,8 @@ function (_Component) {
         type: "Installed Software",
         options: [1, 2, 3, 4, 5, 6].map(function (x) {
           return new _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_6__["QueryOption"](x);
-        })
+        }),
+        selected: this.state.software
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
         for: this.devices
       }, "Affected Devices"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -25631,21 +25632,24 @@ function (_Component) {
         type: "Device",
         options: [1, 2, 3, 4, 5, 6].map(function (x) {
           return new _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_6__["QueryOption"](x);
-        })
+        }),
+        selected: this.state.devices
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SpecialistSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
         ref: this.specialist,
-        label: "Assign Specialists"
+        label: "Assign Specialists",
+        selected: this.state.specialists
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["RequiredLabel"], {
         for: this.priority
       }, "Priority"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_Select__WEBPACK_IMPORTED_MODULE_8__["default"], {
         type: "Priority",
-        options: ["Normal", "Urgent", "Emergency"].map(function (x) {
-          return new _Select_Select__WEBPACK_IMPORTED_MODULE_8__["SelectOption"](x);
+        options: [1, 2, 3].map(function (x) {
+          return new _Problem__WEBPACK_IMPORTED_MODULE_5__["UrgencyOption"](x);
         }),
-        ref: this.priority
+        ref: this.priority,
+        value: this.state.priority
       }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-row"
-      }, _Problem__WEBPACK_IMPORTED_MODULE_5__["default"].render("New", this.state.title, this.state.priority), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      }, _Problem__WEBPACK_IMPORTED_MODULE_5__["default"].render("New", this.state.title, this.state.priority.value), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "select-problem-edit",
         onClick: function onClick(event) {
           return _this2.edit();
@@ -25745,12 +25749,13 @@ function (_Component2) {
 /*!*********************************************!*\
   !*** ./resources/js/components/Problem.jsx ***!
   \*********************************************/
-/*! exports provided: default */
+/*! exports provided: default, UrgencyOption */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Problem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UrgencyOption", function() { return UrgencyOption; });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
@@ -25766,6 +25771,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -25849,14 +25856,46 @@ function () {
         className: "employee-full-name"
       }, title), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "tag"
-      }, "Priority: ", priority));
+      }, "Priority: ", this.getPriority(priority)));
+    }
+  }, {
+    key: "getPriority",
+    value: function getPriority(priority) {
+      return this.priorities[priority - 1];
     }
   }]);
 
   return Problem;
 }();
 
+_defineProperty(Problem, "priorities", ["Normal", "High", "Emergency"]);
 
+
+var UrgencyOption =
+/*#__PURE__*/
+function () {
+  function UrgencyOption(value) {
+    _classCallCheck(this, UrgencyOption);
+
+    this._value = value;
+  }
+
+  _createClass(UrgencyOption, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "select-option-content"
+      }, Problem.getPriority(this._value));
+    }
+  }, {
+    key: "value",
+    get: function get() {
+      return this._value;
+    }
+  }]);
+
+  return UrgencyOption;
+}();
 
 /***/ }),
 
@@ -25935,7 +25974,7 @@ function (_Component) {
 
     _classCallCheck(this, ProblemSelect);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ProblemSelect).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ProblemSelect).call(this, props)); // setInterval(() => this.validate(), 1000);
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "ref", react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef());
 
@@ -25944,9 +25983,6 @@ function (_Component) {
       options: []
     });
 
-    setInterval(function () {
-      return _this.validate();
-    }, 1000);
     ProblemOption.fetch().then(function (options) {
       return _this.setState({
         options: options
@@ -25960,12 +25996,16 @@ function (_Component) {
     value: function create() {
       var _this2 = this;
 
+      console.log(this.state.created, this.state.created.length !== 0, this.state.created[this.state.created.length - 1]);
+      if (this.state.created.length !== 0 && !this.state.created[this.state.created.length - 1].current.validate()) return;
+      var ref = react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef();
       var newProblem = react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_NewProblem__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        ref: ref,
         onRemove: function onRemove() {
-          return _this2.unCreate(newProblem);
+          return _this2.unCreate(ref);
         }
       });
-      var created = [].concat(_toConsumableArray(this.state.created), [newProblem]);
+      var created = [].concat(_toConsumableArray(this.state.created), [ref]);
       this.setState({
         created: created
       });
@@ -25983,10 +26023,31 @@ function (_Component) {
   }, {
     key: "validate",
     value: function validate() {
-      if (this.state.created.length === 0) return this.ref.current.validate();else {
-        this.ref.current.resetValidate();
-        return true;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.state.created[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var created = _step.value;
+          if (!created.current.validate()) return false;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return != null) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
       }
+
+      return this.state.created.length === 0 ? this.ref.current.validate() : true;
     }
   }, {
     key: "render",
@@ -26002,7 +26063,9 @@ function (_Component) {
         onClick: function onClick(event) {
           return _this3.create();
         }
-      }, "Create New Problem")), this.state.created, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, "Create New Problem")), this.state.created.map(function (ref) {
+        return ref.current;
+      }), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_1__["default"], {
         ref: this.ref,
         type: "Problem",
         options: this.state.options
@@ -26268,6 +26331,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SearchSelect__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchSelect */ "./resources/js/components/Select/SearchSelect.jsx");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _Select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Select */ "./resources/js/components/Select/Select.jsx");
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -26303,6 +26371,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
 var MultiSelect =
 /*#__PURE__*/
 function (_SearchSelect) {
@@ -26316,17 +26386,46 @@ function (_SearchSelect) {
     _classCallCheck(this, MultiSelect);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MultiSelect).call(this, props));
-    _this.state.selected = [];
+    _this.state.selected = props.selected || [];
     return _this;
   }
 
   _createClass(MultiSelect, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      _get(_getPrototypeOf(MultiSelect.prototype), "componentDidMount", this).call(this);
+    }
+  }, {
     key: "options",
     value: function options() {
       var _this2 = this;
 
       return _get(_getPrototypeOf(MultiSelect.prototype), "options", this).call(this).filter(function (option) {
-        return !_this2.state.selected.includes(option);
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = _this2.state.selected[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var opt = _step.value;
+            if (option.equals(opt)) return false;
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return != null) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+
+        return true;
       });
     }
   }, {
@@ -26382,12 +26481,19 @@ function (_SearchSelect) {
         tabIndex: -1
       }, this.searchInput(), this.toggleButton()), this.optionlist()));
     }
+  }, {
+    key: "value",
+    get: function get() {
+      return this.state.selected;
+    }
   }]);
 
   return MultiSelect;
 }(_SearchSelect__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
-_defineProperty(MultiSelect, "propTypes", _SearchSelect__WEBPACK_IMPORTED_MODULE_0__["default"].propTypes);
+_defineProperty(MultiSelect, "propTypes", _objectSpread({}, _SearchSelect__WEBPACK_IMPORTED_MODULE_0__["default"].propTypes, {
+  selected: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.instanceOf(_Select__WEBPACK_IMPORTED_MODULE_3__["SelectOption"]))
+}));
 
 
 
@@ -26553,7 +26659,7 @@ function (_Select) {
 }(_Select__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 _defineProperty(SearchSelect, "propTypes", _objectSpread({}, _Select__WEBPACK_IMPORTED_MODULE_2__["default"].propTypes, {
-  options: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.instanceOf(QueryOption)).isRequired
+  options: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.instanceOf(QueryOption).isRequired).isRequired
 }));
 
 
@@ -26709,24 +26815,20 @@ var Select =
 function (_Component) {
   _inherits(Select, _Component);
 
-  function Select() {
-    var _getPrototypeOf2;
-
+  function Select(props) {
     var _this;
 
     _classCallCheck(this, Select);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Select)).call.apply(_getPrototypeOf2, [this].concat(args)));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Select).call(this, props));
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
       option: null,
       active: false
     });
 
+    console.log(props.value);
+    _this.state.option = props.value;
     return _this;
   }
 
@@ -26735,6 +26837,7 @@ function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
+      // if (this.props.value) this.select(this.props.value);
       this.refs.root.addEventListener("focusout", function (event) {
         if (!_this2.refs.root.contains(event.relatedTarget)) _this2.close();
       });
@@ -26742,7 +26845,7 @@ function (_Component) {
   }, {
     key: "valid",
     value: function valid() {
-      return this.state.option !== null;
+      return this.state.option !== null && this.state.option !== undefined;
     }
   }, {
     key: "validate",
@@ -26855,6 +26958,7 @@ function (_Component) {
 
       var className = "select-field";
       if (this.state.active) className += " active";
+      if (this.valid()) console.log(this.state.option);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-root"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -26884,7 +26988,7 @@ function (_Component) {
       this.close();
     },
     get: function get() {
-      return this.state.option.value;
+      return this.state.option; //.value;
     }
   }]);
 
@@ -26893,8 +26997,9 @@ function (_Component) {
 
 _defineProperty(Select, "propTypes", {
   type: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string.isRequired,
-  options: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.instanceOf(SelectOption)).isRequired,
-  onchange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func // optionToString: PropTypes.func.isRequired,
+  options: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.instanceOf(SelectOption).isRequired).isRequired,
+  onchange: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  value: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.instanceOf(SelectOption) // optionToString: PropTypes.func.isRequired,
 
 });
 
@@ -26914,6 +27019,11 @@ function () {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-option-content"
       }, this._value.toString());
+    }
+  }, {
+    key: "equals",
+    value: function equals(option) {
+      return option instanceof SelectOption && this.value === option.value;
     }
   }, {
     key: "value",
@@ -27130,7 +27240,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return this.state.options ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "employee-select"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__["RequiredLabel"], {
         for: this.ref,
@@ -27139,8 +27249,13 @@ function (_Component) {
         ref: this.ref,
         type: "Specialist",
         options: this.state.options,
-        onchange: console.log
-      })) : null;
+        selected: this.props.selected
+      }));
+    }
+  }, {
+    key: "value",
+    get: function get() {
+      return this.ref.current.value;
     }
   }]);
 
@@ -27149,7 +27264,8 @@ function (_Component) {
 
 _defineProperty(SpecialistSelect, "propTypes", {
   label: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
-  onchange: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func
+  onchange: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func,
+  selected: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.instanceOf(SpecialistOption))
 });
 
 

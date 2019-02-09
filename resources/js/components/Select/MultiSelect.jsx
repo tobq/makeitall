@@ -1,18 +1,31 @@
 import SearchSelect from "./SearchSelect";
 import React from "react";
+import PropTypes from "prop-types";
+import {SelectOption} from "./Select";
 
 export default class MultiSelect extends SearchSelect {
-    static propTypes = SearchSelect.propTypes;
+    static propTypes = {
+        ...SearchSelect.propTypes,
+        selected: PropTypes.arrayOf(PropTypes.instanceOf(SelectOption))
+    };
     // state = {active: false};
     // selected = new Set();
 
     constructor(props) {
         super(props);
-        this.state.selected = [];
+        this.state.selected = props.selected || [];
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
     }
 
     options() {
-        return super.options().filter(option => !this.state.selected.includes(option))
+        return super.options().filter(option => {
+            for (let opt of this.state.selected)
+                if (option.equals(opt)) return false;
+            return true;
+        })
     }
 
     select(option) {
@@ -29,6 +42,10 @@ export default class MultiSelect extends SearchSelect {
         this.setState({selected: selected});
         this.changed(selected);
         this.close();
+    }
+
+    get value() {
+        return this.state.selected;
     }
 
     valid() {
