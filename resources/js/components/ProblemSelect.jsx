@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {FieldLabel} from "./FieldLabel/FieldLabel";
 import {Component} from "react";
 import React from "react";
-import Problem from "./Select/Problem";
+import Problem from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
 
 export default class ProblemSelect extends Component {
@@ -22,20 +22,33 @@ export default class ProblemSelect extends Component {
 
     constructor(props) {
         super(props);
+        // setInterval(() => this.validate(), 1000);
 
         ProblemOption.fetch()
             .then(options => this.setState({options: options}));
     }
 
     create() {
-        const newProblem = <NewProblem onRemove={() => this.unCreate(newProblem)}/>;
-        const created = [...this.state.created, newProblem];
+        console.log(this.state.created, this.state.created.length !== 0,
+            this.state.created[this.state.created.length - 1]);
+        if (this.state.created.length !== 0 &&
+            !this.state.created[this.state.created.length - 1].current.validate()) return;
+        const ref = React.createRef();
+        const newProblem = <NewProblem ref={ref} onRemove={() => this.unCreate(ref)}/>;
+        const created = [...this.state.created, ref];
         this.setState({created: created});
     }
 
     unCreate(newProblem) {
         const created = this.state.created.filter(np => np !== newProblem);
         this.setState({created: created});
+    }
+
+    validate() {
+        for (let created of this.state.created)
+            if (!created.current.validate()) return false;
+
+        return this.state.created.length === 0 ? this.ref.current.validate() : true;
     }
 
     render() {
@@ -48,8 +61,12 @@ export default class ProblemSelect extends Component {
                 >Create New Problem
                 </button>
             </div>
-            {this.state.created}
-            <MultiSelect ref={this.ref} options={this.state.options}/>
+            {this.state.created.map(ref => ref.current)}
+            <MultiSelect
+                ref={this.ref}
+                type={"Problem"}
+                options={this.state.options}
+            />
         </div>
 
     }

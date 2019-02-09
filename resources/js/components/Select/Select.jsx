@@ -7,8 +7,9 @@ import PropTypes from "prop-types";
 export default class Select extends Component {
     static propTypes = {
         type: PropTypes.string.isRequired,
-        options: PropTypes.arrayOf(PropTypes.instanceOf(SelectOption)).isRequired,
+        options: PropTypes.arrayOf(PropTypes.instanceOf(SelectOption).isRequired).isRequired,
         onchange: PropTypes.func,
+        value: PropTypes.instanceOf(SelectOption)
         // optionToString: PropTypes.func.isRequired,
     };
     state = {
@@ -16,14 +17,37 @@ export default class Select extends Component {
         active: false
     };
 
+    constructor(props) {
+        super(props);
+        console.log(props.value);
+        this.state.option = props.value;
+    }
+
     componentDidMount() {
+        // if (this.props.value) this.select(this.props.value);
+
         this.refs.root.addEventListener("focusout", (event) => {
             if (!this.refs.root.contains(event.relatedTarget)) this.close();
         });
     }
 
     valid() {
-        return this.state.option !== null;
+        return this.state.option !== null && this.state.option !== undefined;
+    }
+
+    validate() {
+        if (this.valid()) {
+            this.refs.root.classList.remove("required-error");
+            return true;
+        } else {
+            this.refs.root.classList.add("required-error");
+            this.focus();
+            return false;
+        }
+    }
+
+    resetValidate() {
+        this.refs.root.classList.remove("required-error");
     }
 
     toggle() {
@@ -65,7 +89,7 @@ export default class Select extends Component {
     }
 
     get value() {
-        return this.state.option.value;
+        return this.state.option//.value;
     }
 
     toggleButton() {
@@ -103,6 +127,7 @@ export default class Select extends Component {
     render() {
         let className = "select-field";
         if (this.state.active) className += " active";
+        if (this.valid()) console.log(this.state.option);
 
         return <div className="select-root">
             <div className={className} ref={"root"}>
@@ -131,5 +156,9 @@ export class SelectOption {
         return <div className="select-option-content">
             {this._value.toString()}
         </div>
+    }
+
+    equals(option) {
+        return option instanceof SelectOption && this.value === option.value;
     }
 }

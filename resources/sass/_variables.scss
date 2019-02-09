@@ -7,7 +7,7 @@ $header-colour: white;
 $body-spacing: 30px;
 $MIA-grey: rgb(211, 211, 211);
 $MIA-yellow: rgb(255, 217, 0);
-$MIA-light-grey: #EEE;
+$MIA-light-grey: rgba(black, 0.05);
 $MIA-light-yellow: lighten(desaturate($MIA-yellow, 20%), 20%);
 $error-color: salmon;
 

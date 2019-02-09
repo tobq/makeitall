@@ -4,12 +4,6 @@ import React from "react";
 import {RequiredLabel} from "./FieldLabel/FieldLabel";
 
 export default class RequiredField extends Component {
-    static propTypes = {
-        label: PropTypes.string.isRequired,
-        placeholder: PropTypes.string.isRequired,
-        value: PropTypes.string
-    };
-
     state = {
         valid: true
     };
@@ -35,6 +29,14 @@ export default class RequiredField extends Component {
     get value() {
         return this.input.current.value;
     }
+}
+
+export class RequiredInput extends RequiredField {
+    static propTypes = {
+        label: PropTypes.string.isRequired,
+        placeholder: PropTypes.string.isRequired,
+        value: PropTypes.string
+    };
 
     render() {
         let className = "select-input";
@@ -50,7 +52,7 @@ export default class RequiredField extends Component {
     }
 }
 
-export class RequiredTextarea extends RequiredField {
+export class RequiredTextarea extends RequiredInput {
     static propTypes = {
         label: PropTypes.string.isRequired,
         value: PropTypes.string

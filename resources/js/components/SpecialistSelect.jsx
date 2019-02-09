@@ -5,11 +5,13 @@ import SearchSelect from "./Select/SearchSelect";
 import React from "react";
 import {QueryOption} from "./Select/SearchSelect";
 import Specialist from "./Specialist";
+import MultiSelect from "./Select/MultiSelect";
 
 export default class SpecialistSelect extends Component {
     static propTypes = {
         label: PropTypes.string.isRequired,
         onchange: PropTypes.func,
+        selected: PropTypes.arrayOf(PropTypes.instanceOf(SpecialistOption)),
     };
 
     constructor(props) {
@@ -19,19 +21,32 @@ export default class SpecialistSelect extends Component {
             .then(options => this.setState({options: options}));
     }
 
+    get value() {
+        return this.ref.current.value;
+    }
+
     state = {options: []};
     ref = createRef();
+    label = createRef();
+
+    validate() {
+        if (this.ref.current.validate()) return true;
+        else {
+            this.label.current.activate();
+            return false;
+        }
+    }
 
     render() {
-        return this.state.options ? <div className="employee-select">
-            <RequiredLabel for={this.ref}>{this.props.label}</RequiredLabel>
-            <SearchSelect
+        return <div className="employee-select">
+            <RequiredLabel for={this.ref} ref={this.label}>{this.props.label}</RequiredLabel>
+            <MultiSelect
                 ref={this.ref}
                 type="Specialist"
                 options={this.state.options}
-                onchange={console.log}
+                selected={this.props.selected}
             />
-        </div> : null
+        </div>
 
     }
 }
