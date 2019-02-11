@@ -1,0 +1,238 @@
+// Variables
+@import "variables";
+@import "fonts";
+@import "material-icons";
+
+@import "Select";
+@import "FieldLabel";
+
+/**
+RESET DEFAULT HTML
+ */
+
+//* {
+//  outline-color: $MIA-grey;
+//}
+
+body {
+  @extend %MIA-font;
+  box-sizing: border-box;
+  padding-top: $logo-height;
+  margin: 0 0 0 $sidebar-width;
+  text-align: center;
+
+  > * {
+    text-align: left;
+  }
+}
+
+#body-content {
+  display: inline-block;
+  max-width: 100%;
+  width: 600px;
+  box-sizing: border-box;
+  padding: $body-spacing $body-spacing 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+button, input {
+  background: none;
+  //outline: none;
+  font-family: roboto;
+  border: none;
+}
+
+button {
+  text-align: center;
+  padding: 0;
+}
+
+/**
+DOCUMENT HEADER / NAVBAR CSS
+*/
+
+#title {
+  @extend %text-overflow;
+  font-size: 24px;
+  flex-grow: 1;
+}
+
+#overlay-components {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+#header-con{
+  display: flex;
+}
+
+header {
+  display: flex;
+  height: $logo-height;
+  flex-grow: 1;
+  //box-sizing: border-box;
+  //width: 100%;
+  padding: 0 $body-spacing;
+  background-color: rgba($header-colour, 0.95);
+  box-shadow: 0 2px 4px rgba(black, 0.05);
+  align-items: center;
+
+  > * {
+    pointer-events: all;
+    //border: 1px solid #AAA;
+    border-radius: $button-radius;
+
+    margin-right: $sidebar-spacing;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+nav {
+  pointer-events: all;
+  flex-grow: 1;
+  width: $sidebar-width;
+  background: $MIA-light-grey;
+  //font-family: KC;
+  line-height: $logo-height;
+
+  > a {
+    display: block;
+    font-family: rbold, roboto, Arial, serif;
+    transition: background-color 100ms ease;
+
+    &:hover {
+      background-color: $MIA-grey;
+    }
+
+    > .material-icons {
+      display: inline-block;
+      text-align: center;
+      width: $logo-height;
+    }
+  }
+}
+
+#logo {
+  @extend %no-select;
+  flex-shrink: 0;
+  font-family: "Bauhaus 93";
+  font-size: 24px;
+  font-weight: normal;
+  line-height: $logo-height;
+  width: $sidebar-width;
+  background-color: $MIA-grey;
+  pointer-events: all;
+}
+
+#logo-icon {
+  height: 30px;
+  width: $logo-height;
+  display: inline-block;
+  vertical-align: middle;
+  background-image: url(/i/logo.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#new-call-button {
+  text-align: center;
+  background-color: $MIA-light-yellow;
+  line-height: $button-height;
+  display: inline-block;
+  padding: 0 20px;
+  font-family: rbold;
+  border-radius: $button-height / 2;
+
+  > .material-icons {
+    margin-right: 10px;
+  }
+}
+
+.user-menu-list {
+  @extend %hover-shadow;
+  position: fixed;
+  margin: 0;
+  top: 0;
+  right: $sidebar-spacing;
+  width: $sidebar-width;
+  line-height: $button-height;
+  text-align: left;
+  background-color: white;
+  border-radius: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 100ms ease;
+  z-index: 1;
+  font-size: 15px;
+
+  > a {
+    padding: 0 $sidebar-spacing;
+    display: block;
+
+    &:hover {
+      background-color: $MIA-light-grey;
+    }
+  }
+}
+
+.user-menu-root.active > .user-menu-list {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.user-menu-name {
+  background-color: $MIA-light-grey;
+  line-height: $logo-height;
+}
+
+.user-display-picture {
+  @extend %material-icons;
+  @extend %MIA-outline;
+  display: block;
+  position: relative;
+  z-index: 2;
+  width: $button-height;
+  height: $button-height;
+  border-radius: $button-radius;
+  background-color: $MIA-light-grey;
+  text-align: center;
+
+  &:after {
+    content: 'person';
+  }
+}
+
+#user-noti {
+  position: relative;
+  transition: color 200ms ease;
+
+  &.active:after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -2px;
+    height: 10px;
+    width: 10px;
+    background: red;
+    border: 2px solid $header-colour;
+    border-radius: 50%;
+  }
+}
+
+.tag {
+  @extend %tag;
+}

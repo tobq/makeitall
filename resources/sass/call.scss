@@ -1,0 +1,12 @@
+@import "material-icons";
+@import "ProblemSelect";
+@import "SelectOption";
+
+.select-field, textarea {
+  //margin-bottom: 24px; TODO: MARGIN-BOTTOM
+  //&:last-child {
+  //  margin-bottom: 0;
+  //}
+  box-sizing: border-box;
+
+}

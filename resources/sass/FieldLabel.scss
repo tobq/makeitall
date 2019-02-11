@@ -1,0 +1,25 @@
+@import "variables";
+
+.field-label {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  height: 28px;
+  //z-index: 100;
+  //position: relative;
+
+  > label {
+    color: #333;
+    font-size: 13px;
+  }
+
+  > .required-field {
+    @extend %tag;
+    @extend %no-select;
+    margin-left: 10px;
+
+    &.required-error {
+      background-color: $error-color;
+    }
+  }
+}

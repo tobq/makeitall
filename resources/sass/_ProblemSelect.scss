@@ -1,0 +1,125 @@
+@import "SelectVariables";
+
+.select-new-problem-con {
+  @extend %MIA-outline;
+  //@extend %hover-shadow;
+  position: relative;
+  z-index: 3;
+  //display: flex;
+}
+
+.select-create-problem {
+  @extend %select-row-input;
+  background-color: $MIA-light-grey;
+  color: #444;
+  //font-family: rbold;
+}
+
+.select-input {
+  @extend %list-underline;
+  height: $button-height;
+  padding: 0 $select-spacing;
+  width: 100%;
+  //margin-bottom: 30px; TODO: MARGIN-BOTTOM
+}
+
+.select-new-problem {
+  padding: 30px;
+}
+
+//
+//.select-problem-row {
+//  @extend %select-row;
+//}
+//
+//
+.select-problem-edit {
+  @extend %select-button;
+
+  &:after {
+    content: 'edit';
+  }
+}
+
+.select-problem-save {
+  @extend %select-button;
+
+  &:after {
+    content: 'save';
+  }
+}
+
+//
+//.select-create-field {
+//
+//  &.active {
+//    @extend %hover-shadow;
+//    position: relative;
+//    z-index: 3;
+//    border-radius: $button-radius;
+//
+//    .select-create-edit:after {
+//      content: 'save';
+//    }
+//
+//    .select-create-field-content {
+//      render: block;
+//    }
+//
+//    .select-problem-title {
+//      border: 1px solid $MIA-light-grey;
+//    }
+//  }
+//}
+//
+//.select-create-field-content {
+//  padding: 20px;
+//  render: none;
+//}
+//
+//.select-problem-ID {
+//  @extend %tag;
+//  margin: 0 $select-spacing;
+//}
+//
+//.select-problem-title {
+//  flex-grow: 1;
+//  border-radius: $button-radius;
+//  padding: 0 4px;
+//  height: $button-height - 12px;
+//  margin-right: 4px;
+//
+//  &:disabled {
+//    padding: 0;
+//    color: black !important;
+//  }
+//}
+//
+.required-input-error {
+  border-color: $error-color !important;
+  background-color: lighten($error-color, 25%) !important;
+  outline-color: $error-color !important;
+}
+
+.select-problem-editing-label {
+  font-style: italic;
+}
+
+$priority-size: 22px;
+.select-priority {
+  line-height: $button-height;
+  text-align: center;
+}
+.select-priority-option {
+  outline: none;
+  margin: 0 6px;
+  height: $priority-size;
+  width: $priority-size;
+  border: 3px solid $MIA-grey;
+  border-radius: 50%;
+  transition: background-color 100ms ease;
+
+  &.active {
+    background-color: $MIA-grey;
+  }
+}
