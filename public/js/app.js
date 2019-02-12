@@ -23783,10 +23783,10 @@ function (_Component) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\js\app.jsx */"./resources/js/app.jsx");
-__webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\sass\app.scss */"./resources/sass/app.scss");
-__webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\sass\call.scss */"./resources/sass/call.scss");
-module.exports = __webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\sass\dashboard.scss */"./resources/sass/dashboard.scss");
+__webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\js\app.jsx */"./resources/js/app.jsx");
+__webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\sass\call.scss */"./resources/sass/call.scss");
+module.exports = __webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\sass\dashboard.scss */"./resources/sass/dashboard.scss");
 
 
 /***/ })

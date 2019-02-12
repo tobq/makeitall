@@ -26005,7 +26005,7 @@ function (_Component) {
           return _this2.unCreate(ref);
         }
       });
-      var created = [].concat(_toConsumableArray(this.state.created), [ref]);
+      var created = [].concat(_toConsumableArray(this.state.created), [newProblem]);
       this.setState({
         created: created
       });
@@ -26063,9 +26063,7 @@ function (_Component) {
         onClick: function onClick(event) {
           return _this3.create();
         }
-      }, "Create New Problem")), this.state.created.map(function (ref) {
-        return ref.current;
-      }), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, "Create New Problem")), this.state.created, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_1__["default"], {
         ref: this.ref,
         type: "Problem",
         options: this.state.options
@@ -27348,7 +27346,7 @@ function (_QueryOption) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\js\call.jsx */"./resources/js/call.jsx");
+module.exports = __webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\js\call.jsx */"./resources/js/call.jsx");
 
 
 /***/ })

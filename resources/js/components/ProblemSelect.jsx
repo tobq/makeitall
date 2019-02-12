@@ -35,7 +35,7 @@ export default class ProblemSelect extends Component {
             !this.state.created[this.state.created.length - 1].current.validate()) return;
         const ref = React.createRef();
         const newProblem = <NewProblem ref={ref} onRemove={() => this.unCreate(ref)}/>;
-        const created = [...this.state.created, ref];
+        const created = [...this.state.created, newProblem];
         this.setState({created: created});
     }
 
@@ -61,7 +61,7 @@ export default class ProblemSelect extends Component {
                 >Create New Problem
                 </button>
             </div>
-            {this.state.created.map(ref => ref.current)}
+            {this.state.created}
             <MultiSelect
                 ref={this.ref}
                 type={"Problem"}
