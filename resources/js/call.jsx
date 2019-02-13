@@ -7,25 +7,36 @@ import EmployeeSelect from "./components/EmployeeSelect";
 const content = document.getElementById("body-content");
 
 const reasonRef = React.createRef(),
-    notesRef = React.createRef();
+    notesRef = React.createRef(),
+    problemsRef = React.createRef();
 
 ReactDOM.render(<div>
-    <EmployeeSelect
-        label="Caller"
-        type="Employee CALLERR"
-        onchange={console.log}
-    />
+    <div className="form-field">
+        <EmployeeSelect
+            label="Caller"
+            type="Employee CALLERR"
+            onchange={console.log}
+        />
+    </div>
 
-    <RequiredLabel for={reasonRef}>Call Reason</RequiredLabel>
-    <textarea id="call-reason-field" ref={reasonRef}/>
+    <div className="form-field">
+        <RequiredLabel for={reasonRef}>Call Reason</RequiredLabel>
+        <textarea id="call-reason-field" ref={reasonRef}/>
+    </div>
 
-    <RequiredLabel for={notesRef}>Call Notes</RequiredLabel>
-    <textarea id="notes-field" ref={notesRef}/>
+    <div className="form-field">
+        <RequiredLabel for={notesRef}>Call Notes</RequiredLabel>
+        <textarea id="notes-field" ref={notesRef}/>
+    </div>
 
-    <ProblemSelect
-        type="Problem"
-        label="Referenced problems"
-        onchange={console.log}
-    />
+    <div className="form-field">
+        <ProblemSelect
+            ref={problemsRef}
+            type="Problem"
+            label="Referenced problems"
+            onchange={console.log}
+        />
+    </div>
 
+    <button id="report-call-button">Report call</button>
 </div>, content);

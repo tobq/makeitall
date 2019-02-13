@@ -59,3 +59,8 @@ $error-color: salmon;
   //  border-bottom: none;
   //}
 }
+
+%button{
+  height: $button-height;
+  border-radius: $button-radius;
+}
