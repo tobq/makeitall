@@ -3,7 +3,6 @@
 /public/storage
 /storage/*.key
 /vendor
-#.env
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -13,3 +12,4 @@ yarn-error.log
 #public/js/
 #public/css/
 *.sql
+.env
