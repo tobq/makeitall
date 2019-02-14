@@ -1,20 +1,20 @@
 import MultiSelect from "./Select/MultiSelect";
 import NewProblem from "./NewProblem";
 import PropTypes from "prop-types";
-import {FieldLabel} from "./FieldLabel/FieldLabel";
-import {Component} from "react";
+import {FieldLabel, RequiredLabel} from "./FieldLabel/FieldLabel";
 import React from "react";
 import Problem from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
+import RequiredField from "./RequiredField";
 
-export default class ProblemSelect extends Component {
+export default class ProblemSelect extends React.Component {
     static propTypes = {
-        type: PropTypes.string.isRequired,
         label: PropTypes.string.isRequired,
         onchange: PropTypes.func,
     };
 
     ref = React.createRef();
+    label = React.createRef();
     state = {
         created: [],
         options: []
@@ -29,12 +29,12 @@ export default class ProblemSelect extends Component {
     }
 
     create() {
-        console.log(this.state.created, this.state.created.length !== 0,
-            this.state.created[this.state.created.length - 1]);
+        // console.log(this.state.created, this.state.created.length !== 0,
+        //     this.state.created[this.state.created.length - 1]);
         if (this.state.created.length !== 0 &&
-            !this.state.created[this.state.created.length - 1].current.validate()) return;
+            !this.state.created[this.state.created.length - 1].ref.current.validate()) return false;
         const ref = React.createRef();
-        const newProblem = <NewProblem ref={ref} onRemove={() => this.unCreate(ref)}/>;
+        const newProblem = <NewProblem ref={ref} onRemove={() => this.unCreate(newProblem)}/>;
         const created = [...this.state.created, newProblem];
         this.setState({created: created});
     }
@@ -45,15 +45,26 @@ export default class ProblemSelect extends Component {
     }
 
     validate() {
+        let valid = true;
+        console.log(this.state.created);
         for (let created of this.state.created)
-            if (!created.current.validate()) return false;
+            if (!created.ref.current.validate()) {
+                valid = false;
+                break;
+            }
 
-        return this.state.created.length === 0 ? this.ref.current.validate() : true;
+        if (valid && this.state.created.length === 0) valid = this.ref.current.validate();
+
+        if (valid) {
+            this.label.current.deactivate();
+            this.ref.current.resetValidate();
+        } else this.label.current.activate();
+        return valid;
     }
 
     render() {
         return <div>
-            <FieldLabel for={this.ref}>{this.props.label}</FieldLabel>
+            <RequiredLabel ref={this.label} for={this.ref}>{this.props.label}</RequiredLabel>
             <div className="select-row">
                 <button
                     className="select-create-problem"
@@ -70,6 +81,13 @@ export default class ProblemSelect extends Component {
         </div>
 
     }
+
+    get value() {
+        return {
+            created: this.state.created.map(x => x.ref.current.value),
+            selected: this.state.options
+        }
+    }
 }
 
 
@@ -82,12 +100,16 @@ export class ProblemOption extends QueryOption {
 
     toSearchString() {
         const problem = this.value;
-        return this.prepareSearchString(`${problem.id} ${problem.title} ${problem.description}`);
+        return QueryOption.prepareSearchString(`${problem.id} ${problem.title} ${problem.description}`);
     }
 
     render() {
         const problem = this.value;
         return Problem.render(problem.id, problem.title, problem.priority)
+    }
+
+    getKey() {
+        return this._value.id;
     }
 
     static async fetch() {

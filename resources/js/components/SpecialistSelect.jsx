@@ -30,7 +30,10 @@ export default class SpecialistSelect extends Component {
     label = createRef();
 
     validate() {
-        if (this.ref.current.validate()) return true;
+        if (this.ref.current.validate()){
+            this.label.current.deactivate();
+            return true;
+        }
         else {
             this.label.current.activate();
             return false;
@@ -60,7 +63,7 @@ export class SpecialistOption extends QueryOption {
 
     toSearchString() {
         const specialist = this.value;
-        return this.prepareSearchString(`${specialist.id} ${specialist.fullName()}`);
+        return QueryOption.prepareSearchString(`${specialist.id} ${specialist.fullName()}`);
     }
 
     render() {
@@ -69,6 +72,10 @@ export class SpecialistOption extends QueryOption {
             <div className="employee-full-name">{this.value.fullName()}</div>
             <div className="tag">Current Problems: {this.value.problem_count}</div>
         </div>
+    }
+
+    getKey() {
+        return this._value.id;
     }
 
     static async fetch() {

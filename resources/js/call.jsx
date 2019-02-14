@@ -3,12 +3,16 @@ import React from "react";
 import ProblemSelect from "./components/ProblemSelect";
 import {RequiredLabel} from "./components/FieldLabel/FieldLabel";
 import EmployeeSelect from "./components/EmployeeSelect";
+import {RequiredTextarea} from "./components/RequiredField";
+import ProblemTypeSelect from "./components/ProblemTypeSelect";
 
 const content = document.getElementById("body-content");
 
 const reasonRef = React.createRef(),
     notesRef = React.createRef(),
-    problemsRef = React.createRef();
+    problemsRef = React.createRef(),
+    problemTypeRef = React.createRef(),
+    employeeRef = React.createRef();
 
 ReactDOM.render(<div>
     <div className="form-field">
@@ -16,27 +20,46 @@ ReactDOM.render(<div>
             label="Caller"
             type="Employee CALLERR"
             onchange={console.log}
+            ref={employeeRef}
         />
     </div>
 
     <div className="form-field">
-        <RequiredLabel for={reasonRef}>Call Reason</RequiredLabel>
-        <textarea id="call-reason-field" ref={reasonRef}/>
+        <RequiredTextarea label="Call Reason" ref={reasonRef}/>
     </div>
 
     <div className="form-field">
-        <RequiredLabel for={notesRef}>Call Notes</RequiredLabel>
-        <textarea id="notes-field" ref={notesRef}/>
+        <RequiredTextarea label="Call Notes" ref={notesRef}/>
     </div>
 
     <div className="form-field">
         <ProblemSelect
             ref={problemsRef}
-            type="Problem"
             label="Referenced problems"
             onchange={console.log}
         />
     </div>
 
-    <button id="report-call-button">Report call</button>
+    <div className="form-field">
+        <ProblemTypeSelect
+            ref={problemTypeRef}
+            label="Referenced problems"
+            onchange={console.log}
+        />
+    </div>
+
+    <button id="report-call-button"
+            onClick={onSubmit}>Report call
+    </button>
 </div>, content);
+
+function onSubmit() {
+    reasonRef.current.validate();
+    notesRef.current.validate();
+    problemsRef.current.validate();
+    employeeRef.current.validate();
+    console.log(reasonRef.current.value);
+    console.log(notesRef.current.value);
+    console.log(problemsRef.current.value);
+    console.log(employeeRef.current.value);
+}

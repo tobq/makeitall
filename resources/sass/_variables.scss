@@ -61,6 +61,8 @@ $error-color: salmon;
 }
 
 %button{
+  font-family: rbold;
+  font-size: 14px;
   height: $button-height;
   border-radius: $button-radius;
 }
