@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class SpecialistsController extends Controller
 {
-    public function all()
+    public function list()
     {
         return DB::select('
 SELECT employee.id,

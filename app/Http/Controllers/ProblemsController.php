@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ProblemsController extends Controller
 {
-    public function all()
+    public function list()
     {
         return DB::select('SELECT id, title, description, priority FROM problem;');
     }
