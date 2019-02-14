@@ -19,6 +19,7 @@
             <div class="problembuttoncontents">
                 <?php
                 $x = $problem[$i]->priority;
+                // NEED TO MAKE SOLVED BOOLEAN
                 if ($x == 0){
                     echo "<div class = 'prioritybeggining'>Solved</div> ";
                 }
