@@ -12,7 +12,7 @@
     <div class="problemtitle"><h2>Problem ID</h2><h2>Title</h2><h2>Creation Date</h2><h2>Urgency</h2></div>
     <ul>
     @for($i = 0; $i < count($problem); $i++)
-        <?php echo "<li class = 'problembutton'>"; ?>
+        <li class = 'problembutton'>
             <div class="problembuttoncontents">{{ $problem[$i]->id }}</div>
             <div class="problembuttoncontents">{{ $problem[$i]->title }}</div>
             <div class="problembuttoncontents">{{ $problem[$i]->creation }}</div>
@@ -31,10 +31,7 @@
                 ?>
             </div>
         </li>
-        <?php
-        echo "
-        <div class = 'dropdown' id = 'dropdown$i'>
-            <script>changedrop('dropdown$i')</script>"; ?>
+        <div class = 'dropdown'>
             <div class = "descriptionheader">Description: </div>
             <div class = "description">{{ $problem[$i]->description }}</div>
         </div>
