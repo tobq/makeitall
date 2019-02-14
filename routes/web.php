@@ -19,6 +19,9 @@ Route::get('/calls/new', function () {
     return view('calls.new');
 });
 
+Route::get('/employees', function () {
+    return view('Employees1');
+});
 
 Route::get('/specialists', 'SpecialistsController@all');
 

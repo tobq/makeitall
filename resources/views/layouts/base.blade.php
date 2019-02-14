@@ -30,7 +30,7 @@
         <a href="/"><i class="material-icons">home</i>Dashboard</a>
         <a href="/"><i class="material-icons">assignment</i>Problems</a>
         <a href="/"><i class="material-icons">list</i>Calls</a>
-        <a href="/"><i class="material-icons">group</i>Employees</a>
+        <a href="employees1"><i class="material-icons">group</i>Employees</a>
         <a href="/"><i class="material-icons">business_center</i>Equipment</a>
     </nav>
 </section>

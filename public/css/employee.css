@@ -1,0 +1,73 @@
+	@import "compass/css3";
+			html, body {
+    	max-width: 100%;
+			overflow-y: visible;
+				}
+		.mainPage {
+			position: relative;
+			width: 1400px;
+			height: 700px;
+			background-color: white;
+			bottom: 28px;
+			left: -390px;
+		}
+		.show {display: block;}
+		.spclstTab {
+        border-radius: 0px 0px 10px 10px;
+        box-shadow: none;
+        outline: none;
+        width: 15%;
+        height: 40px;
+        margin-top: 0.2%;
+        font-size: 20px;
+        position: relative;
+        bottom: 3px;
+        left: 13px;
+        }
+		.hidden {
+        display:none;
+        }
+    .unhidden{
+        display:block;
+      	}
+		.dropdown {
+			width: 1280px;
+		  height: 400px;
+			background: #d3d3d3;
+			bottom: 60px;
+			overflow: hidden;
+		}
+		ul {
+		  list-style-type: none;
+		  margin: 0;
+		  padding: 0;
+		}
+
+		li {
+		  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+		  border-bottom: 1px solid #ccc;
+		}
+
+		li:last-child {
+		  border: none;
+		}
+
+		li a {
+		  text-decoration: none;
+		  color: #000;
+
+		  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+		  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+		  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+		  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+		  transition: font-size 0.3s ease, background-color 0.3s ease;
+		  display: block;
+		  width: 1300px;
+		}
+
+		li a:hover {
+		  font-size: 30px;
+		  background: #ccebff;
+		}
+		a:link { color: #000000; text-decoration: none}
+		a:visited { text-decoration: none; color:black; }
