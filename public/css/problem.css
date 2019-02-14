@@ -40,11 +40,11 @@ li:hover {
     background-color: #f7f7f9;
 }
 
-#body-content{
+#body-content {
     width: 100%;
 }
 
-.problemtitle{
+.problemtitle {
     width: 100%;
     height: 50px;
     border-bottom: 2px solid black;
@@ -63,7 +63,8 @@ li:hover {
     height: 50px;
     padding-bottom: 5px;
     padding-top: 15px;
- }
+    cursor: pointer;
+}
 
 .underline {
     width: 75%;
@@ -71,18 +72,18 @@ li:hover {
     margin-bottom: 30px;
 }
 
-.removemargin{
+.removemargin {
     margin: 0;
 }
 
-.prioritybeggining{
+.prioritybeggining {
     margin-right: 0;
     display: inline-block;
     text-align: right;
     background-color: lightgray;
 }
 
-.priorityending{
+.priorityending {
     display: inline-block;
     text-align: left;
     font-weight: bold;
@@ -90,23 +91,55 @@ li:hover {
     padding-right: 1%;
 }
 
-.dropdown{
+.dropdown {
     background-color: #fff3cd;
-    height: 100px;
+    overflow: hidden;
+    height:auto;
     display: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
-.descriptionheader{
+.descriptionheader {
+    width: 200px;
     font-weight: bold;
     margin-left: 1%;
     margin-top: 5px;
     margin-right: 1%;
     float: left;
+    text-align: right;
 }
 
-.description{
+.description {
+    width: 75%;
     float: left;
     margin-top: 5px;
+}
+
+.solve {
+    float: left;
+    width: 10%;
+    margin-top: 10px;
+    margin-left: 35%;
+    margin-right: 5%;
+    background-color: #f7f7f9;
+    font-weight: bold;
+    font-size: 15px;
+    border: solid black 1px;
+    cursor: pointer;
+}
+
+.edit {
+    float: left;
+    width: 10%;
+    margin-top: 10px;
+    margin-left: 5%;
+    margin-right: 35%;
+    background-color: #f7f7f9;
+    font-weight: bold;
+    font-size: 15px;
+    border: solid black 1px;
+    cursor: pointer;
 }
 
 /*

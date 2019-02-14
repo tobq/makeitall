@@ -4,3 +4,12 @@ $(document).ready(function() {
     });
 });
 
+function solveform(){
+    $background = document.getElementById('greyback');
+    if($background.style.display != '') {
+        $background.style.display = '';
+    }
+    else {
+        $background.style.display = 'none'
+    }
+}

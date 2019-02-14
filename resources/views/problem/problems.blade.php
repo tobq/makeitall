@@ -19,7 +19,10 @@
             <div class="problembuttoncontents">
                 <?php
                 $x = $problem[$i]->priority;
-                if($x == 1){
+                if ($x == 0){
+                    echo "<div class = 'prioritybeggining'>Solved</div> ";
+                }
+                else if($x == 1){
                     echo "<div class = 'prioritybeggining'>Priority:</div><div class= 'priorityending' style = 'background-color: lightgreen'>low</div>";
                 }
                 else if($x == 2){
@@ -34,6 +37,21 @@
         <div class = 'dropdown'>
             <div class = "descriptionheader">Description: </div>
             <div class = "description">{{ $problem[$i]->description }}</div>
+            <?php
+            if ($x!=0){
+                echo "
+                <button class = 'solve' onclick ='solvefrom()'>Solve</button>
+                <button class = 'edit' onclick ='editfrom()'>Edit</button>
+                ";
+            } else {
+                // NEEDS A SOLVED COLUMN IN THE TABLE
+                $tempstd = $problem[$i]->description;
+                echo "
+                <div class = 'descriptionheader'>How it was solved:</div>
+                <div class = 'description'>$tempstd</div>
+                ";
+            }
+            ?>
         </div>
     @endfor
     </ul>
