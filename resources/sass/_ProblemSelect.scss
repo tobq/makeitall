@@ -44,6 +44,10 @@
 .select-problem-save {
   @extend %select-button;
 
+  &.required-error {
+    @extend %required-error;
+  }
+
   &:after {
     content: 'save';
   }
@@ -110,6 +114,7 @@ $priority-size: 22px;
   line-height: $button-height;
   text-align: center;
 }
+
 .select-priority-option {
   outline: none;
   margin: 0 6px;
@@ -122,4 +127,8 @@ $priority-size: 22px;
   &.active {
     background-color: $MIA-grey;
   }
+}
+
+.new-problem-field:not(:last-child) {
+  margin-bottom: 15px;
 }

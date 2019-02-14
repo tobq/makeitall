@@ -24995,6 +24995,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_ProblemSelect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/ProblemSelect */ "./resources/js/components/ProblemSelect.jsx");
 /* harmony import */ var _components_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/FieldLabel/FieldLabel */ "./resources/js/components/FieldLabel/FieldLabel.jsx");
 /* harmony import */ var _components_EmployeeSelect__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/EmployeeSelect */ "./resources/js/components/EmployeeSelect.jsx");
+/* harmony import */ var _components_RequiredField__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/RequiredField */ "./resources/js/components/RequiredField.jsx");
+/* harmony import */ var _components_ProblemTypeSelect__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/ProblemTypeSelect */ "./resources/js/components/ProblemTypeSelect.jsx");
+
+
 
 
 
@@ -25002,26 +25006,54 @@ __webpack_require__.r(__webpack_exports__);
 
 var content = document.getElementById("body-content");
 var reasonRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef(),
-    notesRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef();
-react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_EmployeeSelect__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    notesRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef(),
+    problemsRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef(),
+    problemTypeRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef(),
+    employeeRef = react__WEBPACK_IMPORTED_MODULE_1___default.a.createRef();
+react_dom__WEBPACK_IMPORTED_MODULE_0___default.a.render(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  className: "form-field"
+}, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_EmployeeSelect__WEBPACK_IMPORTED_MODULE_4__["default"], {
   label: "Caller",
   type: "Employee CALLERR",
-  onchange: console.log
-}), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__["RequiredLabel"], {
-  for: reasonRef
-}, "Call Reason"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
-  id: "call-reason-field",
+  onchange: console.log,
+  ref: employeeRef
+})), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  className: "form-field"
+}, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_RequiredField__WEBPACK_IMPORTED_MODULE_5__["RequiredTextarea"], {
+  label: "Call Reason",
   ref: reasonRef
-}), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_3__["RequiredLabel"], {
-  for: notesRef
-}, "Call Notes"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
-  id: "notes-field",
+})), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  className: "form-field"
+}, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_RequiredField__WEBPACK_IMPORTED_MODULE_5__["RequiredTextarea"], {
+  label: "Call Notes",
   ref: notesRef
-}), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_ProblemSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
-  type: "Problem",
+})), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  className: "form-field"
+}, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_ProblemSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  ref: problemsRef,
   label: "Referenced problems",
   onchange: console.log
-})), content);
+})), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+  className: "form-field"
+}, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_ProblemTypeSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  ref: problemTypeRef,
+  label: "Referenced problems",
+  onchange: console.log
+})), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+  id: "report-call-button",
+  onClick: onSubmit
+}, "Report call")), content);
+
+function onSubmit() {
+  reasonRef.current.validate();
+  notesRef.current.validate();
+  problemsRef.current.validate();
+  employeeRef.current.validate();
+  console.log(reasonRef.current.value);
+  console.log(notesRef.current.value);
+  console.log(problemsRef.current.value);
+  console.log(employeeRef.current.value);
+}
 
 /***/ }),
 
@@ -25104,7 +25136,7 @@ function () {
 
             case 3:
               _context.next = 5;
-              return fetch('/employees');
+              return fetch('/employees/list');
 
             case 5:
               response = _context.sent;
@@ -25204,6 +25236,8 @@ function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "ref", react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef());
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "label", react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef());
+
     EmployeeOption.fetch().then(function (options) {
       return _this.setState({
         options: options
@@ -25213,11 +25247,19 @@ function (_React$Component) {
   }
 
   _createClass(EmployeeSelect, [{
+    key: "validate",
+    value: function validate() {
+      var valid = this.ref.current.validate();
+      if (valid) this.label.current.deactivate();else this.label.current.activate();
+      return valid;
+    }
+  }, {
     key: "render",
     value: function render() {
       return this.state.options ? react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
         className: "employee-select"
       }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_4__["RequiredLabel"], {
+        ref: this.label,
         for: this.ref
       }, this.props.label), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_SearchSelect__WEBPACK_IMPORTED_MODULE_3__["default"], {
         ref: this.ref,
@@ -25253,7 +25295,7 @@ function (_QueryOption) {
     key: "toSearchString",
     value: function toSearchString() {
       var employee = this.value;
-      return this.prepareSearchString("".concat(employee.id, " ").concat(employee.fullName()));
+      return _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_3__["QueryOption"].prepareSearchString("".concat(employee.id, " ").concat(employee.fullName()));
     }
   }, {
     key: "render",
@@ -25267,6 +25309,11 @@ function (_QueryOption) {
       }, this.value.fullName()), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
         className: "tag"
       }, this.value.department_name));
+    }
+  }, {
+    key: "getKey",
+    value: function getKey() {
+      return this._value.id;
     }
   }], [{
     key: "fetch",
@@ -25522,7 +25569,8 @@ function (_Component) {
       software: null,
       devices: null,
       specialists: null,
-      priority: null
+      priority: null,
+      unsaved: false
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "title", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
@@ -25537,13 +25585,15 @@ function (_Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "priority", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "saveButton", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
+
     return _this;
   }
 
   _createClass(NewProblem, [{
     key: "save",
     value: function save() {
-      if (this.validate()) {
+      if (this.parse()) {
         this.setState({
           active: false,
           title: this.title.current.value,
@@ -25564,8 +25614,8 @@ function (_Component) {
       console.log("EDIT");
     }
   }, {
-    key: "validate",
-    value: function validate() {
+    key: "parse",
+    value: function parse() {
       var titleValid = this.title.current.validate();
       var descriptionValid = this.description.current.validate();
       var softwareValid = this.software.current.validate() || this.devices.current.validate();
@@ -25580,6 +25630,26 @@ function (_Component) {
       return titleValid && descriptionValid && softwareValid && specialistValid && priorityValid;
     }
   }, {
+    key: "validate",
+    value: function validate() {
+      var unsaved = this.state.active;
+
+      if (unsaved) {
+        if (this.parse()) {
+          this.saveButton.current.focus();
+          this.setState({
+            unsaved: true
+          });
+        }
+      } else {
+        this.setState({
+          unsaved: false
+        });
+      }
+
+      return !unsaved;
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
@@ -25590,6 +25660,8 @@ function (_Component) {
           return _this2.props.onRemove();
         }
       });
+      var className = "select-problem-save";
+      if (this.state.unsaved) className += " required-error";
       return this.state.active ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-new-problem-con"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -25601,22 +25673,29 @@ function (_Component) {
       }, "New"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-problem-editing-label"
       }, "Editing problem...")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "select-problem-save",
+        className: className,
+        ref: this.saveButton,
         onClick: function onClick(event) {
           return _this2.save();
         }
       }), removeButton), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-new-problem"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "new-problem-field"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RequiredField__WEBPACK_IMPORTED_MODULE_4__["RequiredInput"], {
         label: "Title",
         placeholder: "Problem Title",
         ref: this.title,
         value: this.state.title
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RequiredField__WEBPACK_IMPORTED_MODULE_4__["RequiredTextarea"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "new-problem-field"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_RequiredField__WEBPACK_IMPORTED_MODULE_4__["RequiredTextarea"], {
         ref: this.description,
         label: "Description",
         value: this.state.description
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "new-problem-field"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
         for: this.software
       }, "Installed Software"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
         ref: this.software,
@@ -25625,7 +25704,9 @@ function (_Component) {
           return new _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_6__["QueryOption"](x);
         }),
         selected: this.state.software
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "new-problem-field"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
         for: this.devices
       }, "Affected Devices"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
         ref: this.devices,
@@ -25634,11 +25715,15 @@ function (_Component) {
           return new _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_6__["QueryOption"](x);
         }),
         selected: this.state.devices
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SpecialistSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "new-problem-field"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_SpecialistSelect__WEBPACK_IMPORTED_MODULE_7__["default"], {
         ref: this.specialist,
         label: "Assign Specialists",
         selected: this.state.specialists
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["RequiredLabel"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "new-problem-field"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["RequiredLabel"], {
         for: this.priority
       }, "Priority"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_Select__WEBPACK_IMPORTED_MODULE_8__["default"], {
         type: "Priority",
@@ -25647,7 +25732,7 @@ function (_Component) {
         }),
         ref: this.priority,
         value: this.state.priority
-      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-row"
       }, _Problem__WEBPACK_IMPORTED_MODULE_5__["default"].render("New", this.state.title, this.state.priority.value), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "select-problem-edit",
@@ -25655,6 +25740,18 @@ function (_Component) {
           return _this2.edit();
         }
       }), removeButton);
+    }
+  }, {
+    key: "value",
+    get: function get() {
+      return {
+        title: this.state.title,
+        description: this.state.description,
+        software: this.state.software,
+        devices: this.state.devices,
+        specialists: this.state.specialists,
+        priority: this.state.priority
+      };
     }
   }]);
 
@@ -25666,82 +25763,6 @@ _defineProperty(NewProblem, "propTypes", {
 });
 
 
-
-var PrioritySelect =
-/*#__PURE__*/
-function (_Component2) {
-  _inherits(PrioritySelect, _Component2);
-
-  function PrioritySelect() {
-    var _getPrototypeOf3;
-
-    var _this3;
-
-    _classCallCheck(this, PrioritySelect);
-
-    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
-    }
-
-    _this3 = _possibleConstructorReturn(this, (_getPrototypeOf3 = _getPrototypeOf(PrioritySelect)).call.apply(_getPrototypeOf3, [this].concat(args)));
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this3)), "value", 0);
-
-    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this3)), "state", {
-      display: _this3.value
-    });
-
-    return _this3;
-  }
-
-  _createClass(PrioritySelect, [{
-    key: "display",
-    value: function display(priority) {
-      this.setState({
-        display: priority
-      });
-    }
-  }, {
-    key: "select",
-    value: function select(priority) {
-      console.log("VALUE:  " + priority);
-      this.value = priority;
-    }
-  }, {
-    key: "reset",
-    value: function reset() {
-      this.display(this.value);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this4 = this;
-
-      var options = [];
-      var currentDisplay = this.state.display;
-
-      for (var i = 0; i < 5; i++) {
-        var className = "select-priority-option";
-        if (i < currentDisplay) className += " active";
-        options[i] = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          className: className,
-          onMouseEnter: this.display.bind(this, i + 1),
-          onFocus: this.display.bind(this, i + 1),
-          onClick: this.select.bind(this, i + 1)
-        });
-      }
-
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "select-priority",
-        onMouseLeave: function onMouseLeave(event) {
-          return _this4.reset();
-        }
-      }, "Normal ", options, " Emergency");
-    }
-  }]);
-
-  return PrioritySelect;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 /***/ }),
 
@@ -25760,7 +25781,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Select_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Select/Select */ "./resources/js/components/Select/Select.jsx");
 
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -25773,6 +25807,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -25825,7 +25860,7 @@ function () {
 
             case 3:
               _context.next = 5;
-              return fetch('/problems');
+              return fetch('/problems/list');
 
             case 5:
               response = _context.sent;
@@ -25873,11 +25908,13 @@ _defineProperty(Problem, "priorities", ["Normal", "High", "Emergency"]);
 
 var UrgencyOption =
 /*#__PURE__*/
-function () {
-  function UrgencyOption(value) {
+function (_SelectOption) {
+  _inherits(UrgencyOption, _SelectOption);
+
+  function UrgencyOption() {
     _classCallCheck(this, UrgencyOption);
 
-    this._value = value;
+    return _possibleConstructorReturn(this, _getPrototypeOf(UrgencyOption).apply(this, arguments));
   }
 
   _createClass(UrgencyOption, [{
@@ -25887,15 +25924,10 @@ function () {
         className: "select-option-content"
       }, Problem.getPriority(this._value));
     }
-  }, {
-    key: "value",
-    get: function get() {
-      return this._value;
-    }
   }]);
 
   return UrgencyOption;
-}();
+}(_Select_Select__WEBPACK_IMPORTED_MODULE_2__["SelectOption"]);
 
 /***/ }),
 
@@ -25921,6 +25953,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _Problem__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Problem */ "./resources/js/components/Problem.jsx");
 /* harmony import */ var _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Select/SearchSelect */ "./resources/js/components/Select/SearchSelect.jsx");
+/* harmony import */ var _RequiredField__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./RequiredField */ "./resources/js/components/RequiredField.jsx");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -25966,8 +25999,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var ProblemSelect =
 /*#__PURE__*/
-function (_Component) {
-  _inherits(ProblemSelect, _Component);
+function (_React$Component) {
+  _inherits(ProblemSelect, _React$Component);
 
   function ProblemSelect(props) {
     var _this;
@@ -25977,6 +26010,8 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ProblemSelect).call(this, props)); // setInterval(() => this.validate(), 1000);
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "ref", react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef());
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "label", react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef());
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
       created: [],
@@ -25996,16 +26031,17 @@ function (_Component) {
     value: function create() {
       var _this2 = this;
 
-      console.log(this.state.created, this.state.created.length !== 0, this.state.created[this.state.created.length - 1]);
-      if (this.state.created.length !== 0 && !this.state.created[this.state.created.length - 1].current.validate()) return;
+      // console.log(this.state.created, this.state.created.length !== 0,
+      //     this.state.created[this.state.created.length - 1]);
+      if (this.state.created.length !== 0 && !this.state.created[this.state.created.length - 1].ref.current.validate()) return false;
       var ref = react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef();
       var newProblem = react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_NewProblem__WEBPACK_IMPORTED_MODULE_2__["default"], {
         ref: ref,
         onRemove: function onRemove() {
-          return _this2.unCreate(ref);
+          return _this2.unCreate(newProblem);
         }
       });
-      var created = [].concat(_toConsumableArray(this.state.created), [ref]);
+      var created = [].concat(_toConsumableArray(this.state.created), [newProblem]);
       this.setState({
         created: created
       });
@@ -26023,6 +26059,8 @@ function (_Component) {
   }, {
     key: "validate",
     value: function validate() {
+      var valid = true;
+      console.log(this.state.created);
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -26030,7 +26068,11 @@ function (_Component) {
       try {
         for (var _iterator = this.state.created[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var created = _step.value;
-          if (!created.current.validate()) return false;
+
+          if (!created.ref.current.validate()) {
+            valid = false;
+            break;
+          }
         }
       } catch (err) {
         _didIteratorError = true;
@@ -26047,14 +26089,22 @@ function (_Component) {
         }
       }
 
-      return this.state.created.length === 0 ? this.ref.current.validate() : true;
+      if (valid && this.state.created.length === 0) valid = this.ref.current.validate();
+
+      if (valid) {
+        this.label.current.deactivate();
+        this.ref.current.resetValidate();
+      } else this.label.current.activate();
+
+      return valid;
     }
   }, {
     key: "render",
     value: function render() {
       var _this3 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_4__["FieldLabel"], {
+      return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_4__["RequiredLabel"], {
+        ref: this.label,
         for: this.ref
       }, this.props.label), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
         className: "select-row"
@@ -26063,21 +26113,28 @@ function (_Component) {
         onClick: function onClick(event) {
           return _this3.create();
         }
-      }, "Create New Problem")), this.state.created.map(function (ref) {
-        return ref.current;
-      }), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      }, "Create New Problem")), this.state.created, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_1__["default"], {
         ref: this.ref,
         type: "Problem",
         options: this.state.options
       }));
     }
+  }, {
+    key: "value",
+    get: function get() {
+      return {
+        created: this.state.created.map(function (x) {
+          return x.ref.current.value;
+        }),
+        selected: this.state.options
+      };
+    }
   }]);
 
   return ProblemSelect;
-}(react__WEBPACK_IMPORTED_MODULE_5__["Component"]);
+}(react__WEBPACK_IMPORTED_MODULE_5___default.a.Component);
 
 _defineProperty(ProblemSelect, "propTypes", {
-  type: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string.isRequired,
   label: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.string.isRequired,
   onchange: prop_types__WEBPACK_IMPORTED_MODULE_3___default.a.func
 });
@@ -26099,13 +26156,18 @@ function (_QueryOption) {
     key: "toSearchString",
     value: function toSearchString() {
       var problem = this.value;
-      return this.prepareSearchString("".concat(problem.id, " ").concat(problem.title, " ").concat(problem.description));
+      return _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_7__["QueryOption"].prepareSearchString("".concat(problem.id, " ").concat(problem.title, " ").concat(problem.description));
     }
   }, {
     key: "render",
     value: function render() {
       var problem = this.value;
       return _Problem__WEBPACK_IMPORTED_MODULE_6__["default"].render(problem.id, problem.title, problem.priority);
+    }
+  }, {
+    key: "getKey",
+    value: function getKey() {
+      return this._value.id;
     }
   }], [{
     key: "fetch",
@@ -26145,6 +26207,281 @@ function (_QueryOption) {
 
   return ProblemOption;
 }(_Select_SearchSelect__WEBPACK_IMPORTED_MODULE_7__["QueryOption"]);
+
+/***/ }),
+
+/***/ "./resources/js/components/ProblemType.js":
+/*!************************************************!*\
+  !*** ./resources/js/components/ProblemType.js ***!
+  \************************************************/
+/*! exports provided: default, ProblemTypeOption */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ProblemType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProblemTypeOption", function() { return ProblemTypeOption; });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Select_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Select/Select */ "./resources/js/components/Select/Select.jsx");
+/* harmony import */ var _Problem__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Problem */ "./resources/js/components/Problem.jsx");
+
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+
+
+var ProblemType =
+/*#__PURE__*/
+function () {
+  function ProblemType(id, name) {
+    _classCallCheck(this, ProblemType);
+
+    this.id = id;
+    this.name = name;
+  }
+
+  _createClass(ProblemType, null, [{
+    key: "fromRow",
+    value: function fromRow(row) {
+      return new ProblemType(row.id, row.name);
+    }
+  }, {
+    key: "fetch",
+    value: function (_fetch) {
+      function fetch() {
+        return _fetch.apply(this, arguments);
+      }
+
+      fetch.toString = function () {
+        return _fetch.toString();
+      };
+
+      return fetch;
+    }(
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var response, json, types;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (!this._cache) {
+                _context.next = 3;
+                break;
+              }
+
+              console.log("CACHED");
+              return _context.abrupt("return", this._cache);
+
+            case 3:
+              _context.next = 5;
+              return fetch('/problem-types');
+
+            case 5:
+              response = _context.sent;
+              _context.next = 8;
+              return response.json();
+
+            case 8:
+              json = _context.sent;
+              types = json.map(this.fromRow);
+              this._cache = types;
+              return _context.abrupt("return", types);
+
+            case 12:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, this);
+    })))
+  }]);
+
+  return ProblemType;
+}();
+
+
+var ProblemTypeOption =
+/*#__PURE__*/
+function (_SelectOption) {
+  _inherits(ProblemTypeOption, _SelectOption);
+
+  function ProblemTypeOption() {
+    _classCallCheck(this, ProblemTypeOption);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ProblemTypeOption).apply(this, arguments));
+  }
+
+  _createClass(ProblemTypeOption, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "select-option-content"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "employee-id"
+      }, "ID: ", this._value.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "employee-full-name"
+      }, this._value.name));
+    }
+  }], [{
+    key: "fetch",
+    value: function () {
+      var _fetch2 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var types;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return ProblemType.fetch();
+
+              case 2:
+                types = _context2.sent;
+                return _context2.abrupt("return", types.map(function (type) {
+                  return new ProblemTypeOption(type);
+                }));
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function fetch() {
+        return _fetch2.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }]);
+
+  return ProblemTypeOption;
+}(_Select_Select__WEBPACK_IMPORTED_MODULE_2__["SelectOption"]);
+
+/***/ }),
+
+/***/ "./resources/js/components/ProblemTypeSelect.jsx":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/ProblemTypeSelect.jsx ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ProblemTypeSelect; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FieldLabel/FieldLabel */ "./resources/js/components/FieldLabel/FieldLabel.jsx");
+/* harmony import */ var _Select_Select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Select/Select */ "./resources/js/components/Select/Select.jsx");
+/* harmony import */ var _ProblemSelect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ProblemSelect */ "./resources/js/components/ProblemSelect.jsx");
+/* harmony import */ var _ProblemType__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ProblemType */ "./resources/js/components/ProblemType.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+var ProblemTypeSelect =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ProblemTypeSelect, _React$Component);
+
+  function ProblemTypeSelect(props) {
+    var _this;
+
+    _classCallCheck(this, ProblemTypeSelect);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ProblemTypeSelect).call(this, props)); // setInterval(() => this.validate(), 1000);
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "ref", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "label", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      options: []
+    });
+
+    _ProblemType__WEBPACK_IMPORTED_MODULE_4__["ProblemTypeOption"].fetch().then(function (x) {
+      console.log(x);
+      return x;
+    }).then(function (options) {
+      return _this.setState({
+        options: options
+      });
+    });
+    return _this;
+  }
+
+  _createClass(ProblemTypeSelect, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["RequiredLabel"], {
+        ref: this.label,
+        for: this.ref
+      }, "Problem Type"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_Select__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        ref: this.ref,
+        type: "Problem Type",
+        options: this.state.options
+      }));
+    }
+  }]);
+
+  return ProblemTypeSelect;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+
 
 /***/ }),
 
@@ -26466,7 +26803,8 @@ function (_SearchSelect) {
         className: "select-root"
       }, this.state.selected.map(function (option) {
         return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "select-row"
+          className: "select-row",
+          key: option.getKey()
         }, option.render(), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
           className: "select-option-remove",
           onClick: function onClick(event) {
@@ -26675,15 +27013,9 @@ function (_SelectOption) {
   }
 
   _createClass(QueryOption, [{
-    key: "prepareSearchString",
-    value: function prepareSearchString(string) {
-      // console.log(QueryOption.prepare(string.toLowerCase()).join(""));
-      return QueryOption.prepare(string).join("");
-    }
-  }, {
     key: "toSearchString",
     value: function toSearchString() {
-      return this.prepareSearchString(this.value.toString());
+      return QueryOption.prepareSearchString(this.value.toString());
     }
   }, {
     key: "query",
@@ -26762,6 +27094,12 @@ function (_SelectOption) {
         return keptWords[word];
       });
     }
+  }, {
+    key: "prepareSearchString",
+    value: function prepareSearchString(string) {
+      // console.log(QueryOption.prepare(string.toLowerCase()).join(""));
+      return QueryOption.prepare(string).join("");
+    }
   }]);
 
   return QueryOption;
@@ -26827,7 +27165,6 @@ function (_Component) {
       active: false
     });
 
-    console.log(props.value);
     _this.state.option = props.value;
     return _this;
   }
@@ -26937,7 +27274,8 @@ function (_Component) {
           onClick: function onClick(event) {
             return _this5.select(option);
           },
-          className: "select-option"
+          className: "select-option",
+          key: option.getKey()
         }, option.render());
       })) : null;
     }
@@ -26958,7 +27296,6 @@ function (_Component) {
 
       var className = "select-field";
       if (this.state.active) className += " active";
-      if (this.valid()) console.log(this.state.option);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-root"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -27019,6 +27356,11 @@ function () {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-option-content"
       }, this._value.toString());
+    }
+  }, {
+    key: "getKey",
+    value: function getKey() {
+      return this._value;
     }
   }, {
     key: "equals",
@@ -27116,7 +27458,7 @@ function () {
 
             case 3:
               _context.next = 5;
-              return fetch('/specialists');
+              return fetch('/specialists/list');
 
             case 5:
               response = _context.sent;
@@ -27232,7 +27574,10 @@ function (_Component) {
   _createClass(SpecialistSelect, [{
     key: "validate",
     value: function validate() {
-      if (this.ref.current.validate()) return true;else {
+      if (this.ref.current.validate()) {
+        this.label.current.deactivate();
+        return true;
+      } else {
         this.label.current.activate();
         return false;
       }
@@ -27285,7 +27630,7 @@ function (_QueryOption) {
     key: "toSearchString",
     value: function toSearchString() {
       var specialist = this.value;
-      return this.prepareSearchString("".concat(specialist.id, " ").concat(specialist.fullName()));
+      return _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_4__["QueryOption"].prepareSearchString("".concat(specialist.id, " ").concat(specialist.fullName()));
     }
   }, {
     key: "render",
@@ -27299,6 +27644,11 @@ function (_QueryOption) {
       }, this.value.fullName()), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "tag"
       }, "Current Problems: ", this.value.problem_count));
+    }
+  }, {
+    key: "getKey",
+    value: function getKey() {
+      return this._value.id;
     }
   }], [{
     key: "fetch",

@@ -20,7 +20,7 @@ export default class Employee {
             console.log("CACHED");
             return this._cache;
         }
-        const response = await fetch('/employees');
+        const response = await fetch('/employees/list');
         const json = await response.json();
         const employees = json.map(this.fromRow);
         this._cache = employees;

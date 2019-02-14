@@ -15,11 +15,6 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        return DB::select('
-SELECT employee.id, employee.title, employee.first_name, employee.last_name, department.name department_name
-FROM employee
-       INNER JOIN department ON employee.department_id = department.id;
-');
 //        return view('employees.index');
         //
     }
@@ -89,4 +84,16 @@ FROM employee
     {
         //
     }
+
+    public function list()
+    {
+        return DB::select('
+SELECT employee.id, employee.title, employee.first_name, employee.last_name, department.name department_name
+FROM employee
+       INNER JOIN department ON employee.department_id = department.id;
+');
+        //
+    }
+
+
 }
