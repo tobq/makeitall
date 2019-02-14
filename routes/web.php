@@ -21,6 +21,14 @@ Route::get('/calls/new', function () {
     return view('calls.new');
 });
 
+Route::get('problem/problems', function () {
+    $problem = DB::table('problem')->get();
+    return view('problem.problems',['problem'=>$problem]);
+});
+
+Route::get('/calls/existing', function () {
+    return view('calls.existing');
+});
 
 Route::get('/specialists', function () {
     return DB::select('
@@ -32,7 +40,6 @@ SELECT employee.id,
 FROM specialist
        INNER JOIN employee ON specialist.employee_id = employee.id;');
 });
-
 
 Route::get('/problems', function () {
     return DB::select('SELECT id, title, description, priority FROM problem;');
