@@ -1,4 +1,5 @@
 @import "material-icons";
+@import "variables";
 @import "ProblemSelect";
 @import "SelectOption";
 
@@ -9,4 +10,17 @@
   //}
   box-sizing: border-box;
 
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+#report-call-button {
+  @extend %button;
+  margin-top: 20px;
+  cursor: pointer;
+  width: 100%;
+  //border-radius: 20px;
+  background-color: $MIA-light-yellow;
 }

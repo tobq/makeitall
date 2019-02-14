@@ -1,4 +1,5 @@
 import React from "react";
+import {SelectOption} from "./Select/Select";
 
 export default class Problem {
     constructor(id, title, description, priority) {
@@ -39,15 +40,7 @@ export default class Problem {
     }
 }
 
-export class UrgencyOption {
-    constructor(value) {
-        this._value = value;
-    }
-
-    get value() {
-        return this._value;
-    }
-
+export class UrgencyOption extends SelectOption {
     render() {
         return <div className="select-option-content">
             {Problem.getPriority(this._value)}

@@ -19,6 +19,15 @@ $select-spacing: 14px;
   }
 }
 
+%required-error {
+  background-color: lighten($error-color, 25%) !important;
+
+  outline-color: $error-color;
+  //outline-offset: -20px;
+  outline-style: auto;
+  //outline-width: 10px;
+}
+
 %select-row-input {
   flex: 1 1;
   padding: 0 $select-spacing;
