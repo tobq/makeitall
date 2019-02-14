@@ -9,25 +9,11 @@
 		@import "compass/css3";
 			html, body {
     	max-width: 100%;
-      overflow-x: hidden;
+			overflow-y: visible;
 				}
-		 .tab {
-      overflow: hidden;
-        }
-    .tab button {
-      float: left;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      padding: 14px 16px;
-      transition: 0.3s;
-        }
-    .tab button.active {
-      background-color: #ccc;
-        }
 		.mainPage {
 			position: relative;
-			width: 1400px;
+			width: 1280px;
 			height: 700px;
 			background-color: white;
 			bottom: 28px;
@@ -44,7 +30,7 @@
         font-size: 20px;
         position: relative;
         bottom: 3px;
-        left: 1px;
+        left: 10px;
         }
 		.hidden {
         display:none;
@@ -53,9 +39,11 @@
         display:block;
       	}
 		.dropdown {
-			width: 1500px;
+			width: 1285px;
 		  height: 400px;
-		  background: #d3d3d3;
+			background: #d3d3d3;
+			bottom: 60px;
+			overflow: hidden;
 		}
 		ul {
 		  list-style-type: none;
@@ -65,7 +53,8 @@
 
 		li {
 		  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
-		  border-bottom: 1px solid #ccc;
+			border-bottom: 1px solid #ccc;
+			width: 1280px;
 		}
 
 		li:last-child {
@@ -82,7 +71,7 @@
 		  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
 		  transition: font-size 0.3s ease, background-color 0.3s ease;
 		  display: block;
-		  width: 2000px;
+		  width: 1280px;
 		}
 
 		li a:hover {
@@ -106,7 +95,6 @@
 			<button id="oth" class="spclstTab" style="background: #d3d3d3;" onclick = oth();>Other</button>
 
 			<?php
-			$bool = "true";
 			$db = pg_connect("host=localhost dbname=makeitall user=postgres password=qwertyuiop");
 
 				$query = "SELECT * FROM employee";
@@ -124,13 +112,26 @@
 				$empId = $row["id"];
 				$fNAme = $row["first_name"];
 				$lName = $row["last_name"];
+				$job = $row["job_title"];
+				$deptId = $row["department_id"];
+				$deptQuery = "SELECT * FROM department WHERE id=".$deptId;
+				$deptResult  = pg_query($deptQuery);
+				$deptName;
+				while($rowNew = pg_fetch_assoc($deptResult)) {
+					$deptName = $rowNew["name"];
+				}
 				echo "<li style = 'padding: 6px 0px;'>";
 				echo "<a onclick = 'myFunction($id)' href='#'>";
 				echo "<td style = 'font-size: 14pt;'><b>".$row["first_name"]." ".$row["last_name"]."</b></td>"; 
 				echo "</a>";
 				echo "<div style = 'font-size: 12pt;'> Employee ID: $empId </div>";
-				echo "<div class = 'dropdown hidden' id=$id>";
-					echo "<p>$fNAme $lName</p>";
+				echo "<div class = 'dropdown hidden' style = 'border-radius: 10px 10px 10px 10px;' id=$id>";
+					echo "<p style='position:relative; left:25px;'><b>Name:</b> $fNAme $lName"; echo "</br>";
+					echo '<b>Employee ID:</b> '.$empId; echo "</br>";
+					echo '<b>Job Title:</b> '.$job; echo "</br>";
+					echo '<b>Department:</b> '.$deptName;
+					echo "</p>";
+
 				echo "</div>";
 				echo "</li>";
 				$id = $id + 1; 
@@ -151,15 +152,30 @@
 				echo "<div>";
 				echo "<ul id = 'spclstList' class = 'hidden' style='position: relative; left:32px; top: 50px;'>";
 				while($row1 = pg_fetch_assoc($result1)) {
+					$fNAme1 = $row1["first_name"];
+					$lName1 = $row1["last_name"];
+					$job1 = $row1["job_title"];
 					$empId1 = $row1["id"];
+					$deptId1	= $row1["department_id"];
+					$deptQuery1 = "SELECT * FROM department WHERE id=".$deptId1;
+					$deptResult1  = pg_query($deptQuery1);
+					$deptName1;
+					while($rowNew1 = pg_fetch_assoc($deptResult1)) {
+						$deptName1 = $rowNew1["name"];
+					}
 					echo "<li style = 'padding: 6px 0px;'>";
 					echo "<a onclick = 'myFunction1($id1)' href='#'>";
 					echo "<td style = 'font-size: 14pt;'><b>".$row1["first_name"]." ".$row1["last_name"].'</b></td>'; 
 					echo "</a>";
-					echo "<div style = 'font-size: 12pt;'> Employee ID: $empId1 </div>";
-					echo "<div class = 'dropdown hidden' id=$id1>";
-					echo "</div>";
-					echo "</li>";
+					echo "<div style = 'font-size: 12pt;'>Employee ID: $empId1 </div>";
+					echo "<div class = 'dropdown hidden' style = 'border-radius: 10px 10px 10px 10px;' id=$id1>";
+					  echo "<p style='position:relative; left:25px;'><b>Name:</b> $fNAme1 $lName1"; echo "</br>";
+						echo '<b>Employee ID:</b> '.$empId1; echo "</br>";
+						echo '<b>Job Title:</b> '.$job1; echo "</br>";
+						echo '<b>Department:</b> '.$deptName1;
+						echo "</p>";
+						echo "</div>";
+						echo "</li>";
 					$id1 = $id1 + 1;
 				}
 				echo "</div>";
@@ -177,13 +193,28 @@
 			echo "<div>";
 			echo "<ul id = 'othrList' class = 'hidden' style='position: relative; left:32px; top: 50px;'>";
 			while($row2 = pg_fetch_assoc($result)) {
+				$fNAme2 = $row2["first_name"];
+				$lName2 = $row2["last_name"];
+				$job2 = $row2["job_title"];
 				$empId2 = $row2["id"];
+				$deptId2	= $row2["department_id"];
+					$deptQuery2 = "SELECT * FROM department WHERE id=".$deptId2;
+					$deptResult2  = pg_query($deptQuery2);
+					$deptName2;
+					while($rowNew2 = pg_fetch_assoc($deptResult2)) {
+						$deptName2 = $rowNew2["name"];
+					}
 				echo "<li style = 'padding: 6px 0px;'>";
 				echo "<a onclick = 'myFunction2($id2)' href='#'>";
 				echo "<td style = 'font-size: 14pt;'><b>".$row2["first_name"]." ".$row2["last_name"].'</b></td>';
 				echo "</a>";
 				echo "<div style = 'font-size: 12pt;'> Employee ID: $empId2 </div>";
-				echo "<div class = 'dropdown hidden' id=$id2>";
+				echo "<div class = 'dropdown hidden' style = 'border-radius: 10px 10px 10px 10px;' id=$id2>";
+						echo "<p style='position:relative; left:25px;'><b>Name:</b> $fNAme2 $lName2"; echo "</br>";
+						echo '<b>Employee ID:</b> '.$empId2; echo "</br>";
+						echo '<b>Job Title:</b> '.$job2; echo "</br>";
+						echo '<b>Department:</b> '.$deptName1;
+						echo "</p>";
 				echo "</div>";
 				echo "</li>";
 				$id2 = $id2 + 1;
@@ -227,7 +258,7 @@
 		document.getElementById("othrList").className = "unhidden";
 	}
 
-	function myFunction($id, $dept) {
+	function myFunction($id) {
 		document.getElementById($id).classList.toggle('hidden');
 	}
 	function myFunction1($id1) {
