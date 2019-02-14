@@ -20,14 +20,14 @@ Route::get('/calls/new', function () {
 });
 
 
-Route::get('/specialists', 'SpecialistsController@list');
+Route::get('/specialists/list', 'SpecialistsController@list');
 
 Route::get('/problem-types', 'ProblemsController@types');
 
 
-Route::get('/problems', 'ProblemsController@list');
+Route::get('/problems/list', 'ProblemsController@list');
 
-Route::get('/employees', 'EmployeesController@list');
+Route::get('/employees/list', 'EmployeesController@list');
 
 Route::resource('employees', 'EmployeesController');
 Route::resource('departments', 'DepartmentsController');
