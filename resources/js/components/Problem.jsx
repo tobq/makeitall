@@ -18,7 +18,7 @@ export default class Problem {
             console.log("CACHED");
             return this._cache;
         }
-        const response = await fetch('/problems');
+        const response = await fetch('/problems/list');
         const json = await response.json();
         const problems = json.map(this.fromRow);
         this._cache = problems;

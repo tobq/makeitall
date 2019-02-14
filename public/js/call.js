@@ -25136,7 +25136,7 @@ function () {
 
             case 3:
               _context.next = 5;
-              return fetch('/employees');
+              return fetch('/employees/list');
 
             case 5:
               response = _context.sent;
@@ -25860,7 +25860,7 @@ function () {
 
             case 3:
               _context.next = 5;
-              return fetch('/problems');
+              return fetch('/problems/list');
 
             case 5:
               response = _context.sent;
@@ -27458,7 +27458,7 @@ function () {
 
             case 3:
               _context.next = 5;
-              return fetch('/specialists');
+              return fetch('/specialists/list');
 
             case 5:
               response = _context.sent;
