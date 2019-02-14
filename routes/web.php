@@ -21,7 +21,7 @@ Route::get('/calls/new', function () {
     return view('calls.new');
 });
 
-Route::get('/employees1', function () {
+Route::get('/employees', function () {
     return view('Employees1');
 });
 
