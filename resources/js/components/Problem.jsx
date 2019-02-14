@@ -25,7 +25,7 @@ export default class Problem {
         return problems;
     }
 
-    static priorities = ["Normal", "High", "Emergency"];
+    static priorities = ["Low", "Normal", "Emergency"];
 
     static render(id, title, priority) {
         return <div className="select-option-content">
