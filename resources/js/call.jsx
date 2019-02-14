@@ -3,29 +3,63 @@ import React from "react";
 import ProblemSelect from "./components/ProblemSelect";
 import {RequiredLabel} from "./components/FieldLabel/FieldLabel";
 import EmployeeSelect from "./components/EmployeeSelect";
+import {RequiredTextarea} from "./components/RequiredField";
+import ProblemTypeSelect from "./components/ProblemTypeSelect";
 
 const content = document.getElementById("body-content");
 
 const reasonRef = React.createRef(),
-    notesRef = React.createRef();
+    notesRef = React.createRef(),
+    problemsRef = React.createRef(),
+    problemTypeRef = React.createRef(),
+    employeeRef = React.createRef();
 
 ReactDOM.render(<div>
-    <EmployeeSelect
-        label="Caller"
-        type="Employee CALLERR"
-        onchange={console.log}
-    />
+    <div className="form-field">
+        <EmployeeSelect
+            label="Caller"
+            type="Employee CALLERR"
+            onchange={console.log}
+            ref={employeeRef}
+        />
+    </div>
 
-    <RequiredLabel for={reasonRef}>Call Reason</RequiredLabel>
-    <textarea id="call-reason-field" ref={reasonRef}/>
+    <div className="form-field">
+        <RequiredTextarea label="Call Reason" ref={reasonRef}/>
+    </div>
 
-    <RequiredLabel for={notesRef}>Call Notes</RequiredLabel>
-    <textarea id="notes-field" ref={notesRef}/>
+    <div className="form-field">
+        <RequiredTextarea label="Call Notes" ref={notesRef}/>
+    </div>
 
-    <ProblemSelect
-        type="Problem"
-        label="Referenced problems"
-        onchange={console.log}
-    />
+    <div className="form-field">
+        <ProblemSelect
+            ref={problemsRef}
+            label="Referenced problems"
+            onchange={console.log}
+        />
+    </div>
 
+    <div className="form-field">
+        <ProblemTypeSelect
+            ref={problemTypeRef}
+            label="Referenced problems"
+            onchange={console.log}
+        />
+    </div>
+
+    <button id="report-call-button"
+            onClick={onSubmit}>Report call
+    </button>
 </div>, content);
+
+function onSubmit() {
+    reasonRef.current.validate();
+    notesRef.current.validate();
+    problemsRef.current.validate();
+    employeeRef.current.validate();
+    console.log(reasonRef.current.value);
+    console.log(notesRef.current.value);
+    console.log(problemsRef.current.value);
+    console.log(employeeRef.current.value);
+}

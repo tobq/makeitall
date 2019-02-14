@@ -59,3 +59,10 @@ $error-color: salmon;
   //  border-bottom: none;
   //}
 }
+
+%button{
+  font-family: rbold;
+  font-size: 14px;
+  height: $button-height;
+  border-radius: $button-radius;
+}

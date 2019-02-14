@@ -28,8 +28,8 @@
     </div>
     <nav>
         <a href="/"><i class="material-icons">home</i>Dashboard</a>
-        <a href="/"><i class="material-icons">assignment</i>Problems</a>
-        <a href="/"><i class="material-icons">list</i>Calls</a>
+        <a href="/problem/problems"><i class="material-icons">assignment</i>Problems</a>
+        <a href="/calls/exsisting"><i class="material-icons">list</i>Calls</a>
         <a href="/"><i class="material-icons">group</i>Employees</a>
         <a href="/"><i class="material-icons">business_center</i>Equipment</a>
     </nav>

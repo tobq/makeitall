@@ -114,13 +114,13 @@ export class QueryOption extends SelectOption {
         return uniqueWords.filter(word => keptWords[word]);
     }
 
-    prepareSearchString(string) {
+    static prepareSearchString(string) {
         // console.log(QueryOption.prepare(string.toLowerCase()).join(""));
         return QueryOption.prepare(string).join("");
     }
 
     toSearchString() {
-        return this.prepareSearchString(this.value.toString());
+        return QueryOption.prepareSearchString(this.value.toString());
     }
 
     query(preparedQuery) {

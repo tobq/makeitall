@@ -55,7 +55,9 @@ export default class MultiSelect extends SearchSelect {
     render() {
         return <div className="select-root">
             {this.state.selected.map(option =>
-                <div className="select-row">
+                <div className="select-row"
+                     key={option.getKey()}
+                >
                     {option.render()}
                     <button
                         className="select-option-remove"

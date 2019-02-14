@@ -20,7 +20,7 @@ export default class Specialist {
             console.log("CACHED");
             return this._cache;
         }
-        const response = await fetch('/specialists');
+        const response = await fetch('/specialists/list');
         const json = await response.json();
         const specialists = json.map(this.fromRow);
         this._cache = specialists;

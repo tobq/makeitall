@@ -32,6 +32,13 @@
   box-sizing: border-box;
 }
 
+#report-call-button {
+  font-family: rbold;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
 @font-face {
   font-family: "Material Icons";
   font-style: normal;
@@ -92,6 +99,13 @@
   box-sizing: border-box;
 }
 
+#report-call-button {
+  font-family: rbold;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
 .employee-full-name {
   overflow: hidden;
   white-space: nowrap;
@@ -124,6 +138,54 @@
 .select-input {
   border-bottom: 1px solid lightgray;
   box-sizing: border-box;
+}
+
+#report-call-button {
+  font-family: rbold;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+.employee-full-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select-option-content,
+.select-problem-save,
+.select-problem-edit,
+.material-icons {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.employee-id {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+.select-new-problem-con {
+  border: 1px solid lightgray;
+}
+
+.select-input {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+#report-call-button {
+  font-family: rbold;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
 }
 
 @font-face {
@@ -164,6 +226,12 @@
 .select-problem-save:focus,
 .select-problem-edit:focus {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+.select-problem-save.required-error {
+  background-color: #feefed !important;
+  outline-color: salmon;
+  outline-style: auto;
 }
 
 .select-create-problem {
@@ -228,38 +296,8 @@
   background-color: lightgray;
 }
 
-.employee-full-name {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.select-option-content,
-.material-icons,
-.select-problem-edit,
-.select-problem-save {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-.employee-id {
-  background-color: rgba(0, 0, 0, 0.05);
-  font-size: 12px;
-  display: inline-block;
-  line-height: 18px;
-  border-radius: 0px;
-  padding: 0 6px;
-}
-
-.select-new-problem-con {
-  border: 1px solid lightgray;
-}
-
-.select-input {
-  border-bottom: 1px solid lightgray;
-  box-sizing: border-box;
+.new-problem-field:not(:last-child) {
+  margin-bottom: 15px;
 }
 
 .employee-full-name {
@@ -296,6 +334,13 @@
   box-sizing: border-box;
 }
 
+#report-call-button {
+  font-family: rbold;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
 .employee-full-name {
   overflow: hidden;
   white-space: nowrap;
@@ -328,6 +373,54 @@
 .select-input {
   border-bottom: 1px solid lightgray;
   box-sizing: border-box;
+}
+
+#report-call-button {
+  font-family: rbold;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+.employee-full-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select-option-content,
+.material-icons,
+.select-problem-edit,
+.select-problem-save {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.employee-id {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+.select-new-problem-con {
+  border: 1px solid lightgray;
+}
+
+.select-input {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+#report-call-button {
+  font-family: rbold;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
 }
 
 @font-face {
@@ -370,6 +463,12 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.select-problem-save.required-error {
+  background-color: #feefed !important;
+  outline-color: salmon;
+  outline-style: auto;
+}
+
 .select-create-problem {
   flex: 1 1;
   padding: 0 14px;
@@ -388,6 +487,7 @@
   display: flex;
   align-items: center;
   padding: 0 14px;
+  cursor: pointer;
 }
 
 .select-option-content > * {
@@ -401,5 +501,16 @@
 .select-field,
 textarea {
   box-sizing: border-box;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+#report-call-button {
+  margin-top: 20px;
+  cursor: pointer;
+  width: 100%;
+  background-color: #f0dd75;
 }
 
