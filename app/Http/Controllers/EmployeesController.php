@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Employee;
 use Illuminate\Support\Facades\DB;
-
 class EmployeesController extends Controller
 {
     /**
@@ -15,12 +14,12 @@ class EmployeesController extends Controller
      */
     public function index()
     {
+        return view('Employees1');
         return DB::select('
 SELECT employee.id, employee.title, employee.first_name, employee.last_name, department.name department_name
 FROM employee
        INNER JOIN department ON employee.department_id = department.id;
 ');
-//        return view('employees.index');
         //
     }
 

@@ -21,10 +21,6 @@ Route::get('/calls/new', function () {
     return view('calls.new');
 });
 
-Route::get('/employees1', function () {
-    return view('Employees1');
-});
-
 Route::get('/specialists', function () {
     return DB::select('
 SELECT employee.id,
