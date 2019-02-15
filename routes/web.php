@@ -15,7 +15,6 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
-
 Route::get('/specialists/list', 'SpecialistsController@list');
 
 Route::get('/problem-types', 'ProblemsController@types');
