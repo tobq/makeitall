@@ -9,7 +9,8 @@
     Problems
 @endsection
 @section("content")
-    <div class="problemtitle"><h2>Problem ID</h2><h2>Title</h2><h2>Creation Date</h2><h2>Urgency</h2></div>
+    <div id="problemtitle"><h2>Problem ID</h2><h2>Title</h2><h2>Creation Date</h2><h2>Urgency</h2></div>
+    <div class="spacing"></div>
     <ul>
     @for($i = 0; $i < count($problem); $i++)
         <li class = 'problembutton'>
@@ -41,9 +42,22 @@
             <?php
             if ($x!=0){
                 echo "
-                <button class = 'solve' onclick ='solvefrom()'>Solve</button>
-                <button class = 'edit' onclick ='editfrom()'>Edit</button>
+                <button class = 'solve' >Solve</button>
+                <button class = 'edit' >Edit</button>
                 ";
+                ?>
+
+            <form class = 'solvededitform'>
+                <p class = 'formheader'> Solve problem form</p>
+                How was the problem solved: <textarea class = 'formtextarea'></textarea>
+            </form>
+
+            <form class = 'solvededitform'>
+                <p class = 'formheader'> Edit problem form</p>
+                How was the problem solved: <textarea class = 'formtextarea'></textarea>
+            </form>
+
+            <?php
             } else {
                 // NEEDS A SOLVED COLUMN IN THE TABLE
                 $tempstd = $problem[$i]->description;
@@ -53,6 +67,7 @@
                 ";
             }
             ?>
+
         </div>
     @endfor
     </ul>

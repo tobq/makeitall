@@ -44,10 +44,16 @@ li:hover {
     width: 100%;
 }
 
-.problemtitle {
-    width: 100%;
+#problemtitle {
+    margin-top: -30px;
     height: 50px;
     border-bottom: 2px solid black;
+    position: fixed;
+    background-color: white;
+}
+
+.spacing{
+    height: 50px;
 }
 
 .problembuttoncontents {
@@ -140,6 +146,25 @@ li:hover {
     font-size: 15px;
     border: solid black 1px;
     cursor: pointer;
+}
+
+.solvededitform {
+    margin-left: 10%;
+    margin-right: 10%;
+    width:80%;
+    float: left;
+    display: none;
+    overflow: hidden;
+}
+
+.formheader {
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.formtextarea {
+    width: 96.5%;
 }
 
 /*
