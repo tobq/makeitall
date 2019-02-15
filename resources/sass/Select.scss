@@ -53,6 +53,8 @@
 .select-toggle {
   @extend %select-button;
 
+  cursor: pointer;
+
   &:after {
     content: "keyboard_arrow_down";
   }
@@ -87,12 +89,7 @@
   }
 
   &.required-error {
-    background-color: lighten($error-color, 25%) !important;
-
-    outline-color: $error-color;
-    //outline-offset: -20px;
-    outline-style: auto;
-    //outline-width: 10px;
+    @extend %required-error;
   }
 }
 

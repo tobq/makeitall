@@ -3,19 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Employee;
-use Illuminate\Support\Facades\DB;
-class EmployeesController extends Controller
+
+class CallsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Employee[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('employees/index');
-        //
+        return view('calls/index');
     }
 
     /**
@@ -25,13 +23,13 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        //
+        return view('calls/create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -42,7 +40,7 @@ class EmployeesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -53,7 +51,7 @@ class EmployeesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -64,8 +62,8 @@ class EmployeesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -76,23 +74,11 @@ class EmployeesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
     }
-
-    public function list()
-    {
-        return DB::select('
-SELECT employee.id, employee.title, employee.first_name, employee.last_name, department.name department_name
-FROM employee
-       INNER JOIN department ON employee.department_id = department.id;
-');
-        //
-    }
-
-
 }

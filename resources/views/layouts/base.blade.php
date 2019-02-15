@@ -19,7 +19,7 @@
                 @yield("title")
             </div>
 
-            <a href="/calls/new" id="new-call-button">
+            <a href="/calls/create" id="new-call-button">
                 <i class="material-icons">call</i>New Call
             </a><i id="user-noti" class="material-icons">
                 notifications
@@ -28,9 +28,9 @@
     </div>
     <nav>
         <a href="/"><i class="material-icons">home</i>Dashboard</a>
-        <a href="/"><i class="material-icons">assignment</i>Problems</a>
-        <a href="/"><i class="material-icons">list</i>Calls</a>
-        <a href="employees1"><i class="material-icons">group</i>Employees</a>
+        <a href="/problems"><i class="material-icons">assignment</i>Problems</a>
+        <a href="/calls"><i class="material-icons">list</i>Calls</a>
+        <a href="/"><i class="material-icons">group</i>Employees</a>
         <a href="/"><i class="material-icons">business_center</i>Equipment</a>
     </nav>
 </section>
