@@ -15,18 +15,7 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
-Route::get('/calls/new', function () {
-    return view('calls.new');
-});
 
-Route::get('problem/problems', function () {
-    $problem = DB::table('problem')->get();
-    return view('problem.problems',['problem'=>$problem]);
-});
-
-Route::get('/calls/existing', function () {
-    return view('calls.existing');
-});
 Route::get('/specialists/list', 'SpecialistsController@list');
 
 Route::get('/problem-types', 'ProblemsController@types');
@@ -35,5 +24,7 @@ Route::get('/problems/list', 'ProblemsController@list');
 
 Route::get('/employees/list', 'EmployeesController@list');
 
+Route::resource('problems', 'ProblemsController');
+Route::resource('calls', 'CallsController');
 Route::resource('employees', 'EmployeesController');
 Route::resource('departments', 'DepartmentsController');
