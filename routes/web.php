@@ -15,15 +15,16 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
+
 Route::get('/specialists/list', 'SpecialistsController@list');
 
 Route::get('/problem-types', 'ProblemsController@types');
-
 
 Route::get('/problems/list', 'ProblemsController@list');
 
 Route::get('/employees/list', 'EmployeesController@list');
 
-Route::resource('calls','CallsController');
+Route::resource('problems', 'ProblemsController');
+Route::resource('calls', 'CallsController');
 Route::resource('employees', 'EmployeesController');
 Route::resource('departments', 'DepartmentsController');

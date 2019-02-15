@@ -13,7 +13,7 @@ class CallsController extends Controller
      */
     public function index()
     {
-        //
+        return view('calls/index');
     }
 
     /**
