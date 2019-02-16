@@ -162,6 +162,7 @@ export default class NewProblem extends Component {
                         <RequiredLabel for={this.priority}>Priority</RequiredLabel>
                         <Select type={"Priority"}
                                 options={[1, 2, 3].map(x => new UrgencyOption(x))}
+                                options={[1, 2, 3].map(x => new PriorityOption(x))}
                                 ref={this.priority}
                                 value={this.state.priority}
                         />

@@ -41,6 +41,7 @@ export default class Problem {
 }
 
 export class UrgencyOption extends SelectOption {
+export class PriorityOption extends SelectOption {
     render() {
         return <div className="select-option-content">
             {Problem.getPriority(this._value)}
