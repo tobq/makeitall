@@ -32,6 +32,10 @@ export default class Problem {
             <div className="employee-id">ID: {id}</div>
             <div className="employee-full-name">{title}</div>
             <div className="tag">Priority: {this.getPriority(priority)}</div>
+            <div>
+                <span className="tag">Priority</span><span
+                className={"problem-priority-" + priority}>{priorityText}</span>
+            </div>
         </div>
     }
 
@@ -44,7 +48,7 @@ export class UrgencyOption extends SelectOption {
 export class PriorityOption extends SelectOption {
     render() {
         return <div className="select-option-content">
-            {Problem.getPriority(this._value)}
+            {Problem.getPriority(this._value)}<span className={'priority-marker-' + this._value}/>
         </div>
     }
 }
