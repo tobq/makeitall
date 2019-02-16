@@ -11,10 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
-
+Route::get('/', 'UsersController@dashboard');
 Route::get('/specialists/list', 'SpecialistsController@list');
 Route::get('/problem-types', 'ProblemsController@types');
 Route::get('/problems/list', 'ProblemsController@list');
