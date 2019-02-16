@@ -20,12 +20,8 @@ export default class ProblemTypeSelect extends React.Component {
 
     constructor(props) {
         super(props);
-        // setInterval(() => this.validate(), 1000);
 
-        ProblemTypeOption.fetch().then(x => {
-            console.log(x);
-            return x;
-        })
+        ProblemTypeOption.fetch()
             .then(options => this.setState({options: options}));
     }
 
