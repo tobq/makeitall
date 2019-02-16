@@ -16,11 +16,15 @@
   margin-bottom: 15px;
 }
 
-#report-call-button {
-  @extend %button;
-  margin-top: 20px;
-  cursor: pointer;
-  width: 100%;
-  //border-radius: 20px;
-  background-color: $MIA-light-yellow;
+#new-call-button {
+  display: none;
 }
+
+#report-call-button-con {
+  text-align: center;
+}
+#report-call-button {
+  @extend %call-button;
+  margin-top: 20px;
+}
+

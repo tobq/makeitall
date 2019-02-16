@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CallsController extends Controller
 {
@@ -34,7 +35,17 @@ class CallsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->json()->all();
+        $id = DB::table('call')->insertGetId(
+            [
+                'operator_id' => $data['operator_id'],
+                //TODO: GET JANA's LOGIN STUFF FROM SESSION SERVER SIDE
+                'caller_id' => $data['caller_id'],
+                'reason' => $data['reason'],
+                'notes' => $data['notes'],
+            ]
+        );
+        return ['id' => $id];
     }
 
     /**
@@ -80,5 +91,16 @@ class CallsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function assign($cid, $pid)
+    {
+        DB::table('call_problem')->insert(
+            [
+                'call_id' => $cid,
+                'problem_id' => $pid,
+            ]
+        );
+        return;
     }
 }

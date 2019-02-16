@@ -22,7 +22,7 @@ export default class EmployeeSelect extends React.Component {
     ref = React.createRef();
     label = React.createRef();
 
-    validate(){
+    validate() {
         const valid = this.ref.current.validate();
         if (valid) this.label.current.deactivate();
         else this.label.current.activate();
@@ -41,6 +41,10 @@ export default class EmployeeSelect extends React.Component {
         </div> : null
 
     }
+
+    get value() {
+        return this.ref.current.value;
+    }
 }
 
 export class EmployeeOption extends QueryOption {
@@ -50,19 +54,19 @@ export class EmployeeOption extends QueryOption {
     }
 
     toSearchString() {
-        const employee = this.value;
+        const employee = this._value;
         return QueryOption.prepareSearchString(`${employee.id} ${employee.fullName()}`);
     }
 
     render() {
         return <div className="select-option-content">
-            <div className="employee-id">ID: {this.value.id}</div>
-            <div className="employee-full-name">{this.value.fullName()}</div>
-            <div className="tag">{this.value.department_name}</div>
+            <div className="tag-id">ID: {this._value.id}</div>
+            <div className="select-content-title">{this._value.fullName()}</div>
+            <div className="tag">{this._value.department_name}</div>
         </div>
     }
 
-    getKey() {
+    get value() {
         return this._value.id;
     }
 
