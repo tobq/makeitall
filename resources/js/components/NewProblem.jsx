@@ -67,7 +67,7 @@ export default class NewProblem extends Component {
             this.devices.current.resetValidate();
             this.hardSoftware.current.deactivate()
         } else this.hardSoftware.current.activate();
-        
+
         const specialistValid = this.specialist.current.validate();
         const priorityValid = this.priority.current.validate();
 
@@ -102,7 +102,7 @@ export default class NewProblem extends Component {
         return this.state.active ? <div className="select-new-problem-con">
                 <div className="select-row">
                     <div className="select-option-content">
-                        <div className="employee-id">New</div>
+                        <div className="tag-id">New</div>
                         <div className="select-problem-editing-label">Editing problem...</div>
                     </div>
                     <button

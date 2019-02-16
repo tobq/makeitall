@@ -30,8 +30,8 @@ export default class Problem {
     static render(id, title, priority) {
         const priorityText = this.getPriority(priority);
         return <div className="select-option-content">
-            <div className="employee-id">ID: {id}</div>
-            <div className="employee-full-name">{title}</div>
+            <div className="tag-id">ID: {id}</div>
+            <div className="select-content-title">{title}</div>
             <div>
                 <span className="tag">Priority</span><span
                 className={"problem-priority-" + priority}>{priorityText}</span>

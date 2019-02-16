@@ -66,8 +66,8 @@ export class SpecialistOption extends QueryOption {
 
     render() {
         return <div className="select-option-content">
-            <div className="employee-id">ID: {this._value.id}</div>
-            <div className="employee-full-name">{this._value.fullName()}</div>
+            <div className="tag-id">ID: {this._value.id}</div>
+            <div className="select-content-title">{this._value.fullName()}</div>
             <div className="tag">Current Problems: {this._value.problem_count}</div>
         </div>
     }
