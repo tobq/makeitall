@@ -21,6 +21,7 @@ Route::get('/problem-types', 'ProblemsController@types');
 
 Route::get('/problems/list', 'ProblemsController@list');
 
+Route::get('/calls/{cid}/assign/{pid}', 'CallsController@assign');
 Route::get('/employees/list', 'EmployeesController@list');
 
 Route::resource('problems', 'ProblemsController');
