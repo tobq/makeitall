@@ -158,7 +158,7 @@ export class SelectOption {
     }
 
     getKey() {
-        return this._value;
+        return this.value;
     }
 
     equals(option) {

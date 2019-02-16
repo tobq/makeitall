@@ -1,6 +1,5 @@
 import React from "react";
 import {SelectOption} from "./Select/Select";
-import Problem from "./Problem";
 
 export default class ProblemType {
     constructor(id, name) {
@@ -31,6 +30,10 @@ export class ProblemTypeOption extends SelectOption {
             <div className="employee-id">ID: {this._value.id}</div>
             <div className="employee-full-name">{this._value.name}</div>
         </div>
+    }
+
+    get value() {
+        return this._value.id;
     }
 
     static async fetch() {
