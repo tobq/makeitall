@@ -71,10 +71,12 @@ async function createCall(caller_id, reason, notes, problems) {
     const call_id = response.id;
 
     for (let problem_id of problems.selected)
-        assignCallProblem(call_id, problem_id);
+        await assignCallProblem(call_id, problem_id);
 
     for (let newProblem of problems.created)
-        assignCallProblem(call_id, await createProblem(newProblem));
+        await assignCallProblem(call_id, await createProblem(newProblem));
+
+    return call_id;
 }
 
 function assignCallProblem(call_id, problem_id) {
