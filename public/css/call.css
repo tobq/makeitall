@@ -14,7 +14,10 @@
           user-select: none;
 }
 
-.employee-id {
+.employee-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -33,10 +36,23 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -81,7 +97,10 @@
           user-select: none;
 }
 
-.employee-id {
+.employee-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -100,10 +119,23 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 .employee-full-name {
@@ -122,7 +154,10 @@
           user-select: none;
 }
 
-.employee-id {
+.employee-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -141,10 +176,23 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 .employee-full-name {
@@ -163,7 +211,10 @@
           user-select: none;
 }
 
-.employee-id {
+.employee-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -182,10 +233,23 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -300,45 +364,28 @@
   margin-bottom: 15px;
 }
 
-.employee-full-name {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.select-option-content,
-.material-icons,
-.select-problem-edit,
-.select-problem-save {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-.employee-id {
-  background-color: rgba(0, 0, 0, 0.05);
-  font-size: 12px;
+.priority-marker-1,
+.priority-marker-2,
+.priority-marker-3 {
   display: inline-block;
-  line-height: 18px;
-  border-radius: 0px;
-  padding: 0 6px;
+  height: 10px;
+  width: 10px;
+  margin-left: 4px;
 }
 
-.select-new-problem-con {
-  border: 1px solid lightgray;
+.problem-priority-1,
+.priority-marker-1 {
+  background-color: #94d877 !important;
 }
 
-.select-input {
-  border-bottom: 1px solid lightgray;
-  box-sizing: border-box;
+.problem-priority-2,
+.priority-marker-2 {
+  background-color: #ffd900 !important;
 }
 
-#report-call-button {
-  font-family: rbold;
-  font-size: 14px;
-  height: 40px;
-  border-radius: 0px;
+.problem-priority-3,
+.priority-marker-3 {
+  background-color: #ff5757 !important;
 }
 
 .employee-full-name {
@@ -357,7 +404,10 @@
           user-select: none;
 }
 
-.employee-id {
+.employee-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -376,10 +426,23 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 .employee-full-name {
@@ -398,7 +461,10 @@
           user-select: none;
 }
 
-.employee-id {
+.employee-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -417,10 +483,80 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+.employee-full-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select-option-content,
+.material-icons,
+.select-problem-edit,
+.select-problem-save {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.employee-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+.select-new-problem-con {
+  border: 1px solid lightgray;
+}
+
+.select-input {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -507,10 +643,15 @@ textarea {
   margin-bottom: 15px;
 }
 
+#new-call-button {
+  display: none;
+}
+
+#report-call-button-con {
+  text-align: center;
+}
+
 #report-call-button {
   margin-top: 20px;
-  cursor: pointer;
-  width: 100%;
-  background-color: #f0dd75;
 }
 
