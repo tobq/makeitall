@@ -1,7 +1,6 @@
 import {Component, createRef} from "react";
 import PropTypes from "prop-types";
 import {RequiredLabel} from "./FieldLabel/FieldLabel";
-import SearchSelect from "./Select/SearchSelect";
 import React from "react";
 import {QueryOption} from "./Select/SearchSelect";
 import Specialist from "./Specialist";
@@ -30,11 +29,10 @@ export default class SpecialistSelect extends Component {
     label = createRef();
 
     validate() {
-        if (this.ref.current.validate()){
+        if (this.ref.current.validate()) {
             this.label.current.deactivate();
             return true;
-        }
-        else {
+        } else {
             this.label.current.activate();
             return false;
         }
@@ -62,19 +60,19 @@ export class SpecialistOption extends QueryOption {
     }
 
     toSearchString() {
-        const specialist = this.value;
+        const specialist = this._value;
         return QueryOption.prepareSearchString(`${specialist.id} ${specialist.fullName()}`);
     }
 
     render() {
         return <div className="select-option-content">
-            <div className="employee-id">ID: {this.value.id}</div>
-            <div className="employee-full-name">{this.value.fullName()}</div>
-            <div className="tag">Current Problems: {this.value.problem_count}</div>
+            <div className="employee-id">ID: {this._value.id}</div>
+            <div className="employee-full-name">{this._value.fullName()}</div>
+            <div className="tag">Current Problems: {this._value.problem_count}</div>
         </div>
     }
 
-    getKey() {
+    get value() {
         return this._value.id;
     }
 
