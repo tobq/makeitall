@@ -33,6 +33,7 @@ export default class NewProblem extends Component {
     software = React.createRef();
     specialist = React.createRef();
     priority = React.createRef();
+    hardSoftware = React.createRef();
     saveButton = React.createRef();
 
 
@@ -60,18 +61,20 @@ export default class NewProblem extends Component {
         const titleValid = this.title.current.validate();
         const descriptionValid = this.description.current.validate();
         const problemType = this.problemType.current.validate();
-        const softwareValid = this.software.current.validate() || this.devices.current.validate();
-        if (softwareValid) {
+        const hardSoftwareValid = this.software.current.validate() || this.devices.current.validate();
+        if (hardSoftwareValid) {
             this.software.current.resetValidate();
             this.devices.current.resetValidate();
-        }
+            this.hardSoftware.current.deactivate()
+        } else this.hardSoftware.current.activate();
+        
         const specialistValid = this.specialist.current.validate();
         const priorityValid = this.priority.current.validate();
 
         return titleValid &&
             problemType &&
             descriptionValid &&
-            softwareValid &&
+            hardSoftwareValid &&
             specialistValid &&
             priorityValid;
     }
@@ -134,16 +137,15 @@ export default class NewProblem extends Component {
                         />
                     </div>
                     <div className="new-problem-field">
-                        <FieldLabel for={this.software}>Installed Software</FieldLabel>
+                        <RequiredLabel for={this.software} ref={this.hardSoftware}>
+                            Installed Software / Affected Devices
+                        </RequiredLabel>
                         <MultiSelect
                             ref={this.software}
                             type="Installed Software"
                             options={[1, 2, 3, 4, 5, 6].map(x => new QueryOption(x))}
                             selected={this.state.software}
                         />
-                    </div>
-                    <div className="new-problem-field">
-                        <FieldLabel for={this.devices}>Affected Devices</FieldLabel>
                         <MultiSelect
                             ref={this.devices}
                             type="Device"
