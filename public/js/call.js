@@ -25215,7 +25215,7 @@ function _createCall() {
 }
 
 function assignCallProblem(call_id, problem_id) {
-  return fetch(" / calls /".concat(call_id, "/assign/").concat(problem_id));
+  return fetch("/calls/".concat(call_id, "/assign/").concat(problem_id));
 }
 
 function createProblem(_x5) {
@@ -25250,7 +25250,7 @@ function _createProblem() {
 
             for (_iterator3 = problem.specialists[Symbol.iterator](); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
               specialist_id = _step3.value;
-              fetch(" / problems /".concat(problem_id, "/assign/").concat(specialist_id));
+              fetch("/problems/".concat(problem_id, "/assign/").concat(specialist_id));
             }
 
             _context2.next = 15;
