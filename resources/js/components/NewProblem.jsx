@@ -3,10 +3,11 @@ import {FieldLabel, RequiredLabel} from "./FieldLabel/FieldLabel";
 import MultiSelect from "./Select/MultiSelect";
 import PropTypes from "prop-types";
 import {RequiredTextarea, RequiredInput} from "./RequiredField";
-import Problem, {UrgencyOption} from "./Problem";
+import Problem, {PriorityOption} from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
 import SpecialistSelect from "./SpecialistSelect";
-import Select, {SelectOption} from "./Select/Select";
+import Select from "./Select/Select";
+import ProblemTypeSelect from "./ProblemTypeSelect";
 
 
 export default class NewProblem extends Component {
@@ -26,6 +27,7 @@ export default class NewProblem extends Component {
     };
 
     title = React.createRef();
+    problemType = React.createRef();
     description = React.createRef();
     devices = React.createRef();
     software = React.createRef();
@@ -43,7 +45,8 @@ export default class NewProblem extends Component {
                 software: this.software.current.value,
                 devices: this.devices.current.value,
                 specialists: this.specialist.current.value,
-                priority: this.priority.current.value
+                priority: this.priority.current.value,
+                type: this.problemType.current.value
             });
         }
     }
@@ -56,6 +59,7 @@ export default class NewProblem extends Component {
     parse() {
         const titleValid = this.title.current.validate();
         const descriptionValid = this.description.current.validate();
+        const problemType = this.problemType.current.validate();
         const softwareValid = this.software.current.validate() || this.devices.current.validate();
         if (softwareValid) {
             this.software.current.resetValidate();
@@ -64,7 +68,12 @@ export default class NewProblem extends Component {
         const specialistValid = this.specialist.current.validate();
         const priorityValid = this.priority.current.validate();
 
-        return titleValid && descriptionValid && softwareValid && specialistValid && priorityValid;
+        return titleValid &&
+            problemType &&
+            descriptionValid &&
+            softwareValid &&
+            specialistValid &&
+            priorityValid;
     }
 
     validate() {
@@ -107,6 +116,14 @@ export default class NewProblem extends Component {
                             placeholder="Problem Title"
                             ref={this.title}
                             value={this.state.title}
+                        />
+                    </div>
+                    <div className="new-problem-field">
+                        <ProblemTypeSelect
+                            value={this.state.type}
+                            ref={this.problemType}
+                            label="Referenced problems"
+                            onchange={console.log}
                         />
                     </div>
                     <div className="new-problem-field">
@@ -168,8 +185,9 @@ export default class NewProblem extends Component {
             description: this.state.description,
             software: this.state.software,
             devices: this.state.devices,
-            specialists: this.state.specialists,
-            priority: this.state.priority
+            specialists: this.state.specialists.map(specialist => specialist.value),
+            priority: this.state.priority.value,
+            type: this.state.type.value
         }
     }
 }
