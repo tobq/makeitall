@@ -21,7 +21,7 @@
             </div>
 
             <a href="/calls/create" id="new-call-button">
-                <i class="material-icons">call</i>New Call
+                <i class="material-icons">call</i>Report Call
             </a><i id="user-noti" class="material-icons">
                 notifications
             </i><span id="user-menu"></span>
