@@ -1,10 +1,9 @@
 import ReactDOM from 'react-dom';
 import React from "react";
 import ProblemSelect from "./components/ProblemSelect";
-import {RequiredLabel} from "./components/FieldLabel/FieldLabel";
 import EmployeeSelect from "./components/EmployeeSelect";
 import {RequiredTextarea} from "./components/RequiredField";
-import ProblemTypeSelect from "./components/ProblemTypeSelect";
+import PostJSON from "./components/PostJSON";
 
 const content = document.getElementById("body-content");
 
@@ -39,27 +38,59 @@ ReactDOM.render(<div>
             onchange={console.log}
         />
     </div>
-
-    <div className="form-field">
-        <ProblemTypeSelect
-            ref={problemTypeRef}
-            label="Referenced problems"
-            onchange={console.log}
-        />
+    <div id="report-call-button-con">
+        <button id="report-call-button" onClick={onSubmit}>Save call</button>
     </div>
-
-    <button id="report-call-button"
-            onClick={onSubmit}>Report call
-    </button>
 </div>, content);
 
 function onSubmit() {
-    reasonRef.current.validate();
-    notesRef.current.validate();
-    problemsRef.current.validate();
-    employeeRef.current.validate();
-    console.log(reasonRef.current.value);
-    console.log(notesRef.current.value);
-    console.log(problemsRef.current.value);
-    console.log(employeeRef.current.value);
+    const reasonValid = reasonRef.current.validate();
+    const notesValid = notesRef.current.validate();
+    const problemsValid = problemsRef.current.validate();
+    const employeeValid = employeeRef.current.validate();
+    if (!reasonValid ||
+        !notesValid ||
+        !problemsValid ||
+        !employeeValid) return;
+
+    createCall(
+        employeeRef.current.value.value,
+        reasonRef.current.value,
+        notesRef.current.value,
+        problemsRef.current.value
+    );
+}
+
+async function createCall(caller_id, reason, notes, problems) {
+    const response = await PostJSON("/calls", {
+        operator_id: 2,// (ALICE) //TODO: GET JANA's LOGIN STUFF TO FILL OPERATOR ID
+        caller_id: caller_id,
+        reason: reason,
+        notes: notes
+    });
+    const call_id = response.id;
+
+    for (let problem_id of problems.selected)
+        assignCallProblem(call_id, problem_id);
+
+    for (let newProblem of problems.created)
+        assignCallProblem(call_id, await createProblem(newProblem));
+}
+
+function assignCallProblem(call_id, problem_id) {
+    return fetch(`/calls/${call_id}/assign/${problem_id}`);
+}
+
+async function createProblem(problem) {
+    const response = await PostJSON("/problems", {
+        title: problem.title,
+        description: problem.description,
+        priority: problem.priority,
+        type: problem.type
+    });
+    const problem_id = response.id;
+    for (let specialist_id of problem.specialists)
+        fetch(`/problems/${problem_id}/assign/${specialist_id}`);
+
+    return problem_id;
 }
