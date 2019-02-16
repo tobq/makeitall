@@ -25052,7 +25052,9 @@ function onSubmit() {
   var problemsValid = problemsRef.current.validate();
   var employeeValid = employeeRef.current.validate();
   if (!reasonValid || !notesValid || !problemsValid || !employeeValid) return;
-  createCall(employeeRef.current.value.value, reasonRef.current.value, notesRef.current.value, problemsRef.current.value);
+  createCall(employeeRef.current.value.value, reasonRef.current.value, notesRef.current.value, problemsRef.current.value).then(function (call_id) {
+    return window.href = "/calls/".concat(call_id);
+  });
 }
 
 function createCall(_x, _x2, _x3, _x4) {
@@ -25085,119 +25087,135 @@ function _createCall() {
             _didIteratorError = false;
             _iteratorError = undefined;
             _context.prev = 7;
+            _iterator = problems.selected[Symbol.iterator]();
 
-            for (_iterator = problems.selected[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-              problem_id = _step.value;
-              assignCallProblem(call_id, problem_id);
+          case 9:
+            if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+              _context.next = 16;
+              break;
             }
 
-            _context.next = 15;
+            problem_id = _step.value;
+            _context.next = 13;
+            return assignCallProblem(call_id, problem_id);
+
+          case 13:
+            _iteratorNormalCompletion = true;
+            _context.next = 9;
             break;
 
-          case 11:
-            _context.prev = 11;
+          case 16:
+            _context.next = 22;
+            break;
+
+          case 18:
+            _context.prev = 18;
             _context.t0 = _context["catch"](7);
             _didIteratorError = true;
             _iteratorError = _context.t0;
 
-          case 15:
-            _context.prev = 15;
-            _context.prev = 16;
+          case 22:
+            _context.prev = 22;
+            _context.prev = 23;
 
             if (!_iteratorNormalCompletion && _iterator.return != null) {
               _iterator.return();
             }
 
-          case 18:
-            _context.prev = 18;
+          case 25:
+            _context.prev = 25;
 
             if (!_didIteratorError) {
-              _context.next = 21;
+              _context.next = 28;
               break;
             }
 
             throw _iteratorError;
 
-          case 21:
-            return _context.finish(18);
+          case 28:
+            return _context.finish(25);
 
-          case 22:
-            return _context.finish(15);
+          case 29:
+            return _context.finish(22);
 
-          case 23:
+          case 30:
             _iteratorNormalCompletion2 = true;
             _didIteratorError2 = false;
             _iteratorError2 = undefined;
-            _context.prev = 26;
+            _context.prev = 33;
             _iterator2 = problems.created[Symbol.iterator]();
 
-          case 28:
+          case 35:
             if (_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done) {
-              _context.next = 39;
+              _context.next = 47;
               break;
             }
 
             newProblem = _step2.value;
             _context.t1 = assignCallProblem;
             _context.t2 = call_id;
-            _context.next = 34;
+            _context.next = 41;
             return createProblem(newProblem);
 
-          case 34:
-            _context.t3 = _context.sent;
-            (0, _context.t1)(_context.t2, _context.t3);
-
-          case 36:
-            _iteratorNormalCompletion2 = true;
-            _context.next = 28;
-            break;
-
-          case 39:
-            _context.next = 45;
-            break;
-
           case 41:
-            _context.prev = 41;
-            _context.t4 = _context["catch"](26);
+            _context.t3 = _context.sent;
+            _context.next = 44;
+            return (0, _context.t1)(_context.t2, _context.t3);
+
+          case 44:
+            _iteratorNormalCompletion2 = true;
+            _context.next = 35;
+            break;
+
+          case 47:
+            _context.next = 53;
+            break;
+
+          case 49:
+            _context.prev = 49;
+            _context.t4 = _context["catch"](33);
             _didIteratorError2 = true;
             _iteratorError2 = _context.t4;
 
-          case 45:
-            _context.prev = 45;
-            _context.prev = 46;
+          case 53:
+            _context.prev = 53;
+            _context.prev = 54;
 
             if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
               _iterator2.return();
             }
 
-          case 48:
-            _context.prev = 48;
+          case 56:
+            _context.prev = 56;
 
             if (!_didIteratorError2) {
-              _context.next = 51;
+              _context.next = 59;
               break;
             }
 
             throw _iteratorError2;
 
-          case 51:
-            return _context.finish(48);
+          case 59:
+            return _context.finish(56);
 
-          case 52:
-            return _context.finish(45);
+          case 60:
+            return _context.finish(53);
 
-          case 53:
+          case 61:
+            return _context.abrupt("return", call_id);
+
+          case 62:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this, [[7, 11, 15, 23], [16,, 18, 22], [26, 41, 45, 53], [46,, 48, 52]]);
+    }, _callee, this, [[7, 18, 22, 30], [23,, 25, 29], [33, 49, 53, 61], [54,, 56, 60]]);
   }));
   return _createCall.apply(this, arguments);
 }
 
 function assignCallProblem(call_id, problem_id) {
-  return fetch("/calls/".concat(call_id, "/assign/").concat(problem_id));
+  return fetch(" / calls /".concat(call_id, "/assign/").concat(problem_id));
 }
 
 function createProblem(_x5) {
@@ -25232,7 +25250,7 @@ function _createProblem() {
 
             for (_iterator3 = problem.specialists[Symbol.iterator](); !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
               specialist_id = _step3.value;
-              fetch("/problems/".concat(problem_id, "/assign/").concat(specialist_id));
+              fetch(" / problems /".concat(problem_id, "/assign/").concat(specialist_id));
             }
 
             _context2.next = 15;
