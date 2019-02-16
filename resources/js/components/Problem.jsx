@@ -28,10 +28,10 @@ export default class Problem {
     static priorities = ["Low", "Normal", "Emergency"];
 
     static render(id, title, priority) {
+        const priorityText = this.getPriority(priority);
         return <div className="select-option-content">
             <div className="employee-id">ID: {id}</div>
             <div className="employee-full-name">{title}</div>
-            <div className="tag">Priority: {this.getPriority(priority)}</div>
             <div>
                 <span className="tag">Priority</span><span
                 className={"problem-priority-" + priority}>{priorityText}</span>
