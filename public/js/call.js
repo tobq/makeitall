@@ -25838,6 +25838,8 @@ function (_Component) {
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "priority", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "hardSoftware", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "saveButton", react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef());
 
     return _this;
@@ -25873,16 +25875,17 @@ function (_Component) {
       var titleValid = this.title.current.validate();
       var descriptionValid = this.description.current.validate();
       var problemType = this.problemType.current.validate();
-      var softwareValid = this.software.current.validate() || this.devices.current.validate();
+      var hardSoftwareValid = this.software.current.validate() || this.devices.current.validate();
 
-      if (softwareValid) {
+      if (hardSoftwareValid) {
         this.software.current.resetValidate();
         this.devices.current.resetValidate();
-      }
+        this.hardSoftware.current.deactivate();
+      } else this.hardSoftware.current.activate();
 
       var specialistValid = this.specialist.current.validate();
       var priorityValid = this.priority.current.validate();
-      return titleValid && problemType && descriptionValid && softwareValid && specialistValid && priorityValid;
+      return titleValid && problemType && descriptionValid && hardSoftwareValid && specialistValid && priorityValid;
     }
   }, {
     key: "validate",
@@ -25957,20 +25960,17 @@ function (_Component) {
         value: this.state.description
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "new-problem-field"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
-        for: this.software
-      }, "Installed Software"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["RequiredLabel"], {
+        for: this.software,
+        ref: this.hardSoftware
+      }, "Installed Software / Affected Devices"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
         ref: this.software,
         type: "Installed Software",
         options: [1, 2, 3, 4, 5, 6].map(function (x) {
           return new _Select_SearchSelect__WEBPACK_IMPORTED_MODULE_6__["QueryOption"](x);
         }),
         selected: this.state.software
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "new-problem-field"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_1__["FieldLabel"], {
-        for: this.devices
-      }, "Affected Devices"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Select_MultiSelect__WEBPACK_IMPORTED_MODULE_2__["default"], {
         ref: this.devices,
         type: "Device",
         options: [1, 2, 3, 4, 5, 6].map(function (x) {
