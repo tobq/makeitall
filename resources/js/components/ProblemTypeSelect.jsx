@@ -35,10 +35,15 @@ export default class ProblemTypeSelect extends React.Component {
         }
     }
 
+    get value() {
+        return this.ref.current.value;
+    }
+
     render() {
         return <div>
             <RequiredLabel ref={this.label} for={this.ref}>Problem Type</RequiredLabel>
             <Select
+                value={this.props.value}
                 ref={this.ref}
                 type={"Problem Type"}
                 options={this.state.options}
