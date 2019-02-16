@@ -15,7 +15,9 @@ class ProblemsController extends Controller
     public function index()
     {
         $problem = DB::table('problem')->get();
-        return view('problems/index', ['problem' => $problem]);
+        $call = DB::table('call')->get();
+        $call_problem = DB::table('call_problem')->get();
+        return view('problems/index', ['problem' => $problem, 'call' => $call, 'call_problem' => $call_problem]);
     }
 
     /**
