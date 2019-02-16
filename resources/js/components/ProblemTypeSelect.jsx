@@ -1,10 +1,17 @@
 import React from "react";
 import {RequiredLabel} from "./FieldLabel/FieldLabel";
 import Select from "./Select/Select";
-import {ProblemOption} from "./ProblemSelect";
-import ProblemType, {ProblemTypeOption} from "./ProblemType";
+import {ProblemTypeOption} from "./ProblemType";
+import PropTypes from "prop-types";
+
 
 export default class ProblemTypeSelect extends React.Component {
+    static propTypes = {
+        label: PropTypes.string.isRequired,
+        value: PropTypes.instanceOf(ProblemTypeOption),
+        onchange: PropTypes.func,
+    };
+
     ref = React.createRef();
     label = React.createRef();
     state = {
