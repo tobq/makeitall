@@ -58,7 +58,7 @@ function onSubmit() {
         reasonRef.current.value,
         notesRef.current.value,
         problemsRef.current.value
-    );
+    ).then(call_id => window.href = `/calls/${call_id}`);
 }
 
 async function createCall(caller_id, reason, notes, problems) {
