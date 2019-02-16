@@ -25552,9 +25552,9 @@ function (_QueryOption) {
       return react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
         className: "select-option-content"
       }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
-        className: "employee-id"
+        className: "tag-id"
       }, "ID: ", this._value.id), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
-        className: "employee-full-name"
+        className: "select-content-title"
       }, this._value.fullName()), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
         className: "tag"
       }, this._value.department_name));
@@ -25927,7 +25927,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-option-content"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "employee-id"
+        className: "tag-id"
       }, "New"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "select-problem-editing-label"
       }, "Editing problem...")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
@@ -26218,9 +26218,9 @@ function () {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "select-option-content"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "employee-id"
+        className: "tag-id"
       }, "ID: ", id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "employee-full-name"
+        className: "select-content-title"
       }, title), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
         className: "tag"
       }, "Priority"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
@@ -26678,9 +26678,9 @@ function (_SelectOption) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "select-option-content"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "employee-id"
+        className: "tag-id"
       }, "ID: ", this._value.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "employee-full-name"
+        className: "select-content-title"
       }, this._value.name));
     }
   }, {
@@ -27991,9 +27991,9 @@ function (_QueryOption) {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "select-option-content"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "employee-id"
+        className: "tag-id"
       }, "ID: ", this._value.id), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "employee-full-name"
+        className: "select-content-title"
       }, this._value.fullName()), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "tag"
       }, "Current Problems: ", this._value.problem_count));
