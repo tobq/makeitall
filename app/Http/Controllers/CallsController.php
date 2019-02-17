@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class CallsController extends Controller
 {
@@ -13,7 +15,8 @@ class CallsController extends Controller
      */
     public function index()
     {
-        return view('calls/index');
+        $call = DB::table('call')->get();
+        return view('calls/index', ['call' => $call]);
     }
 
     /**

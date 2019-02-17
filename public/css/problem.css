@@ -50,6 +50,7 @@ th {
 }
 
 table, td, th{
+    word-wrap: break-word;
     border-collapse: collapse;
     border: 1px solid black;
 }

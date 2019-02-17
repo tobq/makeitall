@@ -72,7 +72,22 @@ class ProblemsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::table('problem')
+            -> where('id', $id)
+            -> update([
+                'description' => $request->input('description'),
+                'priority' => $request->input('editPriority' )
+            ]);
+
+        return ['id'=>$id, 'description' => $request->description, 'priority' => $request->editPriority];
+
+        /*
+        $problemUpdate = Problem::where('id', $request->id)
+            ->update([
+                'priority' => $request->input('editPriority')
+                'description' => $request->input('description')
+        ]);
+        */
     }
 
     /**

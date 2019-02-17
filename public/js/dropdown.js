@@ -17,3 +17,26 @@ $(window).on("load resize",function(e){
     var new_width = $('#body-content').width();
     $('#problemtitle').width(new_width);
 });
+
+function solve(id) {
+
+}
+
+function edit(event, id) {
+    $.ajax({
+        type: "PUT",
+        url: '/problems/'+id,
+        data: $('#editform'+id).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data, status)
+        {
+            console.log(data, status);
+        },
+        error: function(data, status)
+        {
+            console.log(data, status);
+        }
+    });
+}

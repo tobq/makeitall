@@ -1,5 +1,6 @@
 @extends("layouts.base")
 @section("head")
+    <meta name = 'csrf-token' content = '{{@csrf_token()}}'>
     <link rel="stylesheet" href="/css/dashboard.css"/>
     <link rel="stylesheet" href="/css/problem.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -48,36 +49,36 @@
                 ";
                 ?>
 
-            <form class = 'solvededitform'>
+            <?php echo "<form class = 'solvededitform' id = 'editform{$problem[$i]->id}'>"; ?>
                 <p class = 'formheader'> Edit problem form</p>
                 <div class="underline formunderline"></div>
-                Description:<textarea class = 'formtextarea'>{{ $problem[$i]->description }}</textarea>
+                Description:<textarea class = 'formtextarea' name = 'description'>{{ $problem[$i]->description }}</textarea>
                 <div class = 'priority'>
                     Urgency:
                     <label>
                         @php
-                            echo "<input id = 'low$i' type = 'radio' name = 'editPriority' value = 'low'/>Low";
+                            echo "<input id = 'low$i' type = 'radio' name = 'editPriority' value = '1'/>Low";
                         @endphp
                     </label>
                     <label>
                         @php
-                            echo "<input id = 'normal$i' type='radio' name='editPriority' value='normal'/>Normal";
+                            echo "<input id = 'normal$i' type = 'radio' name = 'editPriority' value = '2'/>Normal";
                         @endphp
                     </label>
                     <label>
                         @php
-                            echo "<input id = 'high$i' type='radio' name='editPriority' value='high'/>High";
+                            echo "<input id = 'high$i' type = 'radio' name = 'editPriority' value = '3'/>High";
                         @endphp
                     </label>
                 </div>
-                <button type = 'submit' class = 'confirmsolved'>Confirm</button>
+                <?php echo"<button type = 'submit' class = 'confirmsolved' onclick = 'edit(event,{$problem[$i]->id})'>Confirm</button>"; ?>
             </form>
 
-            <form class = 'solvededitform'>
+            <?php echo "<form class = 'solvededitform' id = 'solvedform$i'>" ?>
                 <p class = 'formheader'> Solve problem form</p>
                 <div class="underline formunderline"></div>
                 How was the problem solved: <textarea class = 'formtextarea'></textarea>
-                <button type = 'submit' class = 'confirmsolved'>Confirm</button>
+                <?php echo"<button type = 'update' class = 'confirmsolved' onclick = 'solve($i)'>Confirm</button>"; ?>
             </form>
 
             <?php
@@ -103,29 +104,29 @@
             ?>
             <p class = 'associatedcalls'>Associated calls ⬇️</p>
             <table class = 'associatedcallstable'>
+                <tr>
+                    <th class = 'notreason'>
+                        Call ID
+                    </th>
+                    <th class = 'notreason'>
+                        Operator ID
+                    </th>
+                    <th class = 'notreason'>
+                        Caller ID
+                    </th>
+                    <th class = 'notreason'>
+                        Date
+                    </th>
+                    <th class = 'reason'>
+                        Reason
+                    </th>
+                </tr>
                 <?php
                     for($cp = 0; $cp < count($call_problem); $cp++){
                         if($call_problem[$cp]->problem_id == $problem[$i]->id){
                             for($c = 0; $c < count($call); $c++){
                                 if($call[$c]->id==$call_problem[$cp]->call_id){
                                     ?>
-                                    <tr>
-                                        <th class = 'notreason'>
-                                            Call ID
-                                        </th>
-                                        <th class = 'notreason'>
-                                            Operator ID
-                                        </th>
-                                        <th class = 'notreason'>
-                                            Caller ID
-                                        </th>
-                                        <th class = 'notreason'>
-                                            Date
-                                        </th>
-                                        <th class = 'reason'>
-                                            Reason
-                                        </th>
-                                    </tr>
                                     <tr>
                                         <td>
                                             <p class = 'notreasonfield callid'>{{ $call[$c]->id }}</p>
@@ -149,12 +150,11 @@
                         }
                         else {
                             ?>
-                            <tr>
-                                <td>
-                                    <h2 style = 'text-align: center; width: 100%;'>No Associated calls</h2>
-                                </td>
-                            </tr>
+                            <td colspan = "5">
+                                <h2 style = 'text-align: center; width: 100%;'>No Associated calls</h2>
+                            </td>
                             <?php
+                            break;
                         }
                     }
                 ?>
@@ -163,12 +163,3 @@
     @endfor
     </ul>
 @endsection
-@for($cp = 0; $cp < count($call_problem); $cp++)
-    @if($call_problem[$cp]->problem_id == $problem[$x]->id)
-        @for($c = 0; $c < count($call); $c++)
-            @if($call[$c]->id==$call_problem[$cp]->call_id)
-
-            @endif
-        @endfor
-    @endif
-@endfor
