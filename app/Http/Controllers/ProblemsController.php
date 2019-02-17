@@ -14,11 +14,12 @@ class ProblemsController extends Controller
      */
     public function index()
     {
-        $problem = DB::table('problem')->get();
+        $problem = DB::table('problem')->orderby('priority','desc')->get();
         $call = DB::table('call')->get();
         $call_problem = DB::table('call_problem')->get();
         return view('problems/index', ['problem' => $problem, 'call' => $call, 'call_problem' => $call_problem]);
     }
+
 
     /**
      * Show the form for creating a new resource.
