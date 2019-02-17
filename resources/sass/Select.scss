@@ -93,16 +93,22 @@
   }
 }
 
+//.multi-select-list {
+//  overflow: hidden;
+//}
+
+.multi-select-item {
+  @extend %content-row;
+  border-bottom: 1px solid #EEE;
+
+  //&:hover {
+  //  box-shadow: 0 0 20px rgba(black, 0.3);
+  //}
+}
+
 .select-row {
   @extend %list-underline;
-  //&:hover {
-  //  @extend %field-shadow;
-  //}
-
-  height: $button-height;
-  font-size: 14px;
-  display: flex;
-  //align-items: center;
+  @extend %content-row;
 }
 
 //

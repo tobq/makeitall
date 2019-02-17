@@ -5,7 +5,7 @@ import Select, {SelectOption} from "./Select";
 export default class SearchSelect extends Select {
     static propTypes = {
         ...Select.propTypes,
-        options: PropTypes.arrayOf(PropTypes.instanceOf(QueryOption).isRequired).isRequired,
+        // options: PropTypes.arrayOf(PropTypes.instanceOf(QueryOption).isRequired).isRequired,
     };
 
     constructor(props) {//type, element, options, render) {

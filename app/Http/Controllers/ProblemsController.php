@@ -113,4 +113,13 @@ class ProblemsController extends Controller
         );
         return;
     }
+
+    public function byType($tid)
+    {
+        return DB::table('problem')
+            ->select('id', 'creation', 'title', 'description', 'priority')
+            ->where('problem_type_id', $tid)
+            ->orderByDesc('creation')
+            ->get();
+    }
 }

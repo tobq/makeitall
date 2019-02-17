@@ -26,10 +26,7 @@ export default class ProblemType {
 
 export class ProblemTypeOption extends SelectOption {
     render() {
-        return <div className="select-option-content">
-            <div className="tag-id">ID: {this._value.id}</div>
-            <div className="select-content-title">{this._value.name}</div>
-        </div>
+        return <div className="select-option-content">{this._value.name}</div>
     }
 
     get value() {

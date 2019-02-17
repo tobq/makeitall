@@ -54,17 +54,19 @@ export default class MultiSelect extends SearchSelect {
 
     render() {
         return <div className="select-root">
-            {this.state.selected.map(option =>
-                <div className="select-row"
-                     key={option.getKey()}
-                >
-                    {option.render()}
-                    <button
-                        className="select-option-remove"
-                        onClick={event => this.unselect(option)}
-                    />
-                </div>
-            )}
+            <div className="multi-select-list">
+                {this.state.selected.map(option =>
+                    <div className="multi-select-item"
+                         key={option.getKey()}
+                    >
+                        {option.render()}
+                        <button
+                            className="select-option-remove"
+                            onClick={event => this.unselect(option)}
+                        />
+                    </div>
+                )}
+            </div>
             <div className={"select-field" + (this.state.active ? " active" : "")} ref={"root"}>
                 <div className="select-row" tabIndex={-1}>
                     {this.searchInput()}

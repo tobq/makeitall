@@ -30,7 +30,9 @@ export default class Problem {
     static render(id, title, priority) {
         const priorityText = this.getPriority(priority);
         return <div className="select-option-content">
-            <div className="tag-id">ID: {id}</div>
+            <div>
+                <span className="tag-id">ID</span><span className="tag">{id}</span>
+            </div>
             <div className="select-content-title">{title}</div>
             <div>
                 <span className="tag">Priority</span><span
@@ -41,13 +43,5 @@ export default class Problem {
 
     static getPriority(priority) {
         return this.priorities[priority - 1];
-    }
-}
-
-export class PriorityOption extends SelectOption {
-    render() {
-        return <div className="select-option-content">
-            {Problem.getPriority(this._value)}<span className={'priority-marker-' + this._value}/>
-        </div>
     }
 }
