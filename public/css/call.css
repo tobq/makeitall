@@ -1,4 +1,4 @@
-.employee-full-name {
+.select-content-title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -14,7 +14,10 @@
           user-select: none;
 }
 
-.employee-id {
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -30,6 +33,26 @@
 .select-input {
   border-bottom: 1px solid lightgray;
   box-sizing: border-box;
+}
+
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -58,7 +81,7 @@
   vertical-align: middle;
 }
 
-.employee-full-name {
+.select-content-title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -74,7 +97,10 @@
           user-select: none;
 }
 
-.employee-id {
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -92,7 +118,27 @@
   box-sizing: border-box;
 }
 
-.employee-full-name {
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+.select-content-title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -108,7 +154,10 @@
           user-select: none;
 }
 
-.employee-id {
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -124,6 +173,83 @@
 .select-input {
   border-bottom: 1px solid lightgray;
   box-sizing: border-box;
+}
+
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+.select-content-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select-option-content,
+.select-problem-save,
+.select-problem-edit,
+.material-icons {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+.select-new-problem-con {
+  border: 1px solid lightgray;
+}
+
+.select-input {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -164,6 +290,12 @@
 .select-problem-save:focus,
 .select-problem-edit:focus {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+.select-problem-save.required-error {
+  background-color: #feefed !important;
+  outline-color: salmon;
+  outline-style: auto;
 }
 
 .select-create-problem {
@@ -228,7 +360,35 @@
   background-color: lightgray;
 }
 
-.employee-full-name {
+.new-problem-field:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.priority-marker-1,
+.priority-marker-2,
+.priority-marker-3 {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  margin-left: 4px;
+}
+
+.problem-priority-1,
+.priority-marker-1 {
+  background-color: #94d877 !important;
+}
+
+.problem-priority-2,
+.priority-marker-2 {
+  background-color: #ffd900 !important;
+}
+
+.problem-priority-3,
+.priority-marker-3 {
+  background-color: #ff5757 !important;
+}
+
+.select-content-title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -244,7 +404,10 @@
           user-select: none;
 }
 
-.employee-id {
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -262,7 +425,27 @@
   box-sizing: border-box;
 }
 
-.employee-full-name {
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+.select-content-title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -278,7 +461,10 @@
           user-select: none;
 }
 
-.employee-id {
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -296,7 +482,27 @@
   box-sizing: border-box;
 }
 
-.employee-full-name {
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+.select-content-title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -312,7 +518,10 @@
           user-select: none;
 }
 
-.employee-id {
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
   display: inline-block;
@@ -328,6 +537,26 @@
 .select-input {
   border-bottom: 1px solid lightgray;
   box-sizing: border-box;
+}
+
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -370,16 +599,22 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.select-problem-save.required-error {
+  background-color: #feefed !important;
+  outline-color: salmon;
+  outline-style: auto;
+}
+
 .select-create-problem {
   flex: 1 1;
   padding: 0 14px;
 }
 
-.employee-id {
+.tag-id {
   background: lightgray;
 }
 
-.employee-full-name {
+.select-content-title {
   flex-grow: 1;
 }
 
@@ -388,6 +623,7 @@
   display: flex;
   align-items: center;
   padding: 0 14px;
+  cursor: pointer;
 }
 
 .select-option-content > * {
@@ -401,5 +637,21 @@
 .select-field,
 textarea {
   box-sizing: border-box;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+#new-call-button {
+  display: none;
+}
+
+#report-call-button-con {
+  text-align: center;
+}
+
+#report-call-button {
+  margin-top: 20px;
 }
 

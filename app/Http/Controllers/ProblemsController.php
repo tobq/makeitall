@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Employee;
 use Illuminate\Support\Facades\DB;
-class EmployeesController extends Controller
+
+class ProblemsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Employee[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view('employees/index');
-        //
+        $problem = DB::table('problem')->get();
+        return view('problems/index', ['problem' => $problem]);
     }
 
     /**
@@ -36,7 +36,16 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->json()->all();
+        $id = DB::table('problem')->insertGetId(
+            [
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'problem_type_id' => $data['type'],
+                'priority' => $data['priority'],
+            ]
+        );
+        return ['id' => $id];
     }
 
     /**
@@ -86,13 +95,22 @@ class EmployeesController extends Controller
 
     public function list()
     {
-        return DB::select('
-SELECT employee.id, employee.title, employee.first_name, employee.last_name, department.name department_name
-FROM employee
-       INNER JOIN department ON employee.department_id = department.id;
-');
-        //
+        return DB::select('SELECT id, title, description, priority FROM problem;');
     }
 
+    public function types()
+    {
+        return DB::select('SELECT id, name FROM problem_type;');
+    }
 
+    public function assign($pid, $sid)
+    {
+        DB::table('specialist_problem')->insert(
+            [
+                'specialist_id' => $sid,
+                'problem_id' => $pid,
+            ]
+        );
+        return;
+    }
 }

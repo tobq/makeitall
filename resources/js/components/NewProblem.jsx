@@ -3,10 +3,11 @@ import {FieldLabel, RequiredLabel} from "./FieldLabel/FieldLabel";
 import MultiSelect from "./Select/MultiSelect";
 import PropTypes from "prop-types";
 import {RequiredTextarea, RequiredInput} from "./RequiredField";
-import Problem, {UrgencyOption} from "./Problem";
+import Problem, {PriorityOption} from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
 import SpecialistSelect from "./SpecialistSelect";
-import Select, {SelectOption} from "./Select/Select";
+import Select from "./Select/Select";
+import ProblemTypeSelect from "./ProblemTypeSelect";
 
 
 export default class NewProblem extends Component {
@@ -22,18 +23,22 @@ export default class NewProblem extends Component {
         devices: null,
         specialists: null,
         priority: null,
+        unsaved: false,
     };
 
     title = React.createRef();
+    problemType = React.createRef();
     description = React.createRef();
     devices = React.createRef();
     software = React.createRef();
     specialist = React.createRef();
     priority = React.createRef();
+    hardSoftware = React.createRef();
+    saveButton = React.createRef();
 
 
     save() {
-        if (this.validate()) {
+        if (this.parse()) {
             this.setState({
                 active: false,
                 title: this.title.current.value,
@@ -41,7 +46,8 @@ export default class NewProblem extends Component {
                 software: this.software.current.value,
                 devices: this.devices.current.value,
                 specialists: this.specialist.current.value,
-                priority: this.priority.current.value
+                priority: this.priority.current.value,
+                type: this.problemType.current.value
             });
         }
     }
@@ -51,72 +57,117 @@ export default class NewProblem extends Component {
         console.log("EDIT");
     }
 
-    validate() {
+    parse() {
         const titleValid = this.title.current.validate();
         const descriptionValid = this.description.current.validate();
-        const softwareValid = this.software.current.validate() || this.devices.current.validate();
-        if (softwareValid) {
+        const problemType = this.problemType.current.validate();
+        const hardSoftwareValid = this.software.current.validate() || this.devices.current.validate();
+        if (hardSoftwareValid) {
             this.software.current.resetValidate();
             this.devices.current.resetValidate();
-        }
+            this.hardSoftware.current.deactivate()
+        } else this.hardSoftware.current.activate();
+
         const specialistValid = this.specialist.current.validate();
         const priorityValid = this.priority.current.validate();
 
-        return titleValid && descriptionValid && softwareValid && specialistValid && priorityValid;
+        return titleValid &&
+            problemType &&
+            descriptionValid &&
+            hardSoftwareValid &&
+            specialistValid &&
+            priorityValid;
+    }
+
+    validate() {
+        const unsaved = this.state.active;
+        if (unsaved) {
+            if (this.parse()) {
+                this.saveButton.current.focus();
+                this.setState({unsaved: true});
+            }
+        } else {
+            this.setState({unsaved: false});
+        }
+        return !unsaved;
     }
 
     render() {
-
         const removeButton = <button
             className="select-option-remove"
             onClick={event => this.props.onRemove()}
         />;
+        let className = "select-problem-save";
+        if (this.state.unsaved) className += " required-error";
         return this.state.active ? <div className="select-new-problem-con">
                 <div className="select-row">
                     <div className="select-option-content">
-                        <div className="employee-id">New</div>
+                        <div className="tag-id">New</div>
                         <div className="select-problem-editing-label">Editing problem...</div>
                     </div>
                     <button
-                        className="select-problem-save"
+                        className={className}
+                        ref={this.saveButton}
                         onClick={event => this.save()}
                     />
                     {removeButton}
                 </div>
                 <div className="select-new-problem">
-                    <RequiredInput
-                        label="Title"
-                        placeholder="Problem Title"
-                        ref={this.title}
-                        value={this.state.title}
-                    />
-                    <RequiredTextarea
-                        ref={this.description}
-                        label="Description"
-                        value={this.state.description}
-                    />
-                    <FieldLabel for={this.software}>Installed Software</FieldLabel>
-                    <MultiSelect
-                        ref={this.software}
-                        type="Installed Software"
-                        options={[1, 2, 3, 4, 5, 6].map(x => new QueryOption(x))}
-                        selected={this.state.software}
-                    />
-                    <FieldLabel for={this.devices}>Affected Devices</FieldLabel>
-                    <MultiSelect
-                        ref={this.devices}
-                        type="Device"
-                        options={[1, 2, 3, 4, 5, 6].map(x => new QueryOption(x))}
-                        selected={this.state.devices}
-                    />
-                    <SpecialistSelect ref={this.specialist} label={"Assign Specialists"} selected={this.state.specialists}/>
-                    {/*<PrioritySelect/>*/}
-                    <RequiredLabel for={this.priority}>Priority</RequiredLabel>
-                    <Select type={"Priority"}
-                            options={[1, 2, 3].map(x => new UrgencyOption(x))}
-                            ref={this.priority}
-                            value={this.state.priority}
-                    />
+                    <div className="new-problem-field">
+                        <RequiredInput
+                            label="Title"
+                            placeholder="Problem Title"
+                            ref={this.title}
+                            value={this.state.title}
+                        />
+                    </div>
+                    <div className="new-problem-field">
+                        <ProblemTypeSelect
+                            value={this.state.type}
+                            ref={this.problemType}
+                            label="Referenced problems"
+                            onchange={console.log}
+                        />
+                    </div>
+                    <div className="new-problem-field">
+                        <RequiredTextarea
+                            ref={this.description}
+                            label="Description"
+                            value={this.state.description}
+                        />
+                    </div>
+                    <div className="new-problem-field">
+                        <RequiredLabel for={this.software} ref={this.hardSoftware}>
+                            Installed Software / Affected Devices
+                        </RequiredLabel>
+                        <MultiSelect
+                            ref={this.software}
+                            type="Installed Software"
+                            options={[1, 2, 3, 4, 5, 6].map(x => new QueryOption(x))}
+                            selected={this.state.software}
+                        />
+                        <MultiSelect
+                            ref={this.devices}
+                            type="Device"
+                            options={[1, 2, 3, 4, 5, 6].map(x => new QueryOption(x))}
+                            selected={this.state.devices}
+                        />
+                    </div>
+                    <div className="new-problem-field">
+                        <SpecialistSelect
+                            ref={this.specialist}
+                            label={"Assign Specialists"}
+                            selected={this.state.specialists}
+                        />
+                    </div>
+                    <div className="new-problem-field">
+                        <RequiredLabel for={this.priority}>Priority</RequiredLabel>
+                        <Select type={"Priority"}
+                                options={[1, 2, 3].map(x => new PriorityOption(x))}
+                                ref={this.priority}
+                                value={this.state.priority}
+                        />
+                    </div>
                 </div>
             </div>
             :
@@ -128,46 +179,17 @@ export default class NewProblem extends Component {
                 />
                 {removeButton}
             </div>;
-
-    }
-}
-
-class PrioritySelect extends Component {
-    value = 0;
-
-    state = {display: this.value};
-
-    display(priority) {
-        this.setState({display: priority})
     }
 
-    select(priority) {
-        console.log("VALUE:  " + priority);
-        this.value = priority;
-    }
-
-    reset() {
-        this.display(this.value);
-    }
-
-    render() {
-        const options = [];
-        const currentDisplay = this.state.display;
-        for (let i = 0; i < 5; i++) {
-            let className = "select-priority-option";
-            if (i < currentDisplay) className += " active";
-            options[i] = <button
-                className={className}
-                onMouseEnter={this.display.bind(this, i + 1)}
-                onFocus={this.display.bind(this, i + 1)}
-                onClick={this.select.bind(this, i + 1)}
-            />;
+    get value() {
+        return {
+            title: this.state.title,
+            description: this.state.description,
+            software: this.state.software,
+            devices: this.state.devices,
+            specialists: this.state.specialists.map(specialist => specialist.value),
+            priority: this.state.priority.value,
+            type: this.state.type.value
         }
-
-        return <div
-            className="select-priority"
-            onMouseLeave={event => this.reset()}>
-            Normal {options} Emergency
-        </div>
     }
 }

@@ -19,7 +19,6 @@ export default class Select extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props.value);
         this.state.option = props.value;
     }
 
@@ -56,10 +55,7 @@ export default class Select extends Component {
     }
 
     open() {
-        console.log("OPEN", this.refs.root);
-        // console.trace("OPEN");
         if (this.state.active) return false;
-        // this.focus()
         this.setState({active: true}, then => {
             this.refs.options.scrollTop = 0;
         });
@@ -67,8 +63,6 @@ export default class Select extends Component {
     }
 
     close() {
-        console.log("CLOSE", this.refs.root);
-        // console.trace("CLOSE");
         this.setState({active: false});
     }
 
@@ -108,6 +102,7 @@ export default class Select extends Component {
                         tabIndex={this.state.active ? 0 : -1}
                         onClick={event => this.select(option)}
                         className={"select-option"}
+                        key={option.getKey()}
                     >
                         {option.render()}
                     </button>)}
@@ -127,7 +122,6 @@ export default class Select extends Component {
     render() {
         let className = "select-field";
         if (this.state.active) className += " active";
-        if (this.valid()) console.log(this.state.option);
 
         return <div className="select-root">
             <div className={className} ref={"root"}>
@@ -156,6 +150,10 @@ export class SelectOption {
         return <div className="select-option-content">
             {this._value.toString()}
         </div>
+    }
+
+    getKey() {
+        return this.value;
     }
 
     equals(option) {

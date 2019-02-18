@@ -20,10 +20,18 @@ export default class EmployeeSelect extends React.Component {
 
     state = {options: []};
     ref = React.createRef();
+    label = React.createRef();
+
+    validate() {
+        const valid = this.ref.current.validate();
+        if (valid) this.label.current.deactivate();
+        else this.label.current.activate();
+        return valid;
+    }
 
     render() {
         return this.state.options ? <div className="employee-select">
-            <RequiredLabel for={this.ref}>{this.props.label}</RequiredLabel>
+            <RequiredLabel ref={this.label} for={this.ref}>{this.props.label}</RequiredLabel>
             <SearchSelect
                 ref={this.ref}
                 type="Employee"
@@ -32,6 +40,10 @@ export default class EmployeeSelect extends React.Component {
             />
         </div> : null
 
+    }
+
+    get value() {
+        return this.ref.current.value;
     }
 }
 
@@ -42,16 +54,20 @@ export class EmployeeOption extends QueryOption {
     }
 
     toSearchString() {
-        const employee = this.value;
-        return this.prepareSearchString(`${employee.id} ${employee.fullName()}`);
+        const employee = this._value;
+        return QueryOption.prepareSearchString(`${employee.id} ${employee.fullName()}`);
     }
 
     render() {
         return <div className="select-option-content">
-            <div className="employee-id">ID: {this.value.id}</div>
-            <div className="employee-full-name">{this.value.fullName()}</div>
-            <div className="tag">{this.value.department_name}</div>
+            <div className="tag-id">ID: {this._value.id}</div>
+            <div className="select-content-title">{this._value.fullName()}</div>
+            <div className="tag">{this._value.department_name}</div>
         </div>
+    }
+
+    get value() {
+        return this._value.id;
     }
 
     static async fetch() {

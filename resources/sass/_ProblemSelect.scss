@@ -1,5 +1,9 @@
 @import "SelectVariables";
 
+$priority-colour-1: #94d877;
+$priority-colour-2: $MIA-yellow;
+$priority-colour-3: #ff5757;
+
 .select-new-problem-con {
   @extend %MIA-outline;
   //@extend %hover-shadow;
@@ -43,6 +47,10 @@
 
 .select-problem-save {
   @extend %select-button;
+
+  &.required-error {
+    @extend %required-error;
+  }
 
   &:after {
     content: 'save';
@@ -110,6 +118,7 @@ $priority-size: 22px;
   line-height: $button-height;
   text-align: center;
 }
+
 .select-priority-option {
   outline: none;
   margin: 0 6px;
@@ -123,3 +132,31 @@ $priority-size: 22px;
     background-color: $MIA-grey;
   }
 }
+
+.new-problem-field:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.problem-priority-3, .problem-priority-1, .problem-priority-2 {
+  @extend %tag;
+}
+
+.priority-marker-1, .priority-marker-2, .priority-marker-3 {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  margin-left: 4px;
+}
+
+.problem-priority-1, .priority-marker-1 {
+  background-color: $priority-colour-1 !important;
+}
+
+.problem-priority-2, .priority-marker-2 {
+  background-color: $priority-colour-2 !important;
+}
+
+.problem-priority-3, .priority-marker-3 {
+  background-color: $priority-colour-3 !important;
+}
+

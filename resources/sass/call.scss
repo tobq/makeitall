@@ -1,4 +1,5 @@
 @import "material-icons";
+@import "variables";
 @import "ProblemSelect";
 @import "SelectOption";
 
@@ -10,3 +11,20 @@
   box-sizing: border-box;
 
 }
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+#new-call-button {
+  display: none;
+}
+
+#report-call-button-con {
+  text-align: center;
+}
+#report-call-button {
+  @extend %call-button;
+  margin-top: 20px;
+}
+
