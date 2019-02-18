@@ -714,6 +714,12 @@
   text-align: center;
 }
 
+#form,
+#suggestions {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
 #form-content {
   display: inline-block;
   max-width: 600px;
