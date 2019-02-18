@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/', 'UsersController@dashboard');
+
+Route::get('/', 'HomeController@index');
 Route::get('/specialists/list', 'SpecialistsController@list');
 Route::get('/problem-types', 'ProblemsController@types');
 Route::get('/problems/list', 'ProblemsController@list');
