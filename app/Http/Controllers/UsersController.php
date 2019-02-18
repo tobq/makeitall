@@ -4,21 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
-class ProblemsController extends Controller
+class UsersController extends Controller
 {
-    public function __construct() {
-        $this->middleware( 'admin');
-    }
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $problem = DB::table('problem')->get();
-        return view('problems/index', ['problem' => $problem]);
+        if ($request->session()->has("id")) return redirect('/');
+        return view("login");
     }
 
     /**
@@ -40,15 +40,25 @@ class ProblemsController extends Controller
     public function store(Request $request)
     {
         $data = $request->json()->all();
-        $id = DB::table('problem')->insertGetId(
-            [
-                'title' => $data['title'],
-                'description' => $data['description'],
-                'problem_type_id' => $data['type'],
-                'priority' => $data['priority'],
-            ]
-        );
-        return ['id' => $id];
+        $validator = Validator::make($data, [
+            'id' => 'required|int',
+            'password' => 'required|string|min:6|max:128'
+        ]);
+        if ($validator->fails()) return ["error" => "Input validation failed"];
+
+        $id = $request->json('id');
+        $password = $request->json('password');
+
+        $employees = DB::table('login')->select('first_name', 'password_hash')->where('employee_id', $id)
+            ->join('employee', 'login.employee_id', 'employee.id')
+            ->get();
+        $employee = $employees[0];
+        if (!$employee ||
+            Hash::check($password, $employee->password_hash)) {
+            $request->session()->put("id", $id);
+            $request->session()->put("name", $employee->first_name);
+            return ["valid" => true];
+        } else  return ["error" => "Username and password mismatch"];
     }
 
     /**
@@ -91,39 +101,10 @@ class ProblemsController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
-    }
-
-    public function list()
-    {
-        return DB::select('SELECT id, title, description, priority FROM problem;');
-    }
-
-    public function types()
-    {
-        return DB::select('SELECT id, name FROM problem_type;');
-    }
-
-    public function assign($pid, $sid)
-    {
-        DB::table('specialist_problem')->insert(
-            [
-                'specialist_id' => $sid,
-                'problem_id' => $pid,
-            ]
-        );
-        return;
-    }
-
-    public function byType($tid)
-    {
-        return DB::table('problem')
-            ->select('id', 'creation', 'title', 'solution.description')
-            ->join('problem_solution','problem_solution.problem_id','problem.id')
-            ->where('problem_type_id', $tid)
-            ->orderByDesc('creation')
-            ->get();
+        $request->session()->remove('id');
+        $request->session()->remove('name');
+        return redirect('/login');
     }
 }

@@ -7,6 +7,9 @@ use App\Employee;
 use Illuminate\Support\Facades\DB;
 class EmployeesController extends Controller
 {
+    public function __construct() {
+        $this->middleware( 'admin');
+    }
     /**
      * Display a listing of the resource.
      *

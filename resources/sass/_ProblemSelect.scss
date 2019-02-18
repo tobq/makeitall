@@ -2,14 +2,21 @@
 
 $priority-colour-1: #94d877;
 $priority-colour-2: $MIA-yellow;
-$priority-colour-3: #ff5757;
+$priority-colour-3: $error-color;
 
 .select-new-problem-con {
   @extend %MIA-outline;
+  border-top-width: 0 !important;
   //@extend %hover-shadow;
   position: relative;
   z-index: 3;
+  //overflow: hidden;
   //display: flex;
+}
+
+.select-new-problem-header {
+  @extend %content-row;
+  @extend %list-item-shadow;
 }
 
 .select-create-problem {
@@ -28,7 +35,7 @@ $priority-colour-3: #ff5757;
 }
 
 .select-new-problem {
-  padding: 30px;
+  padding: 24px 30px;
 }
 
 //

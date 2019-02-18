@@ -11,13 +11,19 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 
 Route::get('/', 'HomeController@index');
 Route::get('/specialists/list', 'SpecialistsController@list');
 Route::get('/problem-types', 'ProblemsController@types');
 Route::get('/problems/list', 'ProblemsController@list');
+Route::get('/problems/type/{tid}', 'ProblemsController@byType');
 Route::get('/problems/{pid}/assign/{sid}', 'ProblemsController@assign');
 Route::get('/calls/{cid}/assign/{pid}', 'CallsController@assign');
+Route::get('/login', 'UsersController@index');
+Route::get('/logout', 'UsersController@destroy');
+Route::post('/login', 'UsersController@store');
 Route::get('/employees/list', 'EmployeesController@list');
 
 Route::resource('problems', 'ProblemsController');

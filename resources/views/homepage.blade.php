@@ -6,7 +6,7 @@
 @endsection
 {{--The user is greeted with their name--}}
 @section("title")
-    Welcome $Alice
+    Welcome {{Session::get('name')}}
 @endsection
 @section("content")
     {{--the page starts with problem statistics to give them an overview of the company wide problem changing process--}}

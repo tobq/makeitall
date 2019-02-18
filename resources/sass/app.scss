@@ -2,7 +2,6 @@
 @import "variables";
 @import "fonts";
 @import "material-icons";
-
 @import "Select";
 @import "FieldLabel";
 
@@ -20,6 +19,7 @@ body {
   padding-top: $logo-height;
   margin: 0 0 0 $sidebar-width;
   text-align: center;
+  height: 100vh;
 
   > * {
     text-align: left;
@@ -29,7 +29,7 @@ body {
 #body-content {
   display: inline-block;
   max-width: 100%;
-  width: 600px;
+  height: 100%;
   box-sizing: border-box;
   padding: $body-spacing;
 }
@@ -73,7 +73,7 @@ DOCUMENT HEADER / NAVBAR CSS
   pointer-events: none;
 }
 
-#header-con{
+#header-con {
   display: flex;
 }
 
@@ -84,7 +84,7 @@ header {
   //box-sizing: border-box;
   //width: 100%;
   padding: 0 $body-spacing;
-  background-color: rgba($header-colour, 0.95);
+  background: linear-gradient($header-colour, rgba($header-colour, 0.8));
   box-shadow: 0 2px 4px rgba(black, 0.05);
   align-items: center;
 
@@ -94,6 +94,7 @@ header {
     border-radius: $button-radius;
 
     margin-right: $sidebar-spacing;
+
     &:last-child {
       margin-right: 0;
     }
@@ -218,6 +219,7 @@ nav {
 }
 
 #user-noti {
+  display: none;
   position: relative;
   transition: color 200ms ease;
 
@@ -236,4 +238,12 @@ nav {
 
 .tag {
   @extend %tag;
+}
+
+.content-row {
+  @extend %content-row;
+}
+
+@media screen and (max-width: 480px) {
+  
 }

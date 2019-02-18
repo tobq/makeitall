@@ -3,6 +3,47 @@
 @import "ProblemSelect";
 @import "SelectOption";
 
+#body-content {
+  display: flex;
+  align-content: stretch;
+  padding: 0;
+}
+
+#form {
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: 30px;
+  text-align: center;
+}
+
+#form-content {
+  display: inline-block;
+  max-width: 600px;
+  width: 100%;
+  text-align: left;
+}
+
+#suggestions {
+  //flex-shrink: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  width: 300px;
+  background: linear-gradient(90deg, transparent, transparent, rgba(black, 0.05));
+
+  > h1 {
+    font-weight: normal;
+  }
+}
+
+#suggestions-list {
+  text-align: left;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 0 10px;
+}
+
 .select-field, textarea {
   //margin-bottom: 24px; TODO: MARGIN-BOTTOM
   //&:last-child {
@@ -23,8 +64,27 @@
 #report-call-button-con {
   text-align: center;
 }
+
 #report-call-button {
   @extend %call-button;
   margin-top: 20px;
+}
+
+.problem-card {
+  background-color: white;
+  margin-bottom: 10px;
+
+  .select-option-content {
+    height: $button-height;
+  }
+}
+
+.problem-card-title {
+  font-size: 18px;
+}
+
+.problem-card-description {
+  padding: 10px;
+  font-size: 14px;
 }
 

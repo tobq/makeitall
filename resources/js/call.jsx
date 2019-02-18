@@ -4,16 +4,19 @@ import ProblemSelect from "./components/ProblemSelect";
 import EmployeeSelect from "./components/EmployeeSelect";
 import {RequiredTextarea} from "./components/RequiredField";
 import PostJSON from "./components/PostJSON";
+import {FieldLabel} from "./components/FieldLabel/FieldLabel";
+import ProblemCard from "./components/ProblemCard";
+import Problem from "./components/Problem";
 
-const content = document.getElementById("body-content");
+const content = document.getElementById("form");
+const suggestionList = document.getElementById("suggestions-list");
 
 const reasonRef = React.createRef(),
     notesRef = React.createRef(),
     problemsRef = React.createRef(),
-    problemTypeRef = React.createRef(),
     employeeRef = React.createRef();
 
-ReactDOM.render(<div>
+ReactDOM.render(<div id="form-content">
     <div className="form-field">
         <EmployeeSelect
             label="Caller"
@@ -28,14 +31,15 @@ ReactDOM.render(<div>
     </div>
 
     <div className="form-field">
-        <RequiredTextarea label="Call Notes" ref={notesRef}/>
+        <FieldLabel for={notesRef}>Call Notes</FieldLabel>
+        <textarea ref={notesRef}/>
     </div>
 
     <div className="form-field">
         <ProblemSelect
             ref={problemsRef}
             label="Referenced problems"
-            onchange={console.log}
+            onChanged={suggest}
         />
     </div>
     <div id="report-call-button-con">
@@ -43,22 +47,22 @@ ReactDOM.render(<div>
     </div>
 </div>, content);
 
-function onSubmit() {
+async function onSubmit() {
     const reasonValid = reasonRef.current.validate();
-    const notesValid = notesRef.current.validate();
     const problemsValid = problemsRef.current.validate();
     const employeeValid = employeeRef.current.validate();
     if (!reasonValid ||
-        !notesValid ||
         !problemsValid ||
         !employeeValid) return;
 
-    createCall(
-        employeeRef.current.value.value,
+    const call_id = await createCall(
+        employeeRef.current.value,
         reasonRef.current.value,
         notesRef.current.value,
         problemsRef.current.value
-    ).then(call_id => window.href = `/calls/${call_id}`);
+    );
+
+    window.location.href = `/calls/${call_id}`;
 }
 
 async function createCall(caller_id, reason, notes, problems) {
@@ -96,3 +100,20 @@ async function createProblem(problem) {
 
     return problem_id;
 }
+
+async function suggest() {
+    console.log("SUGGESTING");
+    const created = problemsRef.current.value.created;
+    const cards = []
+    for (let newProblem of created) {
+        const response = await fetch(`/problems/type/${newProblem.type}`);
+        const problems = await response.json();
+        for (let problem of problems)
+            cards.push(<ProblemCard problem={Problem.fromRow(problem)}/>)
+    }
+    ReactDOM.render(cards, suggestionList);
+}
+
+//TODO: FiLTER SPECIALISTS TO THOSE FOR TYPE;
+
+//TODO: LOADING SCREEN;

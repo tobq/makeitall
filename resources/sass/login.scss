@@ -1,0 +1,67 @@
+@import "variables";
+@import "fonts";
+
+nav, #new-call-button, #user-noti, #user-menu {
+  display: none;
+}
+
+* {
+  outline: none;
+  border: none;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  background-color: $MIA-light-grey;
+}
+
+#body-content {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+
+#login-fields {
+  box-shadow: 0 4px 16px rgba(black, 0.1);
+  margin-bottom: 30px;
+  padding: 0 20px;
+  background-color: white;
+  display: inline-block;
+  max-width: 300px;
+
+  > * {
+    width: 100%;
+    outline: none;
+    height: $button-height;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $MIA-light-grey;
+    }
+  }
+}
+
+#logo {
+  font-family: "Bauhaus 93";
+  font-size: 28px;
+
+}
+
+#login {
+  @extend %call-button;
+}
+
+$logo-size: 32px;
+
+.logo-image {
+  height: $logo-size;
+  width: $logo-size;
+  display: inline-block;
+  margin: 0 10px;
+  background: url(/i/logo-small.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}

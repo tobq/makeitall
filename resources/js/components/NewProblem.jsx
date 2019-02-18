@@ -1,18 +1,20 @@
 import React, {Component} from "react";
-import {FieldLabel, RequiredLabel} from "./FieldLabel/FieldLabel";
+import {RequiredLabel} from "./FieldLabel/FieldLabel";
 import MultiSelect from "./Select/MultiSelect";
 import PropTypes from "prop-types";
 import {RequiredTextarea, RequiredInput} from "./RequiredField";
-import Problem, {PriorityOption} from "./Problem";
+import Problem from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
 import SpecialistSelect from "./SpecialistSelect";
 import Select from "./Select/Select";
 import ProblemTypeSelect from "./ProblemTypeSelect";
+import {PriorityOption} from "./ProblemSelect";
 
 
 export default class NewProblem extends Component {
     static propTypes = {
-        onRemove: PropTypes.func.isRequired
+        onRemove: PropTypes.func.isRequired,
+        onChanged: PropTypes.func,
     };
 
     state = {
@@ -37,9 +39,9 @@ export default class NewProblem extends Component {
     saveButton = React.createRef();
 
 
-    save() {
+    async save() {
         if (this.parse()) {
-            this.setState({
+            const newProblem = {
                 active: false,
                 title: this.title.current.value,
                 description: this.description.current.value,
@@ -48,13 +50,14 @@ export default class NewProblem extends Component {
                 specialists: this.specialist.current.value,
                 priority: this.priority.current.value,
                 type: this.problemType.current.value
-            });
+            };
+            await this.setState(newProblem);
+            if (this.props.onChanged) this.props.onChanged(newProblem);
         }
     }
 
     edit() {
         this.setState({active: true});
-        console.log("EDIT");
     }
 
     parse() {
@@ -100,7 +103,7 @@ export default class NewProblem extends Component {
         let className = "select-problem-save";
         if (this.state.unsaved) className += " required-error";
         return this.state.active ? <div className="select-new-problem-con">
-                <div className="select-row">
+                <div className="select-new-problem-header">
                     <div className="select-option-content">
                         <div className="tag-id">New</div>
                         <div className="select-problem-editing-label">Editing problem...</div>
@@ -171,7 +174,7 @@ export default class NewProblem extends Component {
                 </div>
             </div>
             :
-            <div className="select-row">
+            <div className="multi-select-item">
                 {Problem.render("New", this.state.title, this.state.priority.value)}
                 <button
                     className="select-problem-edit"

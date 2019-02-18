@@ -5,11 +5,12 @@ import {RequiredLabel} from "./FieldLabel/FieldLabel";
 import React from "react";
 import Problem from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
+import {SelectOption} from "./Select/Select";
 
 export default class ProblemSelect extends React.Component {
     static propTypes = {
         label: PropTypes.string.isRequired,
-        onchange: PropTypes.func,
+        onChanged: PropTypes.func,
     };
 
     ref = React.createRef();
@@ -33,7 +34,11 @@ export default class ProblemSelect extends React.Component {
         if (this.state.created.length !== 0 &&
             !this.state.created[this.state.created.length - 1].ref.current.validate()) return false;
         const ref = React.createRef();
-        const newProblem = <NewProblem ref={ref} onRemove={() => this.unCreate(newProblem)}/>;
+        const newProblem = <NewProblem
+            ref={ref}
+            onRemove={() => this.unCreate(newProblem)}
+            onChanged={this.props.onChanged}
+        />;
         const created = [...this.state.created, newProblem];
         this.setState({created: created});
     }
@@ -70,7 +75,9 @@ export default class ProblemSelect extends React.Component {
                 >Create New Problem
                 </button>
             </div>
-            {this.state.created}
+            <div className="multi-select-list">
+                {this.state.created}
+            </div>
             <MultiSelect
                 ref={this.ref}
                 type={"Problem"}
@@ -87,7 +94,6 @@ export default class ProblemSelect extends React.Component {
         }
     }
 }
-
 
 export class ProblemOption extends QueryOption {
     constructor(value) {
@@ -113,5 +119,13 @@ export class ProblemOption extends QueryOption {
     static async fetch() {
         const problems = await Problem.fetch();
         return problems.map(employee => new ProblemOption(employee));
+    }
+}
+
+export class PriorityOption extends SelectOption {
+    render() {
+        return <div className="select-option-content">
+            {Problem.getPriority(this._value)}<span className={'priority-marker-' + this._value}/>
+        </div>
     }
 }

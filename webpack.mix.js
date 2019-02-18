@@ -14,9 +14,11 @@ const mix = require('laravel-mix');
 mix
     .react('resources/js/app.jsx', 'public/js')
     .react('resources/js/call.jsx', 'public/js')
+    .js('resources/js/Login.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/call.scss', 'public/css')
     .sass('resources/sass/dashboard.scss', 'public/css')
+    .sass('resources/sass/login.scss', 'public/css')
 
     // .sass('resources/sass/FieldLabel.scss', 'public/css/FieldLabel')
     // .sass('resources/sass/Select.scss', 'public/css/Select')
