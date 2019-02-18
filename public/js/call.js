@@ -26526,7 +26526,8 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(EmployeeSelect).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
-      options: []
+      options: [],
+      value: null
     });
 
     _defineProperty(_assertThisInitialized(_this), "ref", react__WEBPACK_IMPORTED_MODULE_5___default.a.createRef());
@@ -26551,6 +26552,8 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       return this.state.options ? react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("div", {
         className: "employee-select"
       }, react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement(_FieldLabel_FieldLabel__WEBPACK_IMPORTED_MODULE_4__["RequiredLabel"], {
@@ -26560,8 +26563,22 @@ function (_React$Component) {
         ref: this.ref,
         type: "Employee",
         options: this.state.options,
-        onchange: console.log
+        onchange: function onchange(employeeOption) {
+          // console.log(employeeOption);
+          _this2.setState({
+            value: employeeOption.value
+          });
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_5___default.a.createElement("input", {
+        type: "hidden",
+        value: this.value,
+        name: "employee-id"
       })) : null;
+    }
+  }, {
+    key: "value",
+    get: function get() {
+      return this.state.value ? this.state.value.id : null;
     }
   }]);
 

@@ -1,3 +1,4 @@
+<!-- blade template layouts -->
 @extends("layouts.base")
 @section("head")
     <link rel="stylesheet" href="/css/dashboard.css"/>
@@ -7,8 +8,9 @@
     Calls
 @endsection
 @section("content")
-    @for($c = 0; $c < count($call); $c++)
+    <!-- creates table to contain calls -->
     <table class = 'associatedcallstable'>
+        <!-- creates row of headers -->
         <tr>
             <th class = 'notreason'>
                 Call ID
@@ -26,23 +28,25 @@
                 Reason
             </th>
         </tr>
+        <!-- Loop and reads all the columns in the call table -->
+        @for($c = 0; $c < count($call); $c++)
         <tr>
-            <td>
-                <p class = 'notreasonfield callid'>{{ $call[$c]->id }}</p>
+            <td class="rowspace">
+                <p class = 'notreasonfield'>{{ $call[$c]->id }}</p>
             </td>
-            <td>
-                <p class = 'notreasonfield calloperatorid'>{{ $call[$c]->operator_id }}</p>
+            <td class="rowspace">
+                <p class = 'notreasonfield'>{{ $call[$c]->operator_id }}</p>
             </td>
-            <td>
-                <p class = 'notreasonfield callcallerid'>{{ $call[$c]->caller_id }}</p>
+            <td class="rowspace">
+                <p class = 'notreasonfield'>{{ $call[$c]->caller_id }}</p>
             </td>
-            <td>
-                <p class = 'notreasonfield calldate'>{{ $call[$c]->date }}</p>
+            <td class="rowspace">
+                <p class = 'notreasonfield'>{{ $call[$c]->date }}</p>
             </td>
-            <td>
+            <td class="rowspace">
                 <p class = 'callreason'>{{ $call[$c]->reason }}</p>
             </td>
         </tr>
+        @endfor
     </table>
-    @endfor
 @endsection

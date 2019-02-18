@@ -14,10 +14,13 @@ class ProblemsController extends Controller
      */
     public function index()
     {
+        // Retrieves databases
         $problem_solution = DB::table('problem_solution')->get();
+        // This one is ordered by highest priority first
         $problem = DB::table('problem')->orderby('priority','desc')->get();
         $call = DB::table('call')->get();
         $call_problem = DB::table('call_problem')->get();
+        // Returns the view with the databases
         return view('problems/index', ['problem' => $problem, 'call' => $call, 'call_problem' => $call_problem, 'problem_solution' => $problem_solution]);
     }
 
@@ -74,6 +77,7 @@ class ProblemsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Used to edit the problem
         DB::table('problem')
             -> where('id', $id)
             -> update([

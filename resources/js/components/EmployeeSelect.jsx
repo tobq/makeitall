@@ -18,11 +18,15 @@ export default class EmployeeSelect extends React.Component {
             .then(options => this.setState({options: options}));
     }
 
-    state = {options: []};
+    state = {options: [],value:null};
     ref = React.createRef();
     label = React.createRef();
 
-    validate(){
+    get value() {
+        return this.state.value?this.state.value.id:null
+    }
+
+    validate() {
         const valid = this.ref.current.validate();
         if (valid) this.label.current.deactivate();
         else this.label.current.activate();
@@ -36,8 +40,14 @@ export default class EmployeeSelect extends React.Component {
                 ref={this.ref}
                 type="Employee"
                 options={this.state.options}
-                onchange={console.log}
+                onchange={employeeOption => {
+                    // console.log(employeeOption);
+                    this.setState({
+                        value:employeeOption.value
+                    });
+                }}
             />
+            <input type="hidden" value={this.value} name="employee-id"/>
         </div> : null
 
     }
