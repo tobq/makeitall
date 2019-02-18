@@ -61,11 +61,12 @@
         <?php
         for ($i = 0; $i < count($problem); $i++) {
             echo "<div class='card--content'>";
-
+            echo "<div class='container-head'>";
             echo "<p class='problem-id'>Problem ID: {$problem[$i]->id}";
             echo "</p>";
             echo "<p class='date'>Created: {$problem[$i]->creation}";
             echo "</p>";
+            echo "</div>";
             echo "<p class='problem-title'>{$problem[$i]->title}";
             echo "</p>";
             echo "<p class='desc'>{$problem[$i]->description}";
