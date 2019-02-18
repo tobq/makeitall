@@ -13,14 +13,15 @@
 
 use Illuminate\Support\Facades\DB;
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', 'HomeController@index');
 
 Route::get('/calls/new', function () {
     return view('calls.new');
 });
 
+Route::get('/login', function () {
+    return view('Log_in.log_in');
+});
 
 Route::get('/specialists', function () {
     return DB::select('
