@@ -42,9 +42,3 @@ Route::get('/problems', function () {
 Route::resource('equipment', 'EquipmentController');
 Route::resource('employees', 'EmployeesController');
 Route::resource('departments', 'DepartmentsController');
-
-
-
-
-
-
