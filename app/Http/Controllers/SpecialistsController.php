@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class SpecialistsController extends Controller
 {
+    public function __construct() {
+        $this->middleware( 'admin')->except('/login');
+    }
     public function list()
     {
         return DB::select('

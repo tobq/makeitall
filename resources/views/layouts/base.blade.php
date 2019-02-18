@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-name" content="{{Session::get('name')}}">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Make It All</title>
     <meta name="description" content="Make it all - Tech support web portal">
@@ -32,7 +33,7 @@
         <a href="/problems"><i class="material-icons">assignment</i>Problems</a>
         <a href="/calls"><i class="material-icons">list</i>Calls</a>
         <a href="/employees"><i class="material-icons">group</i>Employees</a>
-        <a href="/"><i class="material-icons">business_center</i>Equipment</a>
+        <a href="/equipment"><i class="material-icons">business_center</i>Equipment</a>
     </nav>
 </section>
 <section id="body-content">

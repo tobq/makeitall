@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CallsController extends Controller
+class EquipmentController extends Controller
 {
-    public function __construct() {
-        $this->middleware( 'admin');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -17,17 +14,27 @@ class CallsController extends Controller
      */
     public function index()
     {
-        return view('calls/index');
+     $software = DB::table('software')->get();
+	 $hardware = DB::table('hardware')->get();
+	 return view ('Equipments', ['software' => $software, 'hardware' => $hardware]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('calls/create');
+        DB::table('software')->insert(
+            []);
+    }
+
+    public function createhard(Request $request)
+    {
+        DB::table('hardware')->insert([
+            []]);
     }
 
     /**
@@ -38,17 +45,7 @@ class CallsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->json()->all();
-        $id = DB::table('call')->insertGetId(
-            [
-                'operator_id' => $data['operator_id'],
-                //TODO: GET JANA's LOGIN STUFF FROM SESSION SERVER SIDE
-                'caller_id' => $data['caller_id'],
-                'reason' => $data['reason'],
-                'notes' => $data['notes'],
-            ]
-        );
-        return ['id' => $id];
+        //
     }
 
     /**
@@ -94,16 +91,5 @@ class CallsController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function assign($cid, $pid)
-    {
-        DB::table('call_problem')->insert(
-            [
-                'call_id' => $cid,
-                'problem_id' => $pid,
-            ]
-        );
-        return;
     }
 }

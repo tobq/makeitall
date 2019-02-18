@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class ProblemsController extends Controller
 {
+    public function __construct() {
+        $this->middleware( 'admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -117,7 +120,8 @@ class ProblemsController extends Controller
     public function byType($tid)
     {
         return DB::table('problem')
-            ->select('id', 'creation', 'title', 'description', 'priority')
+            ->select('id', 'creation', 'title', 'solution.description')
+            ->join('problem_solution','problem_solution.problem_id','problem.id')
             ->where('problem_type_id', $tid)
             ->orderByDesc('creation')
             ->get();

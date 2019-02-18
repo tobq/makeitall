@@ -29,6 +29,7 @@ body {
 #body-content {
   display: inline-block;
   max-width: 100%;
+  height: 100%;
   box-sizing: border-box;
   padding: $body-spacing;
 }
@@ -218,6 +219,7 @@ nav {
 }
 
 #user-noti {
+  display: none;
   position: relative;
   transition: color 200ms ease;
 

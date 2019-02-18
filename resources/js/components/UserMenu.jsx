@@ -1,12 +1,16 @@
 import React, {Component} from "react";
 
 export default class UserMenu extends Component {
-    state = {active: false};
+    state = {
+        active: false,
+        user: document.querySelector('meta[name="user-name"]').getAttribute('content')
+    };
 
     componentDidMount() {
         this.refs.root.addEventListener("focusout", (event) => {
             if (!this.refs.root.contains(event.relatedTarget)) this.close();
         });
+
     }
 
     render() {
@@ -14,10 +18,8 @@ export default class UserMenu extends Component {
         return <div tabIndex={-1} ref={"root"} className={"user-menu-root" + (this.state.active ? " active" : "")}>
             <button className="user-display-picture" onClick={event => this.toggle()}/>
             <div className="user-menu-list">
-                <a className="user-menu-name" href="/" tabIndex={rovingIndex}>$Alice</a>
-                <a href="/" tabIndex={rovingIndex}>Settings</a>
-                <a href="/" tabIndex={rovingIndex}>Something</a>
-                <a href="/" tabIndex={rovingIndex}>Log Out</a>
+                <a className="user-menu-name" href="/" tabIndex={rovingIndex}>{this.state.user}</a>
+                <a href="/logout" tabIndex={rovingIndex}>Log Out</a>
             </div>
         </div>
     }

@@ -8,10 +8,11 @@
     <meta name="description" content="Make it all - Tech support web portal">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="/css/login.css"/>
+    <script src="/js/Login.js" async defer></script>
 </head>
 
 <body>
-<div id="body-content">
+<form id="body-content">
     <div id="logo">
         <div class="logo-image"></div>
         MakeItAll
@@ -24,6 +25,6 @@
     </div>
     <br/>
     <button id="login">Log In</button>
-</div>
+</form>
 </body>
 </html>

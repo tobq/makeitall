@@ -8,7 +8,7 @@
 @section("content")
     <section id="form"></section>
     <section id="suggestions">
-        <h1>Suggested Problems</h1>
+        <h1>Suggested Solution</h1>
         <div id="suggestions-list"></div>
     </section>
 @endsection

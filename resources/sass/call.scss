@@ -30,7 +30,7 @@
   flex-direction: column;
   align-content: stretch;
   width: 300px;
-  background: linear-gradient(90deg, transparent, rgba(black, 0.1));
+  background: linear-gradient(90deg, transparent, transparent, rgba(black, 0.05));
 
   > h1 {
     font-weight: normal;
