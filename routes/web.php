@@ -20,6 +20,9 @@ Route::get('/', function () {
 Route::get('/calls/new', function () {
     return view('calls.new');
 });
+Route::get('/Equipments', function () {
+	return view('/Equipments');
+});
 
 
 Route::get('/specialists', function () {
