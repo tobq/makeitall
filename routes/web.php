@@ -24,3 +24,4 @@ Route::resource('problems', 'ProblemsController');
 Route::resource('calls', 'CallsController');
 Route::resource('employees', 'EmployeesController');
 Route::resource('departments', 'DepartmentsController');
+Route::resource('equipment', 'EquipmentController');
