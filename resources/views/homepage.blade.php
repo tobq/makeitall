@@ -4,10 +4,12 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 @endsection
+{{--The user is greeted with their name--}}
 @section("title")
     Welcome $Alice
 @endsection
 @section("content")
+    {{--the page starts with problem statistics to give them an overview of the company wide problem changing process--}}
     <section class="statistics">
         <h3 id="stat">Problem Statistics</h3>
         <div class="background">
@@ -18,6 +20,7 @@
                             person
                         </m>
                     </div>
+                    {{--pulls statistics out of database--}}
                     <?php
                     echo "<h1>";
                     $count = 0;
@@ -49,6 +52,7 @@
             </div>
         </div>
     </section>
+    {{--most recent problems are ordered and displayed on the page in a sleek horizontal scroll--}}
     <section class="recent-heading">
         <h3>Recent Problems</h3>
         <div class="recent">
@@ -81,6 +85,7 @@
             <h5 id="most">These problems have the highest urgency</h5
         </div>
     </section>
+    {{--problems with 'high' as their urgency (3, the highest value) are displayed seperately so they can be monitored--}}
     <section id="urgent" class="card">
         <?php
         foreach ($problem as $prob) {
