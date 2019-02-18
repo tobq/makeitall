@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EquipmentController extends Controller
 {
@@ -13,17 +14,27 @@ class EquipmentController extends Controller
      */
     public function index()
     {
-        //
+     $software = DB::table('software')->get();
+	 $hardware = DB::table('hardware')->get();
+	 return view ('Equipments', ['software' => $software, 'hardware' => $hardware]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        DB::table('software')->insert(
+            []);
+    }
+
+    public function createhard(Request $request)
+    {
+        DB::table('hardware')->insert([
+            []]);
     }
 
     /**

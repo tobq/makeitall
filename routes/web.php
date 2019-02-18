@@ -20,10 +20,8 @@ Route::get('/', function () {
 Route::get('/calls/new', function () {
     return view('calls.new');
 });
-Route::get('/Equipments', function () {
-	return view('/Equipments');
-});
 
+Route::get('/equipment/createhard', 'EquipmentController@createhard');
 
 Route::get('/specialists', function () {
     return DB::select('
@@ -41,5 +39,12 @@ Route::get('/problems', function () {
     return DB::select('SELECT id, title, description, priority FROM problem;');
 });
 
+Route::resource('equipment', 'EquipmentController');
 Route::resource('employees', 'EmployeesController');
 Route::resource('departments', 'DepartmentsController');
+
+
+
+
+
+

@@ -31,7 +31,7 @@
         <a href="/"><i class="material-icons">assignment</i>Problems</a>
         <a href="/"><i class="material-icons">list</i>Calls</a>
         <a href="/"><i class="material-icons">group</i>Employees</a>
-        <a href="/"><i class="material-icons">business_center</i>Equipment</a>
+        <a href="equipment"><i class="material-icons">business_center</i>Equipment</a>
     </nav>
 </section>
 <section id="body-content">
