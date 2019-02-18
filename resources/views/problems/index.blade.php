@@ -21,18 +21,21 @@
             <div class="problembuttoncontents">
                 <?php
                 $x = $problem[$i]->priority;
-                // NEED TO MAKE SOLVED BOOLEAN
-                if ($x == 0){
-                    echo "<div class = 'prioritybeggining'>Solved</div> ";
+                $solvedcheck = false;
+                for($j = 0; $j < count($problem_solution); $j++) {
+                    if ($problem_solution[$j]->problem_id == $problem[$i]->id) {
+                        $solvedcheck = true;
+                        echo "<div class = 'prioritybeggining'>Solved</div> ";
+                    }
                 }
-                else if($x == 1){
-                    echo "<div class = 'prioritybeggining'>Priority:</div><div class= 'priorityending' style = 'background-color: lightgreen'>low</div>";
+                if($x == 1 && $solvedcheck==false){
+                    echo "<div class= 'priorityending' style = 'background-color: lightgreen'>low</div>";
                 }
-                else if($x == 2){
-                    echo "<div class = 'prioritybeggining'>Priority:</div><div class= 'priorityending' style = 'background-color: yellow'>normal</div>";
+                else if($x == 2 && $solvedcheck==false){
+                    echo "<div class= 'priorityending' style = 'background-color: yellow'>normal</div>";
                 }
-                else if($x == 3){
-                    echo "<div class = 'prioritybeggining'>Priority:</div><div class= 'priorityending' style = 'background-color: #ff6666'>high</div>";
+                else if($x == 3 && $solvedcheck==false){
+                    echo "<div class= 'priorityending' style = 'background-color: #ff6666'>high</div>";
                 }
                 ?>
             </div>
@@ -71,13 +74,14 @@
                         @endphp
                     </label>
                 </div>
-                <?php echo"<button type = 'submit' class = 'confirmsolved' onclick = 'edit(event,{$problem[$i]->id})'>Confirm</button>"; ?>
+                <?php echo"<button type = 'submit' class = 'confirmsolved' onclick = 'edit({$problem[$i]->id})'>Confirm</button>"; ?>
             </form>
 
             <?php echo "<form class = 'solvededitform' id = 'solvedform$i'>" ?>
                 <p class = 'formheader'> Solve problem form</p>
+                <div class="multiselect-con"></div>
                 <div class="underline formunderline"></div>
-                How was the problem solved: <textarea class = 'formtextarea'></textarea>
+                <p class = 'howwas'>How was the problem solved:</p> <textarea class = 'formtextarea' name = 'description'></textarea>
                 <?php echo"<button type = 'update' class = 'confirmsolved' onclick = 'solve($i)'>Confirm</button>"; ?>
             </form>
 
@@ -95,11 +99,12 @@
 
             } else {
                 // NEEDS A SOLVED COLUMN IN THE TABLE
-                $tempstd = $problem[$i]->description;
-                echo "
-                <div class = 'descriptionheader'>How it was solved:</div>
-                <div class = 'description'>$tempstd</div>
-                ";
+                echo "<div class = 'descriptionheader'>How it was solved:</div>";
+                for($k = 0; $k < count($problem_solution); $k++) {
+                    if ($problem_solution[$k]->problem_id == $problem[$i]->id) {
+                        echo "<div class = 'description'>{$problem_solution[$k]->description}</div>";
+                    }
+                }
             }
             ?>
             <p class = 'associatedcalls'>Associated calls ⬇️</p>

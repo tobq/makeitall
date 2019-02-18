@@ -1,10 +1,12 @@
-#title {
+#title,
+.employee-full-name {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 #logo,
+.select-option-content,
 .field-label > .required-field,
 .user-display-picture,
 .select-option-remove,
@@ -27,6 +29,7 @@ textarea {
 }
 
 .tag,
+.employee-id,
 .field-label > .required-field {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
@@ -91,13 +94,15 @@ textarea {
   src: url(/f/bauhaus-93-regular.ttf);
 }
 
-#title {
+#title,
+.employee-full-name {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 #logo,
+.select-option-content,
 .field-label > .required-field,
 .user-display-picture,
 .select-option-remove,
@@ -120,6 +125,7 @@ textarea {
 }
 
 .tag,
+.employee-id,
 .field-label > .required-field {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
@@ -166,13 +172,15 @@ textarea {
   vertical-align: middle;
 }
 
-#title {
+#title,
+.employee-full-name {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 #logo,
+.select-option-content,
 .field-label > .required-field,
 .user-display-picture,
 .select-option-remove,
@@ -195,6 +203,7 @@ textarea {
 }
 
 .tag,
+.employee-id,
 .field-label > .required-field {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
@@ -214,13 +223,15 @@ textarea {
   box-sizing: border-box;
 }
 
-#title {
+#title,
+.employee-full-name {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 #logo,
+.select-option-content,
 .field-label > .required-field,
 .user-display-picture,
 .select-option-remove,
@@ -243,6 +254,7 @@ textarea {
 }
 
 .tag,
+.employee-id,
 .field-label > .required-field {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
@@ -398,13 +410,15 @@ textarea {
   width: 100%;
 }
 
-#title {
+#title,
+.employee-full-name {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 #logo,
+.select-option-content,
 .field-label > .required-field,
 .user-display-picture,
 .material-icons,
@@ -427,6 +441,7 @@ textarea {
 }
 
 .tag,
+.employee-id,
 .field-label > .required-field {
   background-color: rgba(0, 0, 0, 0.05);
   font-size: 12px;
@@ -464,6 +479,235 @@ textarea {
 
 .field-label > .required-field.required-error {
   background-color: salmon;
+}
+
+#title,
+.employee-full-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#logo,
+.select-option-content,
+.user-display-picture,
+.material-icons,
+.select-toggle,
+.select-option-remove,
+.field-label > .required-field {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.user-menu-list,
+.select-field.active {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+body,
+textarea {
+  font-family: roboto, Arial, serif;
+}
+
+.tag,
+.employee-id,
+.field-label > .required-field {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+.user-display-picture,
+textarea {
+  border: 1px solid lightgray;
+}
+
+.select-row {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+#title,
+.employee-full-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#logo,
+.select-option-content,
+.user-display-picture,
+.material-icons,
+.select-toggle,
+.select-option-remove,
+.field-label > .required-field {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.user-menu-list,
+.select-field.active {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+body,
+textarea {
+  font-family: roboto, Arial, serif;
+}
+
+.tag,
+.employee-id,
+.field-label > .required-field {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+.user-display-picture,
+textarea {
+  border: 1px solid lightgray;
+}
+
+.select-row {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+#title,
+.employee-full-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#logo,
+.select-option-content,
+.user-display-picture,
+.material-icons,
+.select-toggle,
+.select-option-remove,
+.field-label > .required-field {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.user-menu-list,
+.select-field.active {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+body,
+textarea {
+  font-family: roboto, Arial, serif;
+}
+
+.tag,
+.employee-id,
+.field-label > .required-field {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+.user-display-picture,
+textarea {
+  border: 1px solid lightgray;
+}
+
+.select-row {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: url(/f/material-icons.woff2) format("woff2");
+}
+
+.user-display-picture,
+.material-icons,
+.select-toggle,
+.select-option-remove {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+}
+
+.select-toggle,
+.select-option-remove {
+  transition: background-color 100ms ease;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.select-toggle:hover,
+.select-option-remove:hover,
+.select-toggle:focus,
+.select-option-remove:focus {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.select-field.required-error {
+  background-color: #feefed !important;
+  outline-color: salmon;
+  outline-style: auto;
+}
+
+.select-search {
+  flex: 1 1;
+  padding: 0 14px;
+}
+
+.employee-id {
+  background: lightgray;
+}
+
+.employee-full-name {
+  flex-grow: 1;
+}
+
+.select-option-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.select-option-content > * {
+  margin-right: 14px;
+}
+
+.select-option-content > *:last-child {
+  margin-right: 0;
 }
 
 /**

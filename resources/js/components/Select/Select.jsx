@@ -92,7 +92,11 @@ export default class Select extends Component {
     }
 
     toggleButton() {
-        return <button className="select-toggle" ref="toggle" onClick={event => this.toggle()}/>
+        return <button className="select-toggle" ref="toggle" onClick={event => {
+            this.toggle();
+            event.preventDefault();
+            return false;
+        }}/>
     }
 
     options() {

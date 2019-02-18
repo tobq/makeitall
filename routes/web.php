@@ -23,6 +23,9 @@ Route::get('/problems/list', 'ProblemsController@list');
 
 Route::get('/employees/list', 'EmployeesController@list');
 
+Route::post('/solutions/assign/{id}, SolutionController@assign');
+
+Route::resource('solutions', 'SolutionsController');
 Route::resource('problems', 'ProblemsController');
 Route::resource('calls', 'CallsController');
 Route::resource('employees', 'EmployeesController');

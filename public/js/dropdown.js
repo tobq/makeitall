@@ -19,10 +19,42 @@ $(window).on("load resize",function(e){
 });
 
 function solve(id) {
+    $.ajax({
+        type: "GET",
+        url: '/solutions/'+id,
+        data: $('#solutionsform'+id).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data, status)
+        {
+            console.log(data, status);
+        },
 
+        error: function(data, status)
+        {
+            console.log(data, status);
+        }
+    });
+    $.ajax({
+        type: "PUT",
+        url: '/solutions/'+id,
+        data: $('#solutionsform'+id).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(data, status)
+        {
+            console.log(data, status);
+        },
+        error: function(data, status)
+        {
+            console.log(data, status);
+        }
+    });
 }
 
-function edit(event, id) {
+function edit(id) {
     $.ajax({
         type: "PUT",
         url: '/problems/'+id,

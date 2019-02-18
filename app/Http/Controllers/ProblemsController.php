@@ -10,14 +10,15 @@ class ProblemsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response\
      */
     public function index()
     {
+        $problem_solution = DB::table('problem_solution')->get();
         $problem = DB::table('problem')->orderby('priority','desc')->get();
         $call = DB::table('call')->get();
         $call_problem = DB::table('call_problem')->get();
-        return view('problems/index', ['problem' => $problem, 'call' => $call, 'call_problem' => $call_problem]);
+        return view('problems/index', ['problem' => $problem, 'call' => $call, 'call_problem' => $call_problem, 'problem_solution' => $problem_solution]);
     }
 
 
