@@ -14,8 +14,11 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        return view('employees/index');
-        //
+        $employee = DB::table('employee')->get();
+        $department = DB::table('department')->get();
+        $specialist_problem = DB::table('specialist_problem')->get();
+        $problem = DB::table('problem')->get();
+        return view('employees/index', ['employee' => $employee, 'specialist_problem' => $specialist_problem, 'department' => $department, 'problem' => $problem]);
     }
 
     /**
@@ -91,6 +94,7 @@ SELECT employee.id, employee.title, employee.first_name, employee.last_name, dep
 FROM employee
        INNER JOIN department ON employee.department_id = department.id;
 ');
+
         //
     }
 

@@ -46,6 +46,14 @@ html, body {
     bottom: 60px;
     overflow: hidden;
 }
+.boxes {
+    width: 48%;
+    height: 350px;
+    background: white;
+    position: relative;
+    left: 20px;
+    border-radius: 10px 10px 10px 10px;
+}
 
 ul {
     list-style-type: none;
@@ -77,7 +85,7 @@ li a {
 
 li a:hover {
     font-size: 30px;
-    background: #ccebff;
+    background: #f7f7f9;
 }
 
 a:link {
