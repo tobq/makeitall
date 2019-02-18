@@ -55,10 +55,7 @@ export default class Select extends Component {
     }
 
     open() {
-        console.log("OPEN", this.refs.root);
-        // console.trace("OPEN");
         if (this.state.active) return false;
-        // this.focus()
         this.setState({active: true}, then => {
             this.refs.options.scrollTop = 0;
         });
@@ -66,8 +63,6 @@ export default class Select extends Component {
     }
 
     close() {
-        console.log("CLOSE", this.refs.root);
-        // console.trace("CLOSE");
         this.setState({active: false});
     }
 
@@ -158,7 +153,7 @@ export class SelectOption {
     }
 
     getKey() {
-        return this._value;
+        return this.value;
     }
 
     equals(option) {

@@ -1,11 +1,10 @@
 import MultiSelect from "./Select/MultiSelect";
 import NewProblem from "./NewProblem";
 import PropTypes from "prop-types";
-import {FieldLabel, RequiredLabel} from "./FieldLabel/FieldLabel";
+import {RequiredLabel} from "./FieldLabel/FieldLabel";
 import React from "react";
 import Problem from "./Problem";
 import {QueryOption} from "./Select/SearchSelect";
-import RequiredField from "./RequiredField";
 
 export default class ProblemSelect extends React.Component {
     static propTypes = {
@@ -46,7 +45,6 @@ export default class ProblemSelect extends React.Component {
 
     validate() {
         let valid = true;
-        console.log(this.state.created);
         for (let created of this.state.created)
             if (!created.ref.current.validate()) {
                 valid = false;
@@ -84,8 +82,8 @@ export default class ProblemSelect extends React.Component {
 
     get value() {
         return {
-            created: this.state.created.map(x => x.ref.current.value),
-            selected: this.state.options
+            created: this.state.created.map(newProblem => newProblem.ref.current.value),
+            selected: this.ref.current.value.map(option => option.value)
         }
     }
 }
@@ -99,16 +97,16 @@ export class ProblemOption extends QueryOption {
 
 
     toSearchString() {
-        const problem = this.value;
+        const problem = this._value;
         return QueryOption.prepareSearchString(`${problem.id} ${problem.title} ${problem.description}`);
     }
 
     render() {
-        const problem = this.value;
+        const problem = this._value;
         return Problem.render(problem.id, problem.title, problem.priority)
     }
 
-    getKey() {
+    get value() {
         return this._value.id;
     }
 
