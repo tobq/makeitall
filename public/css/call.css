@@ -1,3 +1,10 @@
+.select-content-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select-option-content,
 .select-problem-save,
 .select-problem-edit,
 .material-icons {
@@ -5,6 +12,18 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
 }
 
 .select-new-problem-con {
@@ -17,10 +36,23 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -49,6 +81,56 @@
   vertical-align: middle;
 }
 
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
+}
+
+
+.select-new-problem-con {
+  border: 1px solid lightgray;
+}
+
+.select-input {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+.select-content-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select-option-content,
 .select-problem-save,
 .select-problem-edit,
 .material-icons {
@@ -56,6 +138,18 @@
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.tag-id,
+.problem-priority-3,
+.problem-priority-1,
+.problem-priority-2 {
+  background-color: rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: inline-block;
+  line-height: 18px;
+  border-radius: 0px;
+  padding: 0 6px;
 }
 
 .select-new-problem-con {
@@ -68,12 +162,32 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
 }
 
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+.select-content-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.select-option-content,
 .select-problem-save,
 .select-problem-edit,
 .material-icons {
@@ -82,6 +196,7 @@
       -ms-user-select: none;
           user-select: none;
 }
+
 
 .select-new-problem-con {
   border: 1px solid lightgray;
@@ -93,35 +208,23 @@
 }
 
 #report-call-button {
-  font-family: rbold;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
   font-size: 14px;
   height: 40px;
   border-radius: 0px;
-}
-
-.select-problem-save,
-.select-problem-edit,
-.material-icons {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-.select-new-problem-con {
-  border: 1px solid lightgray;
-}
-
-.select-input {
-  border-bottom: 1px solid lightgray;
-  box-sizing: border-box;
 }
 
 #report-call-button {
-  font-family: rbold;
-  font-size: 14px;
-  height: 40px;
-  border-radius: 0px;
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -236,6 +339,111 @@
   margin-bottom: 15px;
 }
 
+
+.select-new-problem-con {
+  border: 1px solid lightgray;
+}
+
+.select-input {
+  border-bottom: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+#report-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#report-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#report-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+@font-face {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: url(/f/material-icons.woff2) format("woff2");
+}
+
+.material-icons,
+.select-problem-edit,
+.select-problem-save {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle;
+}
+
+.select-problem-edit,
+.select-problem-save {
+  transition: background-color 100ms ease;
+  width: 40px;
+  flex-shrink: 0;
+}
+
+.select-problem-edit:hover,
+.select-problem-save:hover,
+.select-problem-edit:focus,
+.select-problem-save:focus {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.select-problem-save.required-error {
+  background-color: #feefed !important;
+  outline-color: salmon;
+  outline-style: auto;
+}
+
+.select-create-problem {
+  flex: 1 1;
+  padding: 0 14px;
+}
+
+.tag-id {
+  background: lightgray;
+}
+
+.select-content-title {
+  flex-grow: 1;
+}
+
+.select-option-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.select-option-content > * {
+  margin-right: 14px;
+}
+
+.select-option-content > *:last-child {
+  margin-right: 0;
+}
+
 .select-field,
 textarea {
   box-sizing: border-box;
@@ -245,10 +453,15 @@ textarea {
   margin-bottom: 15px;
 }
 
+#new-call-button {
+  display: none;
+}
+
+#report-call-button-con {
+  text-align: center;
+}
+
 #report-call-button {
   margin-top: 20px;
-  cursor: pointer;
-  width: 100%;
-  background-color: #f0dd75;
 }
 

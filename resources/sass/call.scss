@@ -15,8 +15,15 @@
   margin-bottom: 15px;
 }
 
+#new-call-button {
+  display: none;
+}
+
+#report-call-button-con {
+  text-align: center;
+}
 #report-call-button {
-  @extend %button;
+  @extend %call-button;
   margin-top: 20px;
   cursor: pointer;
   width: 100%;

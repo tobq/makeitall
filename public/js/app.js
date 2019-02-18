@@ -24795,10 +24795,17 @@ function (_Component) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 __webpack_require__(/*! /var/www/html/makeitall/resources/js/app.jsx */"./resources/js/app.jsx");
 __webpack_require__(/*! /var/www/html/makeitall/resources/sass/app.scss */"./resources/sass/app.scss");
 __webpack_require__(/*! /var/www/html/makeitall/resources/sass/call.scss */"./resources/sass/call.scss");
 module.exports = __webpack_require__(/*! /var/www/html/makeitall/resources/sass/dashboard.scss */"./resources/sass/dashboard.scss");
+=======
+__webpack_require__(/*! C:\Users\Fatu.Khalid\Documents\ComputerScience\lifechange\resources\js\app.jsx */"./resources/js/app.jsx");
+__webpack_require__(/*! C:\Users\Fatu.Khalid\Documents\ComputerScience\lifechange\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Fatu.Khalid\Documents\ComputerScience\lifechange\resources\sass\call.scss */"./resources/sass/call.scss");
+module.exports = __webpack_require__(/*! C:\Users\Fatu.Khalid\Documents\ComputerScience\lifechange\resources\sass\dashboard.scss */"./resources/sass/dashboard.scss");
+>>>>>>> 1c02e2232e0ef5aa4df0f662e4dc63faf1a9cc5e
 
 
 /***/ })

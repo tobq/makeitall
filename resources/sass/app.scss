@@ -150,13 +150,14 @@ nav {
 }
 
 #new-call-button {
-  text-align: center;
-  background-color: $MIA-light-yellow;
+  @extend %call-button;
+  //text-align: center;
+  //background-color: $MIA-light-yellow;
   line-height: $button-height;
-  display: inline-block;
-  padding: 0 20px;
-  font-family: rbold;
-  border-radius: $button-height / 2;
+  //display: inline-block;
+  //padding: 0 20px;
+  //font-family: rbold;
+  //border-radius: $button-height / 2;
 
   > .material-icons {
     margin-right: 10px;

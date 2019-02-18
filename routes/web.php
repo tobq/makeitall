@@ -11,16 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
 
+Route::get('/', 'HomeController@index');
 Route::get('/specialists/list', 'SpecialistsController@list');
-
 Route::get('/problem-types', 'ProblemsController@types');
-
 Route::get('/problems/list', 'ProblemsController@list');
-
+Route::get('/problems/{pid}/assign/{sid}', 'ProblemsController@assign');
+Route::get('/calls/{cid}/assign/{pid}', 'CallsController@assign');
 Route::get('/employees/list', 'EmployeesController@list');
 
 Route::post('/solutions/assign/{id}, SolutionController@assign');
@@ -30,3 +27,4 @@ Route::resource('problems', 'ProblemsController');
 Route::resource('calls', 'CallsController');
 Route::resource('employees', 'EmployeesController');
 Route::resource('departments', 'DepartmentsController');
+Route::resource('equipment', 'EquipmentController');

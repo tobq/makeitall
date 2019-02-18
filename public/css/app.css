@@ -49,6 +49,26 @@ textarea {
   box-sizing: border-box;
 }
 
+#new-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#new-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#new-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
 @font-face {
   font-family: couture;
   src: url(/f/couture.otf);
@@ -145,6 +165,26 @@ textarea {
   box-sizing: border-box;
 }
 
+#new-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#new-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#new-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
 @font-face {
   font-family: "Material Icons";
   font-style: normal;
@@ -223,8 +263,27 @@ textarea {
   box-sizing: border-box;
 }
 
-#title,
-.employee-full-name {
+#new-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#new-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#new-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+#title {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -272,6 +331,26 @@ textarea {
 .select-row {
   border-bottom: 1px solid lightgray;
   box-sizing: border-box;
+}
+
+#new-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#new-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#new-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 @font-face {
@@ -459,6 +538,26 @@ textarea {
 .select-row {
   border-bottom: 1px solid lightgray;
   box-sizing: border-box;
+}
+
+#new-call-button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#new-call-button {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#new-call-button:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
 }
 
 .field-label {
@@ -842,13 +941,7 @@ nav > a > .material-icons {
 }
 
 #new-call-button {
-  text-align: center;
-  background-color: #f0dd75;
   line-height: 40px;
-  display: inline-block;
-  padding: 0 20px;
-  font-family: rbold;
-  border-radius: 20px;
 }
 
 #new-call-button > .material-icons {

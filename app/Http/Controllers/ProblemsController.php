@@ -43,7 +43,16 @@ class ProblemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->json()->all();
+        $id = DB::table('problem')->insertGetId(
+            [
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'problem_type_id' => $data['type'],
+                'priority' => $data['priority'],
+            ]
+        );
+        return ['id' => $id];
     }
 
     /**
@@ -115,5 +124,16 @@ class ProblemsController extends Controller
     public function types()
     {
         return DB::select('SELECT id, name FROM problem_type;');
+    }
+
+    public function assign($pid, $sid)
+    {
+        DB::table('specialist_problem')->insert(
+            [
+                'specialist_id' => $sid,
+                'problem_id' => $pid,
+            ]
+        );
+        return;
     }
 }

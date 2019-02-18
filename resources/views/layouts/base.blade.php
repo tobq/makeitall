@@ -2,6 +2,7 @@
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Make It All</title>
     <meta name="description" content="Make it all - Tech support web portal">
@@ -20,7 +21,7 @@
             </div>
 
             <a href="/calls/create" id="new-call-button">
-                <i class="material-icons">call</i>New Call
+                <i class="material-icons">call</i>Report Call
             </a><i id="user-noti" class="material-icons">
                 notifications
             </i><span id="user-menu"></span>
@@ -31,7 +32,7 @@
         <a href="/problems"><i class="material-icons">assignment</i>Problems</a>
         <a href="/calls"><i class="material-icons">list</i>Calls</a>
         <a href="/employees"><i class="material-icons">group</i>Employees</a>
-        <a href="/"><i class="material-icons">business_center</i>Equipment</a>
+        <a href="/equipment"><i class="material-icons">business_center</i>Equipment</a>
     </nav>
 </section>
 <section id="body-content">

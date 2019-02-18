@@ -12,7 +12,7 @@ $MIA-light-yellow: lighten(desaturate($MIA-yellow, 20%), 20%);
 $error-color: salmon;
 
 
-%field-shadow{
+%field-shadow {
   box-shadow: 0 2px 3px rgba(black, 0.1);
 }
 
@@ -60,9 +60,24 @@ $error-color: salmon;
   //}
 }
 
-%button{
-  font-family: rbold;
+%button {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  //font-family: rbold;
   font-size: 14px;
   height: $button-height;
   border-radius: $button-radius;
+}
+
+%call-button {
+  @extend %button;
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba($MIA-light-yellow, 0.5);
+  cursor: pointer;
+  border-radius: $button-height / 2;
+  background-color: $MIA-light-yellow;
+}
+
+%call-button:hover {
+  box-shadow: 0 2px 6px rgba($MIA-light-yellow, 0.5);
 }

@@ -1,13 +1,13 @@
 @import "variables";
 @import "SelectVariables";
 
-.employee-id {
+.tag-id {
   @extend %tag;
   //margin-right: $select-spacing;
   background: $MIA-grey;
 }
 
-.employee-full-name {
+.select-content-title {
   @extend %text-overflow;
   flex-grow: 1;
 }
