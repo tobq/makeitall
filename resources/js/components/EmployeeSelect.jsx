@@ -27,6 +27,7 @@ export default class EmployeeSelect extends React.Component {
     }
 
     validate() {
+
         const valid = this.ref.current.validate();
         if (valid) this.label.current.deactivate();
         else this.label.current.activate();
