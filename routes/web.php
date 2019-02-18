@@ -21,7 +21,8 @@ Route::get('/problems/list', 'ProblemsController@list');
 Route::get('/problems/type/{tid}', 'ProblemsController@byType');
 Route::get('/problems/{pid}/assign/{sid}', 'ProblemsController@assign');
 Route::get('/calls/{cid}/assign/{pid}', 'CallsController@assign');
-Route::get('/login', function () {
+Route::get('/login', function (Request $request) {
+    if ($request->session()->has("id")) return redirect('/');
     return view("login");
 });
 Route::post('/login', function (Request $request) {
@@ -35,7 +36,9 @@ Route::post('/login', function (Request $request) {
     $id = $request->json('id');
     $password = $request->json('password');
 
-    $employees = DB::table('login')->select('password_hash')->where('employee_id', $id)->get();
+    $employees = DB::table('login')->select('first_name', 'password_hash')->where('employee_id', $id)
+        ->join('employee', 'login.employee_id', 'employee.id')
+        ->get();
     $employee = $employees[0];
     if (!$employee ||
         Hash::check($password, $employee->password_hash)) {
