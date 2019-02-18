@@ -17,6 +17,7 @@ mix
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/call.scss', 'public/css')
     .sass('resources/sass/dashboard.scss', 'public/css')
+    .sass('resources/sass/login.scss', 'public/css')
 
     // .sass('resources/sass/FieldLabel.scss', 'public/css/FieldLabel')
     // .sass('resources/sass/Select.scss', 'public/css/Select')

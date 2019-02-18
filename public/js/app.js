@@ -23776,17 +23776,29 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/sass/login.scss":
+/*!***********************************!*\
+  !*** ./resources/sass/login.scss ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ 0:
-/*!*************************************************************************************************************************!*\
-  !*** multi ./resources/js/app.jsx ./resources/sass/app.scss ./resources/sass/call.scss ./resources/sass/dashboard.scss ***!
-  \*************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************!*\
+  !*** multi ./resources/js/app.jsx ./resources/sass/app.scss ./resources/sass/call.scss ./resources/sass/dashboard.scss ./resources/sass/login.scss ***!
+  \*****************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\js\app.jsx */"./resources/js/app.jsx");
-__webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\sass\app.scss */"./resources/sass/app.scss");
-__webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\sass\call.scss */"./resources/sass/call.scss");
-module.exports = __webpack_require__(/*! C:\Users\tobia\Documents\makeitall\resources\sass\dashboard.scss */"./resources/sass/dashboard.scss");
+__webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\js\app.jsx */"./resources/js/app.jsx");
+__webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\sass\call.scss */"./resources/sass/call.scss");
+__webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\sass\dashboard.scss */"./resources/sass/dashboard.scss");
+module.exports = __webpack_require__(/*! C:\Users\Toby\Documents\makeitall\resources\sass\login.scss */"./resources/sass/login.scss");
 
 
 /***/ })

@@ -1,0 +1,125 @@
+#login {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 0 24px;
+  font-size: 14px;
+  height: 40px;
+  border-radius: 0px;
+}
+
+#login {
+  max-width: 100%;
+  box-shadow: 0 4px 10px rgba(240, 221, 117, 0.5);
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #f0dd75;
+}
+
+#login:hover {
+  box-shadow: 0 2px 6px rgba(240, 221, 117, 0.5);
+}
+
+@font-face {
+  font-family: couture;
+  src: url(/f/couture.otf);
+}
+
+@font-face {
+  font-family: coyote;
+  src: url(/f/coyote.ttf);
+}
+
+@font-face {
+  font-family: KC;
+  src: url(/f/KC.ttf);
+}
+
+@font-face {
+  font-family: lemon;
+  src: url(/f/lemon.otf);
+}
+
+@font-face {
+  font-family: roboto;
+  src: url(/f/roboto.ttf);
+}
+
+@font-face {
+  font-family: rbold;
+  src: url(/f/roboto-bold.ttf);
+}
+
+@font-face {
+  font-family: rbblack;
+  src: url(/f/roboto-black.ttf);
+}
+
+@font-face {
+  font-family: rcondensed;
+  src: url(/f/roboto-condensed.ttf);
+}
+
+@font-face {
+  font-family: "Bauhaus 93";
+  src: url(/f/bauhaus-93-regular.ttf);
+}
+
+nav,
+#new-call-button,
+#user-noti,
+#user-menu {
+  display: none;
+}
+
+* {
+  outline: none;
+  border: none;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+#body-content {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+#login-fields {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  padding: 0 20px;
+  background-color: white;
+  display: inline-block;
+  max-width: 300px;
+}
+
+#login-fields > * {
+  width: 100%;
+  outline: none;
+  height: 40px;
+}
+
+#login-fields > *:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+#logo {
+  font-family: "Bauhaus 93";
+  font-size: 28px;
+}
+
+.logo-image {
+  height: 32px;
+  width: 32px;
+  display: inline-block;
+  margin: 0 10px;
+  background: url(/i/logo-small.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
