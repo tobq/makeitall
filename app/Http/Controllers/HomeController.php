@@ -15,6 +15,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //queries are conducted and then passed into the view to allow for further queries
         $problem = DB::table('problem')
             ->select('id', 'creation', 'title', "priority", 'description')
             ->orderByDesc("creation")

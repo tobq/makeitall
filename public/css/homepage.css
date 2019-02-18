@@ -8,7 +8,11 @@
   max-width: 800px;
   width: auto;
 }
-
+/*
+the card is a div involving horizontal scrolling which leads to a sleek card set rotation
+the overflow property allows this
+every card has a shadow to add plasticity
+ */
 .card {display: flex}
 
 .card--content {
@@ -40,7 +44,9 @@
 h3, h5{
   margin-bottom: 5px;
 }
-
+/*
+the background is in the make it all yellow that we used throughout the site
+ */
 .background{
   background-color: #f0dd75;
   height: 50px;
