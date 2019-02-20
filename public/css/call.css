@@ -733,6 +733,7 @@
   flex-direction: column;
   align-content: stretch;
   width: 300px;
+  display: none;
   background: linear-gradient(90deg, transparent, transparent, rgba(0, 0, 0, 0.05));
 }
 
